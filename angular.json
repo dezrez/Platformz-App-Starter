@@ -1,0 +1,49 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "cli": { "analytics": false },
+  "projects": {
+    "angular-basic": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "index": "src/index.html",
+            "tsConfig": "tsconfig.app.json",
+            "outputPath": "dist/angular-basic",
+            "assets": [{ "glob": "**/*", "input": "public" }],
+            "styles": ["src/rezi-tokens.css", "src/rezi-components.css", "public/assets/rezi-icons.css", "src/styles.css"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": { "scripts": true, "styles": { "minify": true, "inlineCritical": false }, "fonts": false },
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true,
+              "budgets": [{ "type": "initial", "maximumWarning": "350kB", "maximumError": "500kB" }]
+            },
+            "development": { "optimization": false, "sourceMap": true, "extractLicenses": false }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "development": { "buildTarget": "angular-basic:build:development" },
+            "production": { "buildTarget": "angular-basic:build:production" }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": { "tsConfig": "tsconfig.spec.json", "runner": "vitest", "progress": false }
+        }
+      }
+    }
+  }
+}

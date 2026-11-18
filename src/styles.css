@@ -1,0 +1,23 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; min-width: 0; }
+body { font-family: 'exo-soft', 'Exo 2', Arial, sans-serif; }
+.app-content { display: grid; gap: 10px; min-width: 0; padding: 12px; }
+.rezi-panel, .rezi-panel__heading, .rezi-panel__title { min-width: 0; }
+.rezi-panel__heading { flex-wrap: wrap; }
+.rezi-panel__title, .property-address, .rezi-muted, dd { overflow-wrap: anywhere; }
+.heading-icon { flex: 0 0 auto; font-size: calc(16px * var(--rezi-modern-font-scale, 1)); text-align: center; width: calc(22.4px * var(--rezi-modern-font-scale, 1)); }
+.property-address { align-items: center; display: flex; gap: 10px; }
+dl { display: flex; flex-wrap: wrap; gap: 12px 32px; }
+dt { color: var(--rezi-modern-muted); }
+dd { margin: 3px 0 0; }
+textarea { display: block; margin-top: 6px; resize: vertical; width: 100%; }
+.note-caption { align-items: baseline; display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+.note-caption p { flex: 1 1 220px; }
+.note-caption span { white-space: nowrap; }
+.status { margin: 0; min-height: 1.5em; overflow-wrap: anywhere; }
+.mock-shell { padding: 12px; }
+.mock-toolbar { align-items: end; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+.mock-toolbar label { display: grid; gap: 5px; }
+.mock-frame { border: 1px solid var(--rezi-modern-border); border-radius: 10px; display: block; height: max(600px, calc(100dvh - 230px)); width: 100%; }
+.mock-help { margin: 10px 0; }
+@media (max-width: 480px) { .rezi-actions { justify-content: flex-start !important; } .app-content, .mock-shell { padding: 8px; } }

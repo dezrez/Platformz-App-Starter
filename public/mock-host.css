@@ -1,0 +1,11 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--app-font-family, 'Exo 2', Arial, sans-serif); }
+.mock-shell { display: grid; gap: 10px; padding: 12px; }
+.heading-icon { font-size: calc(16px * var(--rezi-modern-font-scale)); text-align: center; width: calc(22.4px * var(--rezi-modern-font-scale)); }
+.mock-toolbar { align-items: end; display: flex; flex-wrap: wrap; gap: 10px; }
+.mock-toolbar label { display: grid; gap: 5px; min-width: 0; max-width: 100%; }
+.mock-toolbar select { min-width: 0; width: 100%; }
+.mock-toolbar label.check { align-items: center; display: flex; min-height: 34px; }
+iframe { background: var(--rezi-modern-surface); border: 1px solid var(--rezi-modern-border); border-radius: 10px; display: block; height: max(600px, calc(100dvh - 240px)); width: 100%; }
+.dialog-footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+@media (max-width: 480px) { .mock-shell { padding: 8px; } }

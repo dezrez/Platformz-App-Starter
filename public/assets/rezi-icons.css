@@ -1,0 +1,36 @@
+/* Rezi icon subset. Decorative glyphs use the bundled Rezi font. */
+@font-face {
+  font-family: Rezi;
+  src: url('./fonts/icomoon.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.char {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Rezi';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.char-home3::before { content: '\e002'; }
+.char-book::before { content: '\e036'; }
+.char-file::before { content: '\e03b'; }
+.char-screen::before { content: '\e09f'; }
+.char-user::before { content: '\e0ed'; }
+.char-search::before { content: '\e11a'; }
+.char-settings::before { content: '\e136'; }
+.char-stats::before { content: '\e157'; }
+.char-list::before { content: '\e1f2'; }
+.char-link::before { content: '\e222'; }
+.char-question::before { content: '\e2b2'; }
+.char-code::before { content: '\e3d9'; }
+.char-office::before { content: '\e00b'; }
+.char-cog::before { content: '\e138'; }
+.char-close::before { content: '\e2c4'; }

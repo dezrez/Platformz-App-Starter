@@ -1,0 +1,193 @@
+import { demoError, envelope, exactOrigin, isEnvelope, OPERATIONS, requestId, THEMES } from './protocol.js';
+import { createDialogActions } from './dialog.js';
+
+// Deliberately page-memory only. This is not durable or server-authorized storage.
+const appStates = new Map();
+const byteLength = value => new TextEncoder().encode(JSON.stringify(value)).length;
+const clone = value => JSON.parse(JSON.stringify(value));
+
+/** Simulate the draft contract for a single, exact iframe window and origin. */
+export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globalThis.window, visibilityTarget = globalThis.document, context, manifest, scenarios, theme = 'light', dialog, onDialogState = () => {}, onActionResult = () => {}, onLog = () => {}, onState = () => {} }) {
+  if (!exactOrigin(targetOrigin)) throw new TypeError('An exact HTTP(S) app origin is required.');
+  if (!targetWindow?.postMessage || !eventTarget?.addEventListener) throw new TypeError('An app window and event target are required.');
+  if (!manifest?.id || manifest.synthetic !== true || !Array.isArray(scenarios)) throw new TypeError('A synthetic manifest and scenarios are required.');
+  if (manifest.surface !== undefined && !['property-action', 'dashboard-widget'].includes(manifest.surface)) throw new TypeError('This synthetic host supports property dialogs or no-record dashboard widgets.');
+  const widget = manifest.surface === 'dashboard-widget';
+  if (widget ? context !== null || !Array.isArray(manifest.permissions) || manifest.permissions.length !== 0 : !context?.id || !context?.agencyId) throw new TypeError('Widgets require null context and no permissions; property apps require a selected property and agency.');
+  const scenariosById = new Map(scenarios.map(item => [item.id, item]));
+  const supportsDialog = !widget && dialog !== undefined;
+  if (supportsDialog && (!visibilityTarget?.addEventListener || !visibilityTarget?.removeEventListener || typeof visibilityTarget.visibilityState !== 'string')) throw new TypeError('Dialog actions require the trusted parent document visibility.');
+  let currentContext = clone(context);
+  let currentTheme = typeof theme === 'string' ? theme : theme.look;
+  if (!THEMES.includes(currentTheme)) currentTheme = 'light';
+  let currentSession = requestId();
+  let currentScenario = 'success';
+  let enabled = true;
+  let connected = false;
+  let closed = false;
+  let disposed = false;
+  let requestCount = 0;
+  const pending = new Map();
+  const seenIds = new Set();
+  const send = (type, id, payload = {}) => targetWindow.postMessage(envelope(type, currentSession, id, payload), targetOrigin);
+  const state = status => onState({ status });
+  const stateKey = () => `${manifest.id}:${currentContext.agencyId}:${currentContext.id}`;
+  const effectiveEnabled = () => enabled && (!supportsDialog || visibilityTarget.visibilityState === 'visible');
+  const dialogActions = supportsDialog ? createDialogActions({ settings: dialog, active: () => !closed && !disposed && effectiveEnabled(), connected: () => connected, pendingRequests: () => pending.size, send, close: dispose, nextId: requestId, onState: onDialogState, onResult: onActionResult }) : null;
+  function visibilityChanged() {
+    if (disposed || closed) return;
+    if (!effectiveEnabled()) dialogActions?.invalidate(); else dialogActions?.publish();
+    if (connected) send('partner.enabled', requestId(), { enabled: effectiveEnabled() });
+    state(effectiveEnabled() ? (connected ? 'connected' : 'waiting') : 'disabled');
+  }
+  function report(id, operation, start, status, result, errorCode = null) {
+    onLog({ id, operation, status, durationMs: Math.max(0, Math.round(performance.now() - start)), responseBytes: byteLength(result), errorCode, at: new Date().toISOString() });
+  }
+  function fail(id, operation, start, error) {
+    const payload = { code: error.code ?? 'DEMO_ERROR', message: error.message, status: error.status ?? 400 };
+    send('partner.error', id, payload);
+    report(id, operation, start, payload.status, payload, payload.code);
+  }
+  function cancelPending(code, message) {
+    for (const [id, entry] of pending) {
+      clearTimeout(entry.timer);
+      fail(id, entry.operation, entry.start, demoError(code, message, 499));
+    }
+    pending.clear();
+    dialogActions?.publish();
+  }
+  function validate(operation, params) {
+    if (!OPERATIONS.includes(operation)) throw demoError('OPERATION_NOT_ALLOWED', 'This demo operation is not in the manifest.', 403);
+    if (!params || typeof params !== 'object' || Array.isArray(params)) throw demoError('INVALID_PARAMS', 'Operation parameters must be an object.');
+    const allowed = operation === 'appState.set' ? ['propertyId', 'note', 'version'] : ['propertyId'];
+    if (Object.keys(params).some(key => !allowed.includes(key))) throw demoError('INVALID_PARAMS', 'Unexpected operation parameters.');
+    if (params.propertyId !== undefined && params.propertyId !== currentContext.id) throw demoError('CONTEXT_FORBIDDEN', 'Only the selected synthetic property is available.', 403);
+    if (operation === 'appState.set') {
+      if (typeof params.note !== 'string' || params.note.length > 500) throw demoError('INVALID_NOTE', 'Enter a note of at most 500 characters.');
+      if (params.version !== undefined && (!Number.isSafeInteger(params.version) || params.version < 0)) throw demoError('INVALID_VERSION', 'The state version must be a nonnegative integer.');
+    }
+  }
+  function perform(operation, params) {
+    const failures = {
+      throttled: ['RATE_LIMITED', 'This scenario simulates a rate limit. Try another scenario.', 429],
+      expired: ['SESSION_EXPIRED', 'This scenario simulates an expired development session.', 401],
+      forbidden: ['PERMISSION_DENIED', 'This scenario simulates denied operation permission.', 403],
+      missing: ['CONTEXT_NOT_FOUND', 'The synthetic property is unavailable in this scenario.', 404],
+    };
+    if (failures[currentScenario]) throw demoError(...failures[currentScenario]);
+    if (operation === 'property.read') return clone(currentContext);
+    const saved = appStates.get(stateKey()) ?? { note: '', version: 0 };
+    if (operation === 'appState.get') return clone(saved);
+    if (params.version !== undefined && params.version !== saved.version) throw demoError('STATE_CONFLICT', 'The note changed. Read the latest version before saving.', 409);
+    const next = { note: params.note, version: saved.version + 1 };
+    appStates.set(stateKey(), next);
+    return clone(next);
+  }
+  function receive(event) {
+    if (disposed || closed || event.source !== targetWindow || event.origin !== targetOrigin || !isEnvelope(event.data)) return;
+    const message = event.data;
+    if (message.type === 'partner.hello') {
+      connected = true;
+      send('partner.init', message.requestId, { context: clone(currentContext), theme: { look: currentTheme }, manifest, enabled: effectiveEnabled(), synthetic: true, ...(widget ? { surface: 'dashboard-widget', permissions: [] } : {}), ...(supportsDialog ? { capabilities: { dialogActions: true }, dialog: dialogActions.config } : {}) });
+      state(effectiveEnabled() ? 'connected' : 'disabled');
+      dialogActions?.publish();
+      return;
+    }
+    if (!connected || message.sessionId !== currentSession) return;
+    if (message.type === 'partner.actionState') { dialogActions?.receiveState(message.payload, message.requestId); return; }
+    if (message.type === 'partner.actionResult') { dialogActions?.receiveResult(message.payload, message.requestId); return; }
+    if (message.type === 'partner.cancel') {
+      const entry = pending.get(message.requestId);
+      if (entry) {
+        clearTimeout(entry.timer);
+        pending.delete(message.requestId);
+        dialogActions?.publish();
+        fail(message.requestId, entry.operation, entry.start, demoError('CANCELLED', 'The request was cancelled.', 499));
+      }
+      return;
+    }
+    if (message.type !== 'partner.request') return;
+    // Replayed request IDs never execute twice, especially writes. The original
+    // response may already be delivered; replayed responses are intentionally absent.
+    if (seenIds.has(message.requestId) || seenIds.size >= 128) return;
+    seenIds.add(message.requestId);
+    const start = performance.now();
+    const { operation, params } = message.payload;
+    const loggedOperation = OPERATIONS.includes(operation) ? operation : 'unsupported';
+    try {
+      if (widget) throw demoError('CONTEXT_REQUIRED', 'Choose a record context before using a record operation.', 409);
+      if (!enabled) throw demoError('HOST_DISABLED', 'The host disabled this app.', 403);
+      validate(operation, params);
+      requestCount += 1;
+      if (requestCount > 12) throw demoError('DEMO_BUDGET_EXCEEDED', 'The illustrative session budget was reached. Restart the demo.', 429);
+      const execute = () => {
+        pending.delete(message.requestId);
+        dialogActions?.publish();
+        try {
+          const result = perform(operation, params);
+          send('partner.result', message.requestId, { result });
+          report(message.requestId, loggedOperation, start, 200, { result });
+        } catch (error) { fail(message.requestId, loggedOperation, start, error); }
+      };
+      const timer = setTimeout(execute, currentScenario === 'slow' ? 1200 : 50);
+      pending.set(message.requestId, { timer, start, operation: loggedOperation });
+      dialogActions?.publish();
+    } catch (error) { fail(message.requestId, loggedOperation, start, error); }
+  }
+  eventTarget.addEventListener('message', receive);
+  if (supportsDialog) visibilityTarget.addEventListener('visibilitychange', visibilityChanged);
+  dialogActions?.publish();
+  state('waiting');
+  function close() {
+    if (disposed || closed) return;
+    closed = true;
+    cancelPending('HOST_CLOSED', 'The host closed this app.');
+    if (connected) send('partner.closed', requestId(), {});
+    connected = false; dialogActions?.dispose(); state('closed');
+  }
+  function dispose() {
+    if (disposed) return;
+    try { close(); }
+    finally { disposed = true; eventTarget.removeEventListener('message', receive); if (supportsDialog) visibilityTarget.removeEventListener('visibilitychange', visibilityChanged); }
+  }
+  return {
+    setContext(next) {
+      if (disposed || closed) return;
+      if (widget ? next !== null : !next?.id || !next?.agencyId) throw new TypeError('Changing app surface requires a new host session.');
+      cancelPending('CONTEXT_CHANGED', 'The host context changed.');
+      currentContext = clone(next);
+      currentSession = requestId();
+      dialogActions?.invalidate({ context: true });
+      seenIds.clear();
+      requestCount = 0;
+      if (connected) send('partner.context', requestId(), widget ? { context: null, surface: 'dashboard-widget', permissions: [] } : clone(currentContext));
+    },
+    setScenario(id) {
+      if (!scenariosById.has(id)) throw new TypeError('Unknown synthetic scenario.');
+      cancelPending('SCENARIO_CHANGED', 'The synthetic scenario changed.');
+      currentScenario = id;
+    },
+    setTheme(look) {
+      if (disposed || closed || !THEMES.includes(look)) return;
+      currentTheme = look;
+      if (connected) send('partner.theme', requestId(), { look });
+    },
+    setEnabled(value) {
+      if (disposed || closed) return;
+      enabled = Boolean(value);
+      if (!enabled) cancelPending('HOST_DISABLED', 'The host disabled this app.');
+      if (!effectiveEnabled()) dialogActions?.invalidate(); else dialogActions?.publish();
+      if (connected) send('partner.enabled', requestId(), { enabled: effectiveEnabled() });
+      state(effectiveEnabled() ? (connected ? 'connected' : 'waiting') : 'disabled');
+    },
+    sendAction(action) {
+      if (widget || disposed || closed || !connected || !enabled || action !== 'save') return false;
+      if (dialogActions) return dialogActions.dispatch(action);
+      send('partner.action', requestId(), { action });
+      return true;
+    },
+    close,
+    dispose,
+    get sessionId() { return currentSession; },
+  };
+}

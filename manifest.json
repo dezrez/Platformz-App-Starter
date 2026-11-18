@@ -1,0 +1,18 @@
+{
+  "id": "my-rezi-angular-app",
+  "name": "My Rezi Angular app",
+  "version": "0.1.0",
+  "protocol": "dezrez.partner/1",
+  "host": "rezi",
+  "surface": "property-action",
+  "permissions": ["property.read", "appState.get", "appState.set"],
+  "providerDestinations": [],
+  "dialog": { "actionText": "Save", "showCancelButton": true, "cancelText": "Cancel" },
+  "certification": {
+    "readSelector": "[data-partner-read]",
+    "noteSelector": "[data-partner-note]",
+    "saveSelector": "[data-partner-save]",
+    "statusSelector": "[data-partner-status]",
+    "contextSelector": "[data-partner-context]"
+  }
+}

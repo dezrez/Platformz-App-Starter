@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Rezi Angular mock host</title>
+  <link rel="stylesheet" href="assets/rezi-tokens.css"><link rel="stylesheet" href="assets/rezi-components.css"><link rel="stylesheet" href="mock-host.css">
+  <link rel="stylesheet" href="assets/rezi-icons.css">
+  <script type="module" src="mock-host.js"></script>
+</head><body data-rezi-modern data-rezi-application-look="light" data-rezi-property-hub-look="light"><main class="mock-shell">
+  <section class="rezi-panel"><header class="rezi-panel__heading"><span class="char char-code heading-icon" aria-hidden="true"></span><h1 class="rezi-panel__title">Test your Angular app</h1></header>
+    <p>Fictional properties only. No account or Rezi credentials are needed. Notes clear when this page refreshes.</p>
+    <div class="mock-toolbar">
+      <label>Context<select id="property"><option value="none">No record (dashboard widget)</option></select></label>
+      <label>Outcome<select id="outcome"><option value="success">Successful response</option><option value="slow">Slow response</option><option value="throttled">Rate limited</option><option value="expired">Expired session</option><option value="forbidden">Permission denied</option><option value="missing">Record not found</option></select></label>
+      <label>Theme<select id="theme"><option value="light">Light</option><option value="dark">Dark</option><option value="high-contrast">High Contrast</option></select></label>
+      <label class="check"><input id="enabled" type="checkbox" checked>App enabled</label>
+      <button id="close" class="rezi-button" type="button">Close app</button><button id="restart" class="rezi-button" type="button">Restart app</button>
+    </div><p id="mock-status" role="status" class="rezi-muted">Opening the app…</p>
+  </section>
+  <iframe id="app" title="Your Angular app preview" sandbox="allow-scripts allow-same-origin"></iframe>
+  <footer class="dialog-footer"><button id="cancel" class="rezi-button" type="button">Cancel</button><button id="save" class="rezi-button rezi-button--primary" type="button" disabled>Save</button></footer>
+</main></body></html>

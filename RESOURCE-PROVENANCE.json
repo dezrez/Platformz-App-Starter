@@ -1,0 +1,25 @@
+{
+  "format": "rezi.angular-basic-resources/1",
+  "protocol": "dezrez.partner/1",
+  "sdkVersion": "0.1.0",
+  "copiedResourceSha256": {
+    "sdk/client.js": "44494af211bea2e8bff5355222e01371defd2f3191ce621b49bf31f26f636a4e",
+    "sdk/protocol.js": "8095b9a6aa5405b1a843aba9c1bd52c5fd09591058df30a48a4f0fc1766bdc13",
+    "sdk/demo-host.js": "6630a0cee03ba38703b34e6b833d578ad8f2cbc0fd04ff669838b5df1ac97e32",
+    "lib/theme.js": "1f9fc46fe9729a0661bf0e5a97d807d4fa3c3002d274186f5cd2af292aabb12c",
+    "sdk/dialog.js": "04be2c0cc72734672ee3f1b6ef1d01654b79cc9979fb57f9f75f3ebddf83e34d",
+    "assets/rezi-icons.css": "b49e14a9c1c34c2b68846d1c97b21383b48db5a5c57963536f5d19bfe2464920",
+    "assets/fonts/icomoon.woff2": "732c29b295f8af80f286ad54fc285726f6a3f597ca22d045d95ddaaabab97d68"
+  },
+  "iconStylesheet": "https://dezrez-partner-developers-systest.azurewebsites.net/assets/rezi-icons.css",
+  "hostedTypeKit": "https://use.typekit.net/yis4cut.css",
+  "iconBinaryIncluded": true,
+  "fallbackFontLicenses": [
+    "public/assets/fonts/Exo2-OFL.txt",
+    "public/assets/fonts/Poppins-OFL.txt"
+  ],
+  "dependencyLockSha256": "fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3",
+  "framework": "Angular 22.2.6",
+  "buildTool": "Angular CLI/build 22.2.7",
+  "fontMode": "bundled"
+}

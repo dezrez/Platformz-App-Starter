@@ -1,0 +1,29 @@
+[
+  {
+    "id": "demo-property-001",
+    "agencyId": "demo-agency",
+    "address": "24 Orchard Lane",
+    "postcode": "DE1 0MO",
+    "price": 385000,
+    "bedrooms": 3,
+    "description": "Fictional property for development only."
+  },
+  {
+    "id": "demo-property-002",
+    "agencyId": "demo-agency",
+    "address": "Flat 7, The Old Printworks, 118 Riverside Walk",
+    "postcode": "DE2 0MO",
+    "price": 247500,
+    "bedrooms": 2,
+    "description": "A fictional long address for responsive testing."
+  },
+  {
+    "id": "demo-property-003",
+    "agencyId": "demo-agency",
+    "address": "9 Meadow Close",
+    "postcode": "DE3 0MO",
+    "price": null,
+    "bedrooms": null,
+    "description": "A fictional property with missing optional values."
+  }
+]
