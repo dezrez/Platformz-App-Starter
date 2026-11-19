@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Adapt, run and test the Dezrez Angular Basic starter through its canonical partner SDK and developer website, retaining the locked build profile and Dezrez themes.
 metadata:
-  version: 0.5.0-angular
+  version: 0.5.1-angular
 ---
 
 # Dezrez Angular app
