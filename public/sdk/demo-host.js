@@ -8,7 +8,8 @@ const byteLength = value => new TextEncoder().encode(JSON.stringify(value)).leng
 const clone = value => JSON.parse(JSON.stringify(value));
 
 /** Simulate the draft contract for a single, exact iframe window and origin. */
-export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globalThis.window, visibilityTarget = globalThis.document, context, manifest, scenarios, theme = 'light', dialog, onDialogState = () => {}, onActionResult = () => {}, onLog = () => {}, onState = () => {} }) {
+export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globalThis.window, visibilityTarget = globalThis.document, context, manifest, scenarios, theme = 'light', dialog, stateStore = appStates, onDialogState = () => {}, onActionResult = () => {}, onLog = () => {}, onState = () => {} }) {
+  if (!stateStore || typeof stateStore.get !== 'function' || typeof stateStore.set !== 'function') throw new TypeError('A trusted Map-like synthetic state store is required.');
   if (!exactOrigin(targetOrigin)) throw new TypeError('An exact HTTP(S) app origin is required.');
   if (!targetWindow?.postMessage || !eventTarget?.addEventListener) throw new TypeError('An app window and event target are required.');
   if (!manifest?.id || manifest.synthetic !== true || !Array.isArray(scenarios)) throw new TypeError('A synthetic manifest and scenarios are required.');
@@ -81,11 +82,11 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
     };
     if (failures[currentScenario]) throw demoError(...failures[currentScenario]);
     if (operation === 'property.read') return clone(currentContext);
-    const saved = appStates.get(stateKey()) ?? { note: '', version: 0 };
+    const saved = clone(stateStore.get(stateKey()) ?? { note: '', version: 0 });
     if (operation === 'appState.get') return clone(saved);
     if (params.version !== undefined && params.version !== saved.version) throw demoError('STATE_CONFLICT', 'The note changed. Read the latest version before saving.', 409);
     const next = { note: params.note, version: saved.version + 1 };
-    appStates.set(stateKey(), next);
+    stateStore.set(stateKey(), clone(next));
     return clone(next);
   }
   function receive(event) {

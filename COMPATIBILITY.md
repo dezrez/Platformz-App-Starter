@@ -64,3 +64,19 @@ using an external certificate and key. It changes no package, lock, compiler,
 build profile or production preview command. Installing a trust tool or changing
 computer trust requires the person's permission. This development server is
 separate from the strict built preview and does not prove hosted acceptance.
+
+
+## Synthetic host state adapter
+
+Bundle `0.4.3-angular` updates the copied canonical demo host and its resource
+hash. A trusted synthetic host can optionally supply a Map-like `stateStore`;
+the default remains the same page-memory store. No child operation, wire protocol,
+SDK wire version, dependency or build command changes. This does not grant an app
+storage or production authority.
+
+The fixed SDK bytes change the reviewed Angular source/profile identity. Future
+Angular certification needs a freshly bound reviewed profile and independent
+calibration; old frozen profiles/evidence remain unchanged. This release does
+not build, activate or certify an Angular worker. The developer website's saved
+copy preview can keep fictional notes across Save/reopen and property changes
+within its current page; sign-out or a full developer-page reload clears them.

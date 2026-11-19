@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Adapt, run and test the Dezrez Angular Basic starter through its canonical partner SDK and developer website, retaining the locked build profile and Dezrez themes.
 metadata:
-  version: 0.4.2-angular
+  version: 0.4.3-angular
 ---
 
 # Dezrez Angular app
@@ -58,3 +58,9 @@ Keep the usual setup first. If your browser needs an HTTPS address, give your AI
 the message in [the optional secure local setup](references/local-https.md).
 It explains the change before asking to install anything or change computer trust.
 Keep certificate keys outside your project and source submission.
+
+
+The bundled canonical synthetic host accepts an optional trusted Map-like state
+adapter without changing any child operation. Preserve these reviewed SDK bytes.
+A developer website may keep temporary fictional notes for one checked app build
+across preview reopen/property changes; this is not connected app-owned storage.

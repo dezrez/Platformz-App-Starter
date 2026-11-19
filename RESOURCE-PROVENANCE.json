@@ -5,7 +5,7 @@
   "copiedResourceSha256": {
     "sdk/client.js": "3e96f0407886e2f9dd98c24a9f910f504f77ed44847c372b846a4da51e5553bc",
     "sdk/protocol.js": "8095b9a6aa5405b1a843aba9c1bd52c5fd09591058df30a48a4f0fc1766bdc13",
-    "sdk/demo-host.js": "3114c28cae95997602d258cc5e0274f40d338578c4556bedce75168c363ee319",
+    "sdk/demo-host.js": "9d2263d5ab18dbba7c6a94d0460a08cf383caee6a4f62f7137a48bad312ab4ff",
     "lib/theme.js": "fd23f6f5ebd693c4d344fabd61dfa4ad73ddfebd5a68fe23c9cdfa6e7dcc9a37",
     "sdk/dialog.js": "04be2c0cc72734672ee3f1b6ef1d01654b79cc9979fb57f9f75f3ebddf83e34d",
     "assets/rezi-icons.css": "9f009e7ebdb2d97cc4ea40ab68891a321348dee3e02eefdbe8d494db7eaadd13",
