@@ -6,7 +6,7 @@
     "postcode": "DE1 0MO",
     "price": 385000,
     "bedrooms": 3,
-    "description": "Fictional property for development only."
+    "description": "A fictional three-bedroom home with a south-facing garden. Created exclusively for the developer sandbox."
   },
   {
     "id": "demo-property-002",
@@ -15,7 +15,7 @@
     "postcode": "DE2 0MO",
     "price": 247500,
     "bedrooms": 2,
-    "description": "A fictional long address for responsive testing."
+    "description": "A fictional riverside apartment with a deliberately long address to exercise responsive layouts."
   },
   {
     "id": "demo-property-003",
@@ -24,6 +24,6 @@
     "postcode": "DE3 0MO",
     "price": null,
     "bedrooms": null,
-    "description": "A fictional property with missing optional values."
+    "description": "A fictional record with missing price and bedroom information for empty-data testing."
   }
 ]

@@ -1,6 +1,7 @@
 import { demoError, envelope, exactOrigin, isEnvelope, OPERATIONS, requestId, THEMES } from './protocol.js';
 import { createDialogActions } from './dialog.js';
 import { normalizeBudgetUsage } from './diagnostics.js';
+import { appStateContextId, recordContextIdentity } from './context.js';
 
 // Deliberately page-memory only. This is not durable or server-authorized storage.
 const appStates = new Map();
@@ -13,9 +14,15 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
   if (!exactOrigin(targetOrigin)) throw new TypeError('An exact HTTP(S) app origin is required.');
   if (!targetWindow?.postMessage || !eventTarget?.addEventListener) throw new TypeError('An app window and event target are required.');
   if (!manifest?.id || manifest.synthetic !== true || !Array.isArray(scenarios)) throw new TypeError('A synthetic manifest and scenarios are required.');
-  if (manifest.surface !== undefined && !['property-action', 'dashboard-widget'].includes(manifest.surface)) throw new TypeError('This synthetic host supports property dialogs or no-record dashboard widgets.');
+  if (manifest.surface !== undefined && !['property-action', 'record-action', 'dashboard-widget'].includes(manifest.surface)) throw new TypeError('Choose a record dialog or no-record dashboard widget.');
   const widget = manifest.surface === 'dashboard-widget';
   if (widget ? context !== null || !Array.isArray(manifest.permissions) || manifest.permissions.length !== 0 : !context?.id || !context?.agencyId) throw new TypeError('Widgets require null context and no permissions; property apps require a selected property and agency.');
+  function validateContext(value) {
+    if (widget) { if (value !== null) throw new TypeError('Widgets have no selected record.'); return; }
+    const identity = recordContextIdentity(value);
+    if (manifest.surface !== 'record-action' && (identity.kind !== 'property' || identity.marketingRole)) throw new TypeError('Update this app to use record contexts.');
+  }
+  validateContext(context);
   const scenariosById = new Map(scenarios.map(item => [item.id, item]));
   const supportsDialog = !widget && dialog !== undefined;
   if (supportsDialog && (!visibilityTarget?.addEventListener || !visibilityTarget?.removeEventListener || typeof visibilityTarget.visibilityState !== 'string')) throw new TypeError('Dialog actions require the trusted parent document visibility.');
@@ -34,7 +41,7 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
   const seenIds = new Set();
   const send = (type, id, payload = {}) => targetWindow.postMessage(envelope(type, currentSession, id, payload), targetOrigin);
   const state = status => onState({ status });
-  const stateKey = () => `${manifest.id}:${currentContext.agencyId}:${currentContext.id}`;
+  const stateKey = () => `${manifest.id}:${currentContext.agencyId}:${appStateContextId(currentContext)}`;
   const effectiveEnabled = () => enabled && (!supportsDialog || visibilityTarget.visibilityState === 'visible');
   const dialogActions = supportsDialog ? createDialogActions({ settings: dialog, active: () => !closed && !disposed && effectiveEnabled(), connected: () => connected, pendingRequests: () => pending.size, send, close: dispose, nextId: requestId, onState: onDialogState, onResult: onActionResult }) : null;
   function visibilityChanged() {
@@ -64,10 +71,11 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
   }
   function validate(operation, params) {
     if (!OPERATIONS.includes(operation)) throw demoError('OPERATION_NOT_ALLOWED', 'This demo operation is not in the manifest.', 403);
+    if (recordContextIdentity(currentContext).kind === 'group' && operation === 'property.read') throw demoError('CONTEXT_OPERATION_NOT_SUPPORTED', 'Property reads need a selected property.', 403);
     if (!params || typeof params !== 'object' || Array.isArray(params)) throw demoError('INVALID_PARAMS', 'Operation parameters must be an object.');
     const allowed = operation === 'appState.set' ? ['propertyId', 'note', 'version'] : ['propertyId'];
     if (Object.keys(params).some(key => !allowed.includes(key))) throw demoError('INVALID_PARAMS', 'Unexpected operation parameters.');
-    if (params.propertyId !== undefined && params.propertyId !== currentContext.id) throw demoError('CONTEXT_FORBIDDEN', 'Only the selected synthetic property is available.', 403);
+    if (params.propertyId !== undefined && (recordContextIdentity(currentContext).kind !== 'property' || params.propertyId !== currentContext.id)) throw demoError('CONTEXT_FORBIDDEN', 'Use only the selected record context.', 403);
     if (operation === 'appState.set') {
       if (typeof params.note !== 'string' || params.note.length > 500) throw demoError('INVALID_NOTE', 'Enter a note of at most 500 characters.');
       if (params.version !== undefined && (!Number.isSafeInteger(params.version) || params.version < 0)) throw demoError('INVALID_VERSION', 'The state version must be a nonnegative integer.');
@@ -94,7 +102,7 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
     const message = event.data;
     if (message.type === 'partner.hello') {
       connected = true;
-      send('partner.init', message.requestId, { context: clone(currentContext), theme: { look: currentTheme }, manifest, enabled: effectiveEnabled(), synthetic: true, ...(widget ? { surface: 'dashboard-widget', permissions: [] } : {}), ...(supportsDialog ? { capabilities: { dialogActions: true }, dialog: dialogActions.config } : {}) });
+      send('partner.init', message.requestId, { context: clone(currentContext), theme: { look: currentTheme }, manifest, enabled: effectiveEnabled(), synthetic: true, ...(widget ? { surface: 'dashboard-widget', permissions: [] } : manifest.surface === 'record-action' ? { surface: 'record-action' } : {}), ...(supportsDialog ? { capabilities: { dialogActions: true }, dialog: dialogActions.config } : {}) });
       state(effectiveEnabled() ? 'connected' : 'disabled');
       dialogActions?.publish();
       return;
@@ -161,7 +169,7 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
   return {
     setContext(next) {
       if (disposed || closed) return;
-      if (widget ? next !== null : !next?.id || !next?.agencyId) throw new TypeError('Changing app surface requires a new host session.');
+      validateContext(next);
       cancelPending('CONTEXT_CHANGED', 'The host context changed.');
       contextEpoch += 1;
       currentContext = clone(next);

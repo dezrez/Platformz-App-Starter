@@ -1,5 +1,6 @@
 /** Versioned partner contract shared by synthetic and connected hosts. */
 export const PROTOCOL = 'dezrez.partner/1';
+export const SDK_VERSION = '0.2.0';
 export const OPERATIONS = Object.freeze(['property.read', 'appState.get', 'appState.set']);
 export const THEMES = Object.freeze(['light', 'dark', 'high-contrast']);
 const TYPES = new Set([

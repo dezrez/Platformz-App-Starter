@@ -1,6 +1,6 @@
 /** Public app-details contract. Declarations describe intent; they grant no access. */
 export const MANIFEST_VERSION = 1;
-export const MANIFEST_SDK_VERSION = '0.1.0';
+export const MANIFEST_SDK_VERSION = '0.2.0';
 const operations = ['property.read', 'appState.get', 'appState.set'];
 const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value) && Object.getPrototypeOf(value) === Object.prototype;
@@ -62,9 +62,9 @@ export function normalizeManifestDeclarations(manifest) {
     return values;
   };
   text(manifest.name, 'name', 100);
-  for (const [key, supported] of [['host', 'rezi'], ['surface', 'property-action']]) {
+  for (const [key, supported] of [['host', ['rezi']], ['surface', ['property-action', 'record-action']]]) {
     const value = text(manifest[key], key);
-    if (value !== null && value !== supported) invalid(key);
+    if (value !== null && !supported.includes(value)) invalid(key);
   }
   const example = boolean(manifest.example, 'example');
   const partnerInput = object(manifest.partner, 'partner', ['organisation', 'supportContact']);
@@ -83,9 +83,9 @@ export function normalizeManifestDeclarations(manifest) {
   let compatibility = null;
   if (compatibilityInput) {
     const sdkVersion = text(compatibilityInput.sdkVersion, 'compatibility.sdkVersion');
-    if (sdkVersion !== null && sdkVersion !== MANIFEST_SDK_VERSION) invalid('compatibility.sdkVersion');
+    if (sdkVersion !== null && !['0.1.0', MANIFEST_SDK_VERSION].includes(sdkVersion)) invalid('compatibility.sdkVersion');
     const hosts = unique(list(compatibilityInput.hosts, 'compatibility.hosts', (value, path) => { const result = text(value, path); if (result !== null && result !== 'rezi') invalid(path); return result; }), 'compatibility.hosts');
-    const surfaces = unique(list(compatibilityInput.surfaces, 'compatibility.surfaces', (value, path) => { const result = text(value, path); if (result !== null && result !== 'property-action') invalid(path); return result; }), 'compatibility.surfaces');
+    const surfaces = unique(list(compatibilityInput.surfaces, 'compatibility.surfaces', (value, path) => { const result = text(value, path); if (result !== null && !['property-action', 'record-action'].includes(result)) invalid(path); return result; }), 'compatibility.surfaces');
     compatibility = { sdkVersion, hosts, surfaces };
   }
   const storageInput = object(manifest.storage, 'storage', ['scope', 'schemaVersion', 'expectedMaximumBytes']);
@@ -93,7 +93,7 @@ export function normalizeManifestDeclarations(manifest) {
   if (storageInput) {
     const scope = text(storageInput.scope, 'storage.scope');
     const schemaVersion = integer(storageInput.schemaVersion, 'storage.schemaVersion', 1);
-    if (scope !== null && scope !== 'app-agency-user-property' || schemaVersion !== null && schemaVersion !== 1) invalid('storage');
+    if (scope !== null && !['app-agency-user-property', 'app-agency-user-context'].includes(scope) || schemaVersion !== null && schemaVersion !== 1) invalid('storage');
     storage = { scope, schemaVersion, expectedMaximumBytes: integer(storageInput.expectedMaximumBytes, 'storage.expectedMaximumBytes', 1) };
   }
   const activityInput = object(manifest.activity, 'activity', ['initializationCalls', 'pollingIntervalMs', 'refreshTriggers', 'backgroundWork']);
@@ -133,6 +133,10 @@ export function normalizeManifestDeclarations(manifest) {
   }
   const testingInput = object(manifest.testing, 'testing', ['journeys', 'fixtures']);
   const testing = testingInput ? { journeys: unique(list(testingInput.journeys, 'testing.journeys', id), 'testing.journeys'), fixtures: unique(list(testingInput.fixtures, 'testing.fixtures', id), 'testing.fixtures') } : null;
+  if (manifest.surface === 'record-action') {
+    if (compatibility?.sdkVersion !== MANIFEST_SDK_VERSION || !compatibility.surfaces?.includes('record-action')) invalid('compatibility');
+    if (storage?.scope !== 'app-agency-user-context') invalid('storage.scope');
+  }
   return { legacy: false, complete: missing.length === 0, missing: [...new Set(missing)], fields: { manifestVersion: MANIFEST_VERSION, example, partner, compatibility, storage, activity, expectedUsage, testing } };
 }
 
@@ -153,12 +157,12 @@ export function requirePublishableManifestDeclarations(manifest) {
 }
 
 /** Explicit fictional example only; these values are not production calibration. */
-export function exampleManifestDeclarations() {
+export function exampleManifestDeclarations({ surface = 'property-action' } = {}) {
   return copy({ manifestVersion: MANIFEST_VERSION, example: true,
     partner: { organisation: 'Example partner', supportContact: 'support@example.invalid' },
-    compatibility: { sdkVersion: MANIFEST_SDK_VERSION, hosts: ['rezi'], surfaces: ['property-action'] },
-    storage: { scope: 'app-agency-user-property', schemaVersion: 1, expectedMaximumBytes: 4096 },
+    compatibility: { sdkVersion: MANIFEST_SDK_VERSION, hosts: ['rezi'], surfaces: [surface] },
+    storage: { scope: surface === 'record-action' ? 'app-agency-user-context' : 'app-agency-user-property', schemaVersion: 1, expectedMaximumBytes: 4096 },
     activity: { initializationCalls: [{ operation: 'property.read', count: 1 }, { operation: 'appState.get', count: 1 }], pollingIntervalMs: null, refreshTriggers: ['manual', 'context-change', 'enabled', 'visible'], backgroundWork: false },
     expectedUsage: { version: 1, status: 'declared', horizonMs: 3600000, maxConcurrentInstances: 1, sessionStarts: 1, actions: [{ name: 'read-property', count: 1 }, { name: 'save-note', count: 1 }] },
-    testing: { journeys: ['initialization', 'read-property', 'save-note', 'read-error', 'save-error', 'context-change', 'close'], fixtures: ['dezrez-demo-properties/1'] } });
+    testing: { journeys: ['initialization', 'read-property', 'save-note', 'read-error', 'save-error', 'context-change', ...(surface === 'record-action' ? ['marketing-role-change', 'group-context'] : []), 'close'], fixtures: [surface === 'record-action' ? 'dezrez-demo-records/1' : 'dezrez-demo-properties/1'] } });
 }

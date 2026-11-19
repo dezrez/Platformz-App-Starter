@@ -2,12 +2,17 @@
 name: dezrez-angular-app
 description: Adapt, run and test the Dezrez Angular Basic starter through its canonical partner SDK and developer website, retaining the locked build profile and Dezrez themes.
 metadata:
-  version: 0.4.3-angular
+  version: 0.5.0-angular
 ---
 
 # Dezrez Angular app
 
 Read the project-root `README.md`, `COMPATIBILITY.md`, `src/app/notes-controller.ts` and `src/app/app.component.html`. Keep this working integration while implementing the person’s idea. Paths and commands are relative to the project root, including when this skill is mirrored into a discovery folder.
+
+Read [selected records and marketing roles](references/record-contexts.md) before
+changing context handling. This starter uses SDK0.2.0 and record-action for a
+property with an optional real marketing role, or a people group. Existing
+SDK0.1.0/property-action apps remain property-only compatibility.
 
 Check the Node version against `package.json`. Use ordinary `npm ci`, `npm test`, `npm run build` and `npm run validate`; start the strict built preview using `npm start` and retain its process. Use `npm run dev` for rebuilding during edits. Verify the local address responds before handing it back. Set `DEMO_PARENT_ORIGIN` to the exact developer website origin supplied by the person before starting the built preview. Keep the protocol origin exact; localhost and 127.0.0.1 are different origins. The local mock host at `/mock-host.html` uses only fictional properties and page-memory notes.
 
@@ -17,13 +22,22 @@ Use `public/sdk/client.js` and its versioned contract. Connect with the pairing-
 
 | Operation | Input | Result |
 |---|---|---|
-| `property.read` | `{ propertyId: context.id }` | Selected property, including nullable price/bedrooms |
-| `appState.get` | `{ propertyId: context.id }` | `{ note, version }` |
-| `appState.set` | `{ propertyId: context.id, note, version }` | Saved note and incremented version |
+| `property.read` | `{ propertyId: context.id }`, only for a property context | Selected property, including nullable price/bedrooms |
+| `appState.get` | `{}` | `{ note, version }` for the selected record/marketing role |
+| `appState.set` | `{ note, version }` | Saved note and incremented version |
 
 The host owns context, effective permission, persistence and budgets. A manifest grants no authority. Do not replace host state with local storage or call arbitrary Dezrez/provider endpoints. Keep notes at most 500 characters. Preserve the draft on a version conflict, block overlapping writes and never retry a write automatically. Keep pause/visibility/close gating, abortable reads, context generations and stale-reply rejection. Destroy the SDK client and listeners on teardown. Handle host theme, context, enabled, action and closed events. Explain throttling, expiry, denied access, missing data and cancellation without leaking raw internal errors.
 
-No record selected means a synthetic dashboard widget: explicit `surface:'dashboard-widget'`, true `context:null`, empty permissions, no record API calls and no host dialog/footer. Preserve the null-state view and clear property drafts/version on context loss. Never invent a property or agency ID. A record dialog requires selected context; changing surface recreates the host/session. The production pilot remains property-action only.
+For a group, show only supplied name/groupType and use app-owned state; never
+call property.read or put the group ID into propertyId. The website derives the
+signed-in agency automatically. Keep separate state for each selected record
+and marketing role, including multiple roles of one property. A context event
+always invalidates old drafts, requests and host actions, even when property ID
+is unchanged. If note loading fails, offer Try loading note again and disable
+Save until its version is known; a conflict retains the draft until that
+explicit reload. A successful property read cannot hide a failed note load.
+
+No record selected means a synthetic dashboard widget: explicit `surface:'dashboard-widget'`, true `context:null`, empty permissions, no record API calls and no host dialog/footer. Preserve the null-state view and clear drafts/version on context loss. Never invent a record or agency ID. Changing surface recreates the host/session. The synthetic widget does not enable production widgets or establish native conformance.
 
 For optional dialog actions, preserve `client.setActionState({enabled})` readiness updates and the host-provided `actionId` on Save. Complete only that action with `client.completeAction(actionId,{success:true})` after the save succeeds, or `success:false` after an error so the dialog stays open. Do not claim success before the operation finishes, replay IDs, invent close messages or change Cancel visibility from app code. The SDK negotiates `capabilities.dialogActions`; unsupported hosts return `false` and retain ordinary read/save behavior. Manifest dialog labels are plain text of at most 30 characters; `actionText:null` means no host primary button.
 
@@ -31,7 +45,13 @@ Retain the Light, Dark and High Contrast semantic tokens and global component ru
 
 Keep `manifest.json` and `public/manifest.json` synchronized. Preserve `data-partner-read`, `data-partner-note`, `data-partner-save`, `data-partner-status` and `data-partner-context` on real visible controls, or update the manifest selectors. These help a genuine external harness exercise the app; they are not evidence that checks passed.
 
-Verify success, slow/cancel, throttled, expired, denied and missing outcomes; context swaps during work; pause/resume; host Save; close and repeated mount; long/missing values; 500-character notes and conflict preservation. Check themes, keyboard focus, narrow layouts, High Contrast and reduced motion in the actual browser using the environment’s permitted browser tool. Unit tests do not prove visual parity.
+Verify property-only, Selling/Letting/Auction and history, group/company/team and
+no-context widget; success, slow/cancel, throttled, expired, denied and missing
+outcomes; context and same-property role swaps during work; pause/resume; host
+Save; note-load retry; close and repeated mount; long/missing values;
+500-character notes and conflict preservation. Check themes, keyboard focus,
+narrow layouts, High Contrast and reduced motion in the actual browser using
+the environment’s permitted browser tool. Unit tests do not prove visual parity.
 
 Use the developer website's optional Activity view and redacted download to investigate repeated reads, overlapping work, request counts, timings and actual errors. These observations describe preview traffic only; do not report token rate limits or remaining request allowances. A cached result is not proof of a retry, a repeated request is not proof of polling, and unobserved retries stay unknown. Keep note text, credentials and record payloads out of diagnostics.
 

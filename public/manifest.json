@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "protocol": "dezrez.partner/1",
   "host": "rezi",
-  "surface": "property-action",
+  "surface": "record-action",
   "permissions": [
     "property.read",
     "appState.get",
@@ -30,16 +30,16 @@
     "supportContact": "support@example.invalid"
   },
   "compatibility": {
-    "sdkVersion": "0.1.0",
+    "sdkVersion": "0.2.0",
     "hosts": [
       "rezi"
     ],
     "surfaces": [
-      "property-action"
+      "record-action"
     ]
   },
   "storage": {
-    "scope": "app-agency-user-property",
+    "scope": "app-agency-user-context",
     "schemaVersion": 1,
     "expectedMaximumBytes": 4096
   },
@@ -84,14 +84,16 @@
     "journeys": [
       "initialization",
       "read-property",
+      "read-group-context",
       "save-note",
-      "read-error",
-      "save-error",
+      "note-read-retry",
+      "version-conflict",
       "context-change",
+      "marketing-role-change",
       "close"
     ],
     "fixtures": [
-      "dezrez-demo-properties/1"
+      "dezrez-demo-records/1"
     ]
   }
 }

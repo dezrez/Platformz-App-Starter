@@ -7,8 +7,8 @@ applies its own policies. Never put credentials or customer records here.
 
 Use the bundled `sdk/manifest.js` normalizer and completeness check. Angular
 uses the identical module in `public/sdk/manifest.js`; keep its two manifest
-copies synchronized. The wire protocol stays `dezrez.partner/1` and SDK stays
-`0.1.0`. `manifestVersion:1` versions the app-details contract separately.
+copies synchronized. The wire protocol stays `dezrez.partner/1`; new record
+apps use SDK `0.2.0`. `manifestVersion:1` versions app details separately.
 
 The supplied manifest is a complete **fictional example**, marked
 `example:true`. Its one-hour example is not a claim about a real partner or a
@@ -26,8 +26,8 @@ claim that changing this marker authorizes a release.
 |---|---|
 | `example` | Required boolean identifying fictional demonstration details. |
 | `partner.organisation`, `partner.supportContact` | Owner's organisation and email or HTTPS support page. No credentials, query or fragment in a URL. |
-| `compatibility` | `sdkVersion:"0.1.0"`, `hosts:["rezi"]`, `surfaces:["property-action"]` for this pilot. These internal wire IDs are unchanged. |
-| `storage` | `scope:"app-agency-user-property"`, `schemaVersion:1`, positive integer `expectedMaximumBytes`. Declared expectation, never a granted quota. |
+| `compatibility` | New apps: `sdkVersion:"0.2.0"`, `hosts:["rezi"]`, `surfaces:["record-action"]`. Old SDK0.1.0/property-action remains property-only compatibility; do not silently change an approved manifest. |
+| `storage` | New record apps: `scope:"app-agency-user-context"`, `schemaVersion:1`, positive integer `expectedMaximumBytes`. Old property-only scope is `app-agency-user-property`. Declared expectation, never a granted quota. |
 | `activity.initializationCalls` | Unique supported operations with nonnegative integer counts expected on one initialization. An explicit empty array means none. |
 | `activity.pollingIntervalMs` | Explicit `null` means no polling. Polling is unsupported by this pilot. Omitting the field is incomplete. |
 | `activity.refreshTriggers` | Nonempty unique subset of `manual`, `context-change`, `enabled`, `visible` matching the app's actual lifecycle. |
@@ -39,6 +39,11 @@ Keep existing identity, version, name, host, surface, permissions, dialog option
 and genuine certification selectors accurate. A versioned app must name the
 supported host/surface. The supported operations remain `property.read`,
 `appState.get` and `appState.set`; declaring another operation does not enable it.
+Read [selected records and marketing roles](record-contexts.md). A property read
+is not applicable to a group; group context metadata and app-owned notes do not
+add full-group/member/contact API access. The server derives the agency and
+checks actual property/role/group access. Typed state separates group IDs and
+marketing roles rather than reusing another record's note.
 
 ## Expected usage
 

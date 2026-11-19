@@ -10,7 +10,7 @@ Verified package selection: 18 November 2026.
 | RxJS | 7.8.2 |
 | tslib | 2.9.1 |
 | Vitest / jsdom | 5.1.0 / 31.0.1 |
-| Partner protocol / SDK | dezrez.partner/1 / 0.1.0 |
+| Partner protocol / SDK | dezrez.partner/1 / 0.2.0 (legacy property declarations: 0.1.0) |
 
 Angular's [official compatibility table](https://angular.dev/reference/versions) requires Node `^22.22.3 || ^24.15.0 || ^26.0.0`, TypeScript `>=6.0.0 <6.1.0` and compatible RxJS 6/7 for Angular 22. The exact public registry package engine/peer metadata was also checked. This starter uses Angular's [current standalone testing builder with Vitest](https://angular.dev/guide/testing), not the inherited Jasmine/Protractor/TSLint stack. Angular 22 is actively supported according to the [official release policy](https://angular.dev/reference/releases).
 
@@ -23,7 +23,27 @@ All dependency versions are exact and the version 3 lockfile records public regi
 - This Angular source cannot be certified by the current buildless static pilot. A separate locked offline Angular compiler stage, followed by an independent disposable conformance stage and reviewed policy, is required. No Angular certification or production deployment is claimed here.
 - Local installation/build/unit/package checks and browser/theme evidence are separate. Actual font parity, localhost pairing, live Dezrez authorization and production release require their own verification.
 
-This app supports the documented Dezrez property-action partner surface. It does not establish PM context/lifecycle support or arbitrary operations, destinations, dependencies or deployment targets.
+This app implements the documented record-action contract for properties with
+optional real marketing roles and minimal people-group context. It retains the
+synthetic no-record widget. Source/local checks do not establish connected,
+native-host or PM conformance, or arbitrary operations, destinations,
+dependencies or deployment targets.
+
+## Record contexts — 0.5.0-angular
+
+SDK0.2.0 adds explicit record-action compatibility and typed context/state
+identities, while old SDK0.1.0/property-action declarations stay property-only.
+The new mock includes Selling/Letting/Auction and historical roles, people
+groups/company/team, and same-property role switching. Groups use supplied
+metadata and appState only, with no new child operation or business write.
+The note controller preserves drafts on conflicts, offers explicit load retry
+and discards stale work on every selected-record/role change.
+
+Canonical SDK/context fixtures and source hashes change the Angular profile
+identity. A fresh reviewed worker/profile and independent context calibration
+are required; existing frozen evidence is unchanged. This bundle does not
+activate, calibrate or certify a worker. Dependencies and their lockfile remain
+unchanged.
 
 ## App-details release
 

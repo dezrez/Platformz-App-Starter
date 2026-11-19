@@ -1,8 +1,12 @@
+export interface MarketingRoleContext { id: string; type: string; status?: string; }
 export interface PropertyContext {
+  kind?: 'property'; marketingRole?: MarketingRoleContext;
   id: string; agencyId: string; address: string; postcode: string;
-  price: number | null; bedrooms: number | null; description: string;
+  price?: number | null; bedrooms?: number | null; description?: string;
 }
-export interface InitialContext { context: PropertyContext | null; surface?: 'property-action' | 'dashboard-widget'; enabled: boolean; synthetic: boolean; theme: { look: string }; expiresAt?: number; capabilities?: { dialogActions?: boolean }; dialog?: { actionText: string | null; showCancelButton: boolean; cancelText: string }; }
+export interface GroupContext { kind: 'group'; id: string; agencyId: string; name: string; groupType?: string; }
+export type RecordContext = PropertyContext | GroupContext;
+export interface InitialContext { context: RecordContext | null; surface?: 'property-action' | 'record-action' | 'dashboard-widget'; enabled: boolean; synthetic: boolean; theme: { look: string }; expiresAt?: number; capabilities?: { dialogActions?: boolean }; dialog?: { actionText: string | null; showCancelButton: boolean; cancelText: string }; }
 export interface SavedNote { note: string; version: number; }
 export interface PartnerClient {
   connect(): Promise<InitialContext>;

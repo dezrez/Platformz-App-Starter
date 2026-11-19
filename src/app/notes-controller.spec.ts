@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { NotesController } from './notes-controller';
-import type { InitialContext, PartnerClient, PropertyContext, SavedNote } from '../../public/sdk/client.js';
+import type { GroupContext, InitialContext, PartnerClient, PropertyContext, SavedNote } from '../../public/sdk/client.js';
 
 const property: PropertyContext = { id: 'test-1', agencyId: 'fictional-agency', address: '24 Orchard Lane', postcode: 'DE1 0MO', price: 385000, bedrooms: 3, description: 'Fictional' };
 class FakeClient implements PartnerClient {
@@ -20,7 +20,7 @@ const tick = async () => { await Promise.resolve(); await Promise.resolve(); awa
 describe('real note controller with the SDK request boundary', () => {
   it('loads selected context and version, applies host theme and performs a versioned write', async () => {
     const { client, notes, theme } = await ready(); expect(theme).toHaveBeenCalledWith('dark'); expect(notes.state.note).toBe('Saved before');
-    notes.edit('Updated'); await notes.save(); expect(client.request).toHaveBeenLastCalledWith('appState.set', { propertyId: property.id, note: 'Updated', version: 2 }, expect.anything()); expect(notes.state.version).toBe(3);
+    notes.edit('Updated'); await notes.save(); expect(client.request).toHaveBeenLastCalledWith('appState.set', { note: 'Updated', version: 2 }, expect.anything()); expect(notes.state.version).toBe(3);
   });
   it('accepts exactly 500 characters and blocks 501 without sending a write', async () => {
     const { client, notes } = await ready(); notes.edit('x'.repeat(500)); await notes.save(); expect(notes.state.version).toBe(3);
@@ -42,7 +42,7 @@ describe('real note controller with the SDK request boundary', () => {
     client.request.mockImplementationOnce(() => new Promise<PropertyContext>(done => { resolve = done; }));
     const old = notes.refresh(); client.emit('context', { ...property, id: 'test-2', address: 'Other property' }); await tick();
     resolve({ ...property, address: 'Old property late' }); await old; expect(notes.state.context?.id).toBe('test-2'); expect(notes.state.property?.address).not.toBe('Old property late');
-    const calls = client.request.mock.calls.slice(-2); expect(calls.every(([, params]) => params.propertyId === 'test-2')).toBe(true);
+    const calls = client.request.mock.calls.slice(-2); expect(calls.map(([operation]) => operation)).toEqual(['property.read', 'appState.get']); expect(calls[0]?.[1]).toEqual({ propertyId: 'test-2' }); expect(calls[1]?.[1]).toEqual({});
   });
   it('sends no background requests and aborts a read when hidden', async () => {
     const { client, notes } = await ready(); notes.setVisible(false); const count = client.request.mock.calls.length; await notes.refresh(); await notes.save(); expect(client.request.mock.calls.length).toBe(count);
@@ -84,5 +84,37 @@ describe('real note controller with the SDK request boundary', () => {
     client.emit('context', null); expect(signal?.aborted).toBe(true); resolve(property); await reading; await notes.save();
     expect(notes.state.context).toBeNull(); expect(notes.state.property).toBeNull(); expect(notes.state.note).toBe(''); expect(notes.state.version).toBe(0); expect(notes.state.stateReady).toBe(false);
     expect(client.request.mock.calls.at(-1)?.[0]).toBe('property.read');
+  });
+  it.each(['Couple', 'BusinessOrganisation', 'Team'])('uses %s group metadata and notes without a property read', async groupType => {
+    const context: GroupContext = { kind: 'group', id: property.id, agencyId: property.agencyId, name: 'Fictional group', groupType };
+    const client = new FakeClient(); client.connect.mockResolvedValueOnce({ context, surface: 'record-action', enabled: true, synthetic: true, theme: { look: 'light' } });
+    const notes = new NotesController(client, () => {}, () => {}); await notes.connect();
+    expect(notes.state.context).toEqual(context); expect(notes.state.property).toBeNull(); expect(notes.state.note).toBe('Saved before');
+    expect(client.request).toHaveBeenCalledTimes(1); expect(client.request).toHaveBeenLastCalledWith('appState.get', {}, expect.anything());
+    notes.edit('A group draft'); await notes.save(); expect(client.request).toHaveBeenLastCalledWith('appState.set', { note: 'A group draft', version: 2 }, expect.anything());
+    expect(client.request.mock.calls.some(([operation]) => operation === 'property.read')).toBe(false);
+  });
+  it('offers one explicit retry for a failed group note load and enables Save only after the version is known', async () => {
+    const client = new FakeClient(); client.connect.mockResolvedValueOnce({ context: { kind: 'group', id: 'group', agencyId: property.agencyId, name: 'Example team' }, surface: 'record-action', enabled: true, synthetic: true, theme: { look: 'light' } });
+    client.request.mockRejectedValueOnce(Object.assign(Error(), { code: 'PERMISSION_DENIED' }));
+    const notes = new NotesController(client, () => {}, () => {}); await notes.connect();
+    expect(notes.state.noteLoadFailed).toBe(true); expect(notes.state.stateReady).toBe(false); expect(client.request).toHaveBeenCalledTimes(1); expect(client.setActionState).toHaveBeenLastCalledWith({ enabled: false });
+    await notes.refresh(); expect(client.request).toHaveBeenCalledTimes(2); expect(notes.state.noteLoadFailed).toBe(false); expect(notes.state.stateReady).toBe(true);
+  });
+  it('rejects a late old-role Save completion when another marketing role of the same property is selected', async () => {
+    const { client, notes } = await ready(); let resolve!: (value: SavedNote) => void;
+    client.request.mockImplementationOnce(() => new Promise<SavedNote>(done => { resolve = done; }));
+    notes.edit('Previous role draft'); const saving = notes.save('old-action');
+    client.emit('context', { ...property, kind: 'property', marketingRole: { id: 'auction-role', type: 'Auction', status: 'Archived' } }); await tick();
+    resolve({ note: 'Old write completed late', version: 99 }); await saving;
+    expect(notes.state.context?.kind).toBe('property'); expect((notes.state.context as PropertyContext).marketingRole?.id).toBe('auction-role');
+    expect(notes.state.note).toBe('Saved before'); expect(notes.state.version).toBe(2); expect(client.completeAction).not.toHaveBeenCalled();
+  });
+  it('requires explicit reload after a conflict without discarding the draft or repeating the write', async () => {
+    const { client, notes } = await ready(); notes.edit('Keep my draft'); client.request.mockRejectedValueOnce(Object.assign(Error(), { code: 'STATE_CONFLICT' }));
+    await notes.save(); expect(notes.state.note).toBe('Keep my draft'); expect(notes.state.noteLoadFailed).toBe(true); expect(notes.state.stateReady).toBe(false);
+    const count = client.request.mock.calls.length; await notes.save(); expect(client.request.mock.calls.length).toBe(count);
+    await notes.refresh(); expect(notes.state.note).toBe('Saved before'); expect(notes.state.stateReady).toBe(true);
+    expect(client.request.mock.calls.filter(([operation]) => operation === 'appState.set')).toHaveLength(1);
   });
 });

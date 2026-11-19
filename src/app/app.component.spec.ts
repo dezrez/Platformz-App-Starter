@@ -23,4 +23,14 @@ describe('standalone Angular UI', () => {
     expect(root.textContent).toContain('No record is selected'); expect(root.querySelector('[data-partner-read]')).toBeNull(); expect(root.querySelector('textarea')).toBeNull();
     expect(root.querySelector('header .char-screen[aria-hidden="true"]')).not.toBeNull(); fixture.destroy();
   });
+  it('renders a people group as inert text with a user icon and no usable property-read control', async () => {
+    await TestBed.configureTestingModule({ imports: [AppComponent] }).compileComponents();
+    const fixture = TestBed.createComponent(AppComponent); fixture.detectChanges();
+    fixture.componentInstance.state.set({ ...initialState(), connected: true, enabled: true, surface: 'record-action', context: { kind: 'group', id: 'group-one', agencyId: 'fictional', name: '<img src=x onerror=alert(1)>', groupType: 'Team' }, stateReady: true });
+    fixture.detectChanges(); await fixture.whenStable(); const root: HTMLElement = fixture.nativeElement;
+    expect(root.textContent).toContain('<img src=x onerror=alert(1)>'); expect(root.querySelector('img')).toBeNull();
+    expect(root.querySelector('header .char-user[aria-hidden="true"]')).not.toBeNull();
+    const read = root.querySelector('[data-partner-read]') as HTMLButtonElement; expect(read.hidden).toBe(true); expect(read.disabled).toBe(true);
+    expect(root.textContent).not.toContain('Bedrooms'); fixture.destroy();
+  });
 });

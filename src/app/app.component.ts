@@ -11,6 +11,13 @@ export class AppComponent implements OnInit, OnDestroy {
   private theme?: ReturnType<typeof createThemeController>;
   private readonly visibility = () => this.notes?.setVisible(document.visibilityState === 'visible');
   private readonly pagehide = () => this.ngOnDestroy();
+  isGroup() { return this.state().context?.kind === 'group'; }
+  recordName() {
+    const context = this.state().context;
+    return context?.kind === 'group' ? context.name : this.state().property?.address ?? context?.address ?? 'Choose a record in the testing page.';
+  }
+  groupType() { const context = this.state().context; return context?.kind === 'group' ? context.groupType : undefined; }
+  marketingRole() { const context = this.state().context; return context?.kind === 'group' ? undefined : context?.marketingRole; }
   ngOnInit() {
     this.theme = createThemeController({ document, window, hostOwned: true, fontSource: 'bundled' });
     const hostOrigin = new URLSearchParams(location.search).get('hostOrigin');

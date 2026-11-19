@@ -43,7 +43,7 @@ export async function validate() {
   const manifest = JSON.parse(await regular('manifest.json'));
   requireCompleteManifestDeclarations(manifest);
   assert.match(manifest.id, /^[a-zA-Z0-9_.-]{1,100}$/); assert.ok(manifest.name); assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
-  assert.equal(manifest.protocol, PROTOCOL); assert.equal(manifest.host, 'rezi'); assert.equal(manifest.surface, 'property-action');
+  assert.equal(manifest.protocol, PROTOCOL); assert.equal(manifest.host, 'rezi'); assert.equal(manifest.surface, 'record-action');
   assert.deepEqual([...manifest.permissions].sort(), [...OPERATIONS].sort()); assert.deepEqual(manifest.providerDestinations, []);
   assert.deepEqual(JSON.parse(await regular('public/manifest.json')), manifest, 'Keep the mock manifest in sync with manifest.json.');
   const angular = JSON.parse(await regular('angular.json'));

@@ -1,6 +1,6 @@
 # Dezrez Angular Basic
 
-A working Angular app for reading the selected property and saving an app-owned note. It uses the same `dezrez.partner/1` SDK as the developer website. The included mock host uses fictional records and needs no account. Dezrez sign-in and credentials stay in the developer website.
+A working Angular app for a selected property, its optional marketing role or a people group, with an app-owned note. It uses SDK0.2.0 and `record-action` on the same `dezrez.partner/1` protocol as the developer website. The included mock host uses fictional records and needs no account. Dezrez sign-in and credentials stay in the developer website; the signed-in agency is selected automatically.
 
 Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md). You can give that file to Codex, Claude Code or another coding assistant.
 
@@ -18,14 +18,18 @@ npm run validate
 npm start
 ```
 
-Open **http://127.0.0.1:4200/mock-host.html** to see the app with fictional records. Change the property, response, theme or enabled setting. The host footer’s Save button stays disabled until the app is ready. Save completes one correlated action and closes the session only after success; an error keeps it open. The app’s own Save note button saves without requesting a close. Cancel closes without claiming that an already-sent write was undone. Mock notes stay in page memory and clear on refresh. The app itself is **http://127.0.0.1:4200/**; opening it alone does not supply a property or a host session.
+Open **http://127.0.0.1:4200/mock-host.html** to see the app with fictional records. Change the record or marketing role, response, theme or enabled setting. The host footer’s Save button stays disabled until the app is ready. Save completes one correlated action and closes the session only after success; an error keeps it open. The app’s own Save note button saves without requesting a close. Cancel closes without claiming that an already-sent write was undone. Mock notes stay in page memory and clear on refresh. The app itself is **http://127.0.0.1:4200/**; opening it alone does not supply a property or a host session.
 
 The mock host starts with **No record (dashboard widget)**. That mode supplies a
 real null context, makes no property/note API requests and has no dialog footer.
-Choose a property to open the record dialog and notes example. Changing surface
+Choose a property, Selling/Letting/Auction role (including history), or a group,
+company or team to open the record dialog and notes example. Changing a role on
+the same property exercises a real context event and clears the old draft.
+Changing surface
 starts a fresh host/session; the app clears record drafts instead of inventing a
-property or agency ID. Production/registered access remains the property-action
-pilot; the synthetic widget preview does not enable production widgets.
+record or agency ID. The synthetic widget preview does not enable production
+widgets. Existing SDK0.1.0/property-action apps remain property-only compatibility;
+they need a separate app update to use new record contexts.
 
 For automatic rebuilds while editing, use `npm run dev` instead of `npm start`. The production preview from `npm start` serves only the built browser files under a strict Content Security Policy. Its server never exposes your source, skills, lockfile or local settings.
 
@@ -34,6 +38,12 @@ For automatic rebuilds while editing, use `npm run dev` instead of `npm start`. 
 Keep the local app running. In the website choose **Open my app for testing** and paste **http://127.0.0.1:4200/**. The website supplies `hostOrigin` and the authorized context. For the production preview, set `DEMO_PARENT_ORIGIN` to the exact website origin before `npm start`; your assistant should do this for you. The default is `http://127.0.0.1:4173`. `localhost` and `127.0.0.1` are different origins.
 
 The app never receives a Dezrez access or refresh token. A manifest requests operations; it does not grant access. The supported operations are `property.read`, `appState.get` and `appState.set`. Notes are limited to 500 characters and saves include the current version. A conflict preserves your draft and explains how to reopen the latest saved version. The app stops new work while paused, hidden or closed, cancels pending work on context changes and discards stale replies. Saves are never retried automatically.
+
+Group context supplies only its name/type and reference; no property read or
+full group/member/contact request is made. App-state requests use `{}` and
+`{note,version}` and belong to the selected record/marketing role. If a note
+cannot load, choose **Try loading note again**. Save stays disabled until its
+version is known. A conflict keeps your draft until you choose that reload.
 
 Optional `manifest.dialog` describes the primary label (`actionText`, or `null` for no primary button), Cancel visibility (`showCancelButton`) and Cancel label (`cancelText`). Labels are plain text, 1–30 characters. Only a host advertising `capabilities.dialogActions` supports `setActionState` and `completeAction`; the SDK returns `false` without sending these messages to older hosts. The app can update its primary label/readiness, while the host owns Cancel visibility and enforces pause, hiding, pending work and the current correlated action. Keep the sample’s exact action ID and success/error completion handling.
 

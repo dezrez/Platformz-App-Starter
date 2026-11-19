@@ -1,0 +1,113 @@
+[
+  {
+    "id": "demo-property-001",
+    "agencyId": "demo-agency",
+    "address": "24 Orchard Lane",
+    "postcode": "DE1 0MO",
+    "price": 385000,
+    "bedrooms": 3,
+    "description": "A fictional three-bedroom home with a south-facing garden. Created exclusively for the developer sandbox.",
+    "kind": "property"
+  },
+  {
+    "id": "demo-property-002",
+    "agencyId": "demo-agency",
+    "address": "Flat 7, The Old Printworks, 118 Riverside Walk",
+    "postcode": "DE2 0MO",
+    "price": 247500,
+    "bedrooms": 2,
+    "description": "A fictional riverside apartment with a deliberately long address to exercise responsive layouts.",
+    "kind": "property"
+  },
+  {
+    "id": "demo-property-003",
+    "agencyId": "demo-agency",
+    "address": "9 Meadow Close",
+    "postcode": "DE3 0MO",
+    "price": null,
+    "bedrooms": null,
+    "description": "A fictional record with missing price and bedroom information for empty-data testing.",
+    "kind": "property"
+  },
+  {
+    "id": "demo-property-001",
+    "agencyId": "demo-agency",
+    "address": "24 Orchard Lane",
+    "postcode": "DE1 0MO",
+    "price": 385000,
+    "bedrooms": 3,
+    "description": "A fictional three-bedroom home with a south-facing garden. Created exclusively for the developer sandbox.",
+    "kind": "property",
+    "marketingRole": {
+      "id": "demo-role-selling-001",
+      "type": "Selling",
+      "status": "ForSale"
+    }
+  },
+  {
+    "id": "demo-property-001",
+    "agencyId": "demo-agency",
+    "address": "24 Orchard Lane",
+    "postcode": "DE1 0MO",
+    "price": 385000,
+    "bedrooms": 3,
+    "description": "A fictional three-bedroom home with a south-facing garden. Created exclusively for the developer sandbox.",
+    "kind": "property",
+    "marketingRole": {
+      "id": "demo-role-letting-001",
+      "type": "Letting",
+      "status": "LetAgreed"
+    }
+  },
+  {
+    "id": "demo-property-001",
+    "agencyId": "demo-agency",
+    "address": "24 Orchard Lane",
+    "postcode": "DE1 0MO",
+    "price": 385000,
+    "bedrooms": 3,
+    "description": "A fictional three-bedroom home with a south-facing garden. Created exclusively for the developer sandbox.",
+    "kind": "property",
+    "marketingRole": {
+      "id": "demo-role-auction-001",
+      "type": "Auction",
+      "status": "Archived"
+    }
+  },
+  {
+    "id": "demo-property-002",
+    "agencyId": "demo-agency",
+    "address": "Flat 7, The Old Printworks, 118 Riverside Walk",
+    "postcode": "DE2 0MO",
+    "price": 247500,
+    "bedrooms": 2,
+    "description": "A fictional riverside apartment with a deliberately long address to exercise responsive layouts.",
+    "kind": "property",
+    "marketingRole": {
+      "id": "demo-role-selling-002",
+      "type": "Selling",
+      "status": "Sold"
+    }
+  },
+  {
+    "kind": "group",
+    "id": "demo-group-001",
+    "agencyId": "demo-agency",
+    "name": "Alex and Sam Example",
+    "groupType": "Couple"
+  },
+  {
+    "kind": "group",
+    "id": "demo-group-002",
+    "agencyId": "demo-agency",
+    "name": "Example Property Company",
+    "groupType": "BusinessOrganisation"
+  },
+  {
+    "kind": "group",
+    "id": "demo-group-003",
+    "agencyId": "demo-agency",
+    "name": "Example Agency Team",
+    "groupType": "Team"
+  }
+]

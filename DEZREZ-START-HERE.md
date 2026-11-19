@@ -10,9 +10,16 @@
 
 You can also open **http://127.0.0.1:4200/mock-host.html** to try fictional examples without signing in.
 
-It starts as a dashboard widget with no record selected. Choose a property in
-the mock host to open the record dialog and notes example. A widget receives no
+It starts as a dashboard widget with no record selected. Choose a property,
+its marketing role or a people group in the mock host to open the record dialog
+and notes example. Your signed-in agency is handled automatically by the website.
+A widget receives no
 property or person and must not make up an ID to call a record API.
+
+If this is an older app, use the website's separate **Update my app** message.
+Updating the AI's instructions alone does not update app code or its supported
+record choices. Ask your AI to preserve your app while comparing the latest
+starting files, SDK and record-contexts reference.
 
 To install or update the assistant’s project skill, paste:
 

@@ -1,5 +1,6 @@
-import { demoError, envelope, exactOrigin, isEnvelope, requestId } from './protocol.js';
+import { demoError, envelope, exactOrigin, isEnvelope, requestId, SDK_VERSION } from './protocol.js';
 import { normalizeActionState, validActionResult } from './dialog.js';
+import { recordContextIdentity } from './context.js';
 
 /**
  * Create a framework-independent client bound to one exact host window/origin.
@@ -18,6 +19,7 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
   let pendingActionId = null;
   let lastActionState = null;
   let surface = 'property-action';
+  let contextKind = 'property';
   const actionIds = new Set();
   const pending = new Map();
   const listeners = new Map();
@@ -41,10 +43,14 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
     const message = event.data;
     if (message.type === 'partner.init') {
       const widget = message.payload.surface === 'dashboard-widget' && message.payload.context === null && message.payload.synthetic === true && message.payload.manifest?.surface === 'dashboard-widget' && Array.isArray(message.payload.permissions) && message.payload.permissions.length === 0 && Array.isArray(message.payload.manifest.permissions) && message.payload.manifest.permissions.length === 0;
-      const property = (message.payload.surface === undefined || message.payload.surface === 'property-action') && message.payload.context?.id && message.payload.context?.agencyId;
-      if (!connecting || message.requestId !== connecting.id || typeof message.payload.synthetic !== 'boolean' || !widget && !property) return;
+      const nextSurface = message.payload.surface ?? message.payload.manifest?.surface ?? 'property-action';
+      let identity = null;
+      try { if (!widget) identity = recordContextIdentity(message.payload.context); } catch { return; }
+      const record = ['property-action', 'record-action'].includes(nextSurface) && identity && (nextSurface === 'record-action' || identity.kind === 'property' && !identity.marketingRole);
+      if (!connecting || message.requestId !== connecting.id || typeof message.payload.synthetic !== 'boolean' || !widget && !record) return;
       sessionId = message.sessionId;
-      surface = widget ? 'dashboard-widget' : 'property-action';
+      surface = widget ? 'dashboard-widget' : nextSurface;
+      contextKind = identity?.kind ?? null;
       enabled = message.payload.enabled !== false;
       dialogActions = !widget && message.payload.capabilities?.dialogActions === true;
       pendingActionId = null;
@@ -63,7 +69,13 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
       if (message.sessionId === sessionId) return;
       if (surface === 'dashboard-widget') {
         if (message.payload.context !== null || message.payload.surface !== 'dashboard-widget' || !Array.isArray(message.payload.permissions) || message.payload.permissions.length !== 0 || Object.keys(message.payload).some(key => !['context', 'surface', 'permissions'].includes(key))) return;
-      } else if (!message.payload.id || !message.payload.agencyId || message.payload.surface === 'dashboard-widget') return;
+      } else {
+        if (message.payload.surface === 'dashboard-widget') return;
+        let identity;
+        try { identity = recordContextIdentity(message.payload); } catch { return; }
+        if ((identity.kind === 'group' || identity.marketingRole) && surface !== 'record-action') return;
+        contextKind = identity.kind;
+      }
       rejectPending('CONTEXT_CHANGED', 'The host context changed.');
       sessionId = message.sessionId;
       pendingActionId = null;
@@ -108,12 +120,13 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
         }, timeoutMs) };
       });
       connecting.promise = promise;
-      hostWindow.postMessage(envelope('partner.hello', null, id, { sdkVersion: '0.1.0' }), hostOrigin);
+      hostWindow.postMessage(envelope('partner.hello', null, id, { sdkVersion: SDK_VERSION }), hostOrigin);
       return promise;
     },
     request(operation, params = {}, { signal } = {}) {
       if (destroyed || !connected) return Promise.reject(demoError('NOT_CONNECTED', 'Connect to the Dezrez host first.', 409));
       if (surface === 'dashboard-widget') return Promise.reject(demoError('CONTEXT_REQUIRED', 'Choose a record context before using a record operation.', 409));
+      if (contextKind === 'group' && operation === 'property.read') return Promise.reject(demoError('CONTEXT_OPERATION_NOT_SUPPORTED', 'Property reads need a selected property.', 403));
       if (!enabled) return Promise.reject(demoError('HOST_DISABLED', 'The host disabled this app.', 403));
       if (signal?.aborted) return Promise.reject(demoError('CANCELLED', 'The request was cancelled.', 499));
       if (pending.size >= 16) return Promise.reject(demoError('TOO_MANY_PENDING', 'Wait for an existing request before sending another.', 429));
