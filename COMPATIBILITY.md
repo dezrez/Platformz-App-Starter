@@ -56,3 +56,11 @@ The additional fixed SDK file changes the reviewed source profile. A future
 Angular certification must bind a fresh reviewed profile and independent
 evidence; existing frozen profiles and results are unchanged. This source update
 does not build, activate or certify an Angular worker.
+
+## Optional local HTTPS
+
+Skill bundle `0.4.2-angular` documents the existing Angular CLI HTTPS options
+using an external certificate and key. It changes no package, lock, compiler,
+build profile or production preview command. Installing a trust tool or changing
+computer trust requires the person's permission. This development server is
+separate from the strict built preview and does not prove hosted acceptance.

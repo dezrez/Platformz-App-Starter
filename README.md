@@ -71,3 +71,10 @@ normalizer used by intake. Unknown required values remain incomplete and cannot
 be privately submitted. Ask the owner for real organisation, support contact and
 usage assumptions before publication, then update the declarations and example
 marker. Private certification does not itself authorize publication.
+
+## If the browser needs a secure local address
+
+Keep the usual setup first. If your browser needs an HTTPS address, give your AI
+the message in [the optional secure local setup](skills/dezrez-angular-app/references/local-https.md).
+It explains the change before asking to install anything or change computer trust.
+Keep certificate keys outside your project and source submission.

@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Adapt, run and test the Dezrez Angular Basic starter through its canonical partner SDK and developer website, retaining the locked build profile and Dezrez themes.
 metadata:
-  version: 0.4.1-angular
+  version: 0.4.2-angular
 ---
 
 # Dezrez Angular app
@@ -51,3 +51,10 @@ for real values before preparing publication; update the declarations and set
 incomplete and example details. Usage counts are totals across the whole
 population and horizon, never per-instance rates or trusted calibration.
 Declarations cannot increase access, storage, request budgets or concurrency.
+
+## If the browser needs a secure local address
+
+Keep the usual setup first. If your browser needs an HTTPS address, give your AI
+the message in [the optional secure local setup](references/local-https.md).
+It explains the change before asking to install anything or change computer trust.
+Keep certificate keys outside your project and source submission.

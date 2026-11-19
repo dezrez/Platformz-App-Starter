@@ -30,3 +30,10 @@ accurate as it changes the app. Before preparing a real release, it must ask you
 for your organisation, a support contact and an estimate of how people will use
 the app. It must leave unknown details unfinished instead of guessing. The
 bundled app-details reference explains how the AI records your answers.
+
+## If the browser needs a secure local address
+
+Keep the usual setup first. If your browser needs an HTTPS address, give your AI
+the message in [the optional secure local setup](skills/dezrez-angular-app/references/local-https.md).
+It explains the change before asking to install anything or change computer trust.
+Keep certificate keys outside your project and source submission.
