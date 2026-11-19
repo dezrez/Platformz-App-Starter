@@ -31,10 +31,12 @@ export function cookieDomain(hostname) {
  * Standalone modern appearance. Shared Original remains an explicit Light
  * companion fallback; startup never rewrites it. A parent-applied frame theme
  * should use hostOwned: true so origin preferences cannot override its host.
- * setLook(look, { persist: false }) also supports non-persisted palette updates.
+ * portalOwned uses only the shared Dezrez cookie and never writes preferences.
+ * Other standalone/mock hosts retain setLook and origin-local preferences.
  */
-export function createThemeController({ document, window, onChange = () => {}, hostOwned = false, initialLook, fontSource = 'hosted' }) {
-  if (!['hosted', 'bundled'].includes(fontSource)) throw new TypeError('Choose hosted Rezi fonts or the bundled fallback fonts.');
+export function createThemeController({ document, window, onChange = () => {}, hostOwned = false, portalOwned = false, initialLook, fontSource = 'hosted' }) {
+  if (!['hosted', 'bundled'].includes(fontSource)) throw new TypeError('Choose hosted Dezrez fonts or the bundled fallback fonts.');
+  const portal = portalOwned && !hostOwned;
   let look = 'light';
   let sharedOriginal = false;
   let disposed = false;
@@ -45,9 +47,10 @@ export function createThemeController({ document, window, onChange = () => {}, h
   }
 
   function preference() {
+    if (portal && !cookieDomain(window.location.hostname)) return null;
     let cookie = '';
     try { cookie = document.cookie; } catch { /* Cookies may be blocked. */ }
-    return readPreference({ cookie, storage: storage() });
+    return readPreference({ cookie, ...(portal ? {} : { storage: storage() }) });
   }
 
   function listen(target, event, listener) {
@@ -120,12 +123,12 @@ export function createThemeController({ document, window, onChange = () => {}, h
   function refresh() {
     if (disposed || hostOwned) return;
     const saved = preference();
-    if (saved === null) return; // Retain a usable in-memory choice if storage is unavailable.
-    apply(saved === 'current' ? 'light' : saved, saved === 'current');
+    if (saved === null && !portal) return; // Mock hosts retain a usable in-memory choice.
+    apply(saved === 'current' || saved === null ? 'light' : saved, saved === 'current');
   }
 
   function setLook(value, { persist = true } = {}) {
-    if (disposed || !isModern(value)) return false;
+    if (disposed || portal || !isModern(value)) return false;
     if (persist && !hostOwned) {
       const domain = cookieDomain(window.location.hostname);
       const secure = window.location.protocol === 'https:' ? '; Secure' : '';

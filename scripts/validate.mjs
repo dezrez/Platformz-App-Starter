@@ -4,6 +4,7 @@ import { readFile, lstat, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PROTOCOL, OPERATIONS } from '../public/sdk/protocol.js';
+import { requireCompleteManifestDeclarations } from '../public/sdk/manifest.js';
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const digestPattern = /^sha512-[A-Za-z0-9+/]+=*$/;
 export async function regular(relative, maximum = 4_000_000) {
@@ -40,6 +41,7 @@ export async function validate() {
     assert.equal(item.link, undefined);
   }
   const manifest = JSON.parse(await regular('manifest.json'));
+  requireCompleteManifestDeclarations(manifest);
   assert.match(manifest.id, /^[a-zA-Z0-9_.-]{1,100}$/); assert.ok(manifest.name); assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
   assert.equal(manifest.protocol, PROTOCOL); assert.equal(manifest.host, 'rezi'); assert.equal(manifest.surface, 'property-action');
   assert.deepEqual([...manifest.permissions].sort(), [...OPERATIONS].sort()); assert.deepEqual(manifest.providerDestinations, []);

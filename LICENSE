@@ -20,6 +20,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Bundled third-party dependencies and fallback fonts retain their own licenses.
-Website-hosted Rezi icon and type-kit assets are referenced, not relicensed or
-redistributed under this license. Retain the fallback font notices provided.
+Bundled third-party dependencies, fallback fonts and included icon assets retain
+their own applicable terms. This license does not relicense those assets or grant
+additional rights to them. Retain the supplied OFL fallback-font notices.
+Adobe type-kit font binaries are not included; any hosted kit use remains subject
+to its applicable terms.

@@ -1,1 +1,1 @@
-Read and follow `AGENTS.md`, `README.md`, `COMPATIBILITY.md` and the canonical `skills/rezi-angular-app/SKILL.md`. They contain this project’s setup, integration and verification rules. Do not invent a different dependency or security workflow for Claude Code.
+Read and follow `AGENTS.md`, `README.md`, `COMPATIBILITY.md` and the canonical `skills/dezrez-angular-app/SKILL.md`. They contain this project’s setup, integration and verification rules. Do not invent a different dependency or security workflow for Claude Code.

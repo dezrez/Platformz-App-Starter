@@ -1,4 +1,4 @@
-/* Rezi icon subset. Decorative glyphs use the bundled Rezi font. */
+/* Dezrez icon subset. Decorative glyphs use the bundled icon font. */
 @font-face {
   font-family: Rezi;
   src: url('./fonts/icomoon.woff2') format('woff2');
@@ -34,3 +34,6 @@
 .char-office::before { content: '\e00b'; }
 .char-cog::before { content: '\e138'; }
 .char-close::before { content: '\e2c4'; }
+.char-cancel-circle2::before { content: '\e2bf'; }
+.char-checkmark-circle2::before { content: '\e2c1'; }
+.char-circle2::before { content: '\e394'; }

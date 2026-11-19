@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Angular Basic reference for the Rezi partner contract.",
+  "description": "Angular Basic reference for the Dezrez partner contract.",
   "license": "MIT",
   "engines": { "node": "^22.22.3 || ^24.15.0 || >=26.0.0", "npm": ">=10" },
   "scripts": {

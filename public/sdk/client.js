@@ -104,7 +104,7 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
       const promise = new Promise((resolve, reject) => {
         connecting = { id, resolve, reject, timer: setTimeout(() => {
           connecting = null;
-          reject(demoError('HANDSHAKE_TIMEOUT', 'The Rezi host did not respond.', 408));
+          reject(demoError('HANDSHAKE_TIMEOUT', 'The Dezrez host did not respond.', 408));
         }, timeoutMs) };
       });
       connecting.promise = promise;
@@ -112,7 +112,7 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
       return promise;
     },
     request(operation, params = {}, { signal } = {}) {
-      if (destroyed || !connected) return Promise.reject(demoError('NOT_CONNECTED', 'Connect to the Rezi host first.', 409));
+      if (destroyed || !connected) return Promise.reject(demoError('NOT_CONNECTED', 'Connect to the Dezrez host first.', 409));
       if (surface === 'dashboard-widget') return Promise.reject(demoError('CONTEXT_REQUIRED', 'Choose a record context before using a record operation.', 409));
       if (!enabled) return Promise.reject(demoError('HOST_DISABLED', 'The host disabled this app.', 403));
       if (signal?.aborted) return Promise.reject(demoError('CANCELLED', 'The request was cancelled.', 499));
