@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Adapt, run and test the Dezrez Angular Basic starter through its canonical partner SDK and developer website, retaining the locked build profile and Dezrez themes.
 metadata:
-  version: 0.4.0-angular
+  version: 0.4.1-angular
 ---
 
 # Dezrez Angular app
@@ -32,6 +32,8 @@ Retain the Light, Dark and High Contrast semantic tokens and global component ru
 Keep `manifest.json` and `public/manifest.json` synchronized. Preserve `data-partner-read`, `data-partner-note`, `data-partner-save`, `data-partner-status` and `data-partner-context` on real visible controls, or update the manifest selectors. These help a genuine external harness exercise the app; they are not evidence that checks passed.
 
 Verify success, slow/cancel, throttled, expired, denied and missing outcomes; context swaps during work; pause/resume; host Save; close and repeated mount; long/missing values; 500-character notes and conflict preservation. Check themes, keyboard focus, narrow layouts, High Contrast and reduced motion in the actual browser using the environment’s permitted browser tool. Unit tests do not prove visual parity.
+
+Use the developer website's optional Activity view and redacted download to investigate repeated reads, overlapping work, request counts, timings and actual errors. These observations describe preview traffic only; do not report token rate limits or remaining request allowances. A cached result is not proof of a retry, a repeated request is not proof of polling, and unobserved retries stay unknown. Keep note text, credentials and record payloads out of diagnostics.
 
 Give a beginner the verified local address and one next action: paste it into **Open my app for testing** in the developer website. Explain unsupported capabilities plainly. `npm run package` packages existing built bytes only; local checks, a mock host or a ZIP do not approve certification, deploy a release or authorize real writes.
 

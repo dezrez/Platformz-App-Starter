@@ -1,5 +1,6 @@
 import { demoError, envelope, exactOrigin, isEnvelope, OPERATIONS, requestId, THEMES } from './protocol.js';
 import { createDialogActions } from './dialog.js';
+import { normalizeBudgetUsage } from './diagnostics.js';
 
 // Deliberately page-memory only. This is not durable or server-authorized storage.
 const appStates = new Map();
@@ -27,6 +28,7 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
   let closed = false;
   let disposed = false;
   let requestCount = 0;
+  let contextEpoch = 1;
   const pending = new Map();
   const seenIds = new Set();
   const send = (type, id, payload = {}) => targetWindow.postMessage(envelope(type, currentSession, id, payload), targetOrigin);
@@ -40,18 +42,21 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
     if (connected) send('partner.enabled', requestId(), { enabled: effectiveEnabled() });
     state(effectiveEnabled() ? (connected ? 'connected' : 'waiting') : 'disabled');
   }
-  function report(id, operation, start, status, result, errorCode = null) {
-    onLog({ id, operation, status, durationMs: Math.max(0, Math.round(performance.now() - start)), responseBytes: byteLength(result), errorCode, at: new Date().toISOString() });
+  const blockedObservation = () => ({ startedAtMs: Date.now(), contextEpoch, inFlightAtStart: 0 });
+  function report(id, operation, start, status, result, errorCode = null, entry = blockedObservation()) {
+    const completedAtMs = Date.now();
+    const budgetUsage = widget ? null : normalizeBudgetUsage({ version: 1, kind: 'example-session', observedAtMs: completedAtMs, sharedLimitsMayApply: false, windows: [{ windowMs: null, used: Math.min(requestCount, 12), limit: 12, remaining: Math.max(0, 12 - requestCount), resetsAtMs: null }] });
+    onLog({ id, operation, status, durationMs: Math.max(0, Math.round(performance.now() - start)), responseBytes: byteLength(result), errorCode, at: new Date().toISOString(), observation: { startedAtMs: entry.startedAtMs, completedAtMs, contextEpoch: entry.contextEpoch, inFlightAtStart: entry.inFlightAtStart }, budgetUsage });
   }
-  function fail(id, operation, start, error) {
+  function fail(id, operation, start, error, entry = blockedObservation()) {
     const payload = { code: error.code ?? 'DEMO_ERROR', message: error.message, status: error.status ?? 400 };
     send('partner.error', id, payload);
-    report(id, operation, start, payload.status, payload, payload.code);
+    report(id, operation, start, payload.status, payload, payload.code, entry);
   }
   function cancelPending(code, message) {
     for (const [id, entry] of pending) {
       clearTimeout(entry.timer);
-      fail(id, entry.operation, entry.start, demoError(code, message, 499));
+      fail(id, entry.operation, entry.start, demoError(code, message, 499), entry);
     }
     pending.clear();
     dialogActions?.publish();
@@ -102,7 +107,7 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
         clearTimeout(entry.timer);
         pending.delete(message.requestId);
         dialogActions?.publish();
-        fail(message.requestId, entry.operation, entry.start, demoError('CANCELLED', 'The request was cancelled.', 499));
+        fail(message.requestId, entry.operation, entry.start, demoError('CANCELLED', 'The request was cancelled.', 499), entry);
       }
       return;
     }
@@ -112,6 +117,7 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
     if (seenIds.has(message.requestId) || seenIds.size >= 128) return;
     seenIds.add(message.requestId);
     const start = performance.now();
+    const observation = blockedObservation();
     const { operation, params } = message.payload;
     const loggedOperation = OPERATIONS.includes(operation) ? operation : 'unsupported';
     try {
@@ -120,19 +126,20 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
       validate(operation, params);
       requestCount += 1;
       if (requestCount > 12) throw demoError('DEMO_BUDGET_EXCEEDED', 'The illustrative session budget was reached. Restart the demo.', 429);
+      const entry = { start, operation: loggedOperation, ...observation, inFlightAtStart: pending.size + 1, timer: null };
       const execute = () => {
         pending.delete(message.requestId);
         dialogActions?.publish();
         try {
           const result = perform(operation, params);
           send('partner.result', message.requestId, { result });
-          report(message.requestId, loggedOperation, start, 200, { result });
-        } catch (error) { fail(message.requestId, loggedOperation, start, error); }
+          report(message.requestId, loggedOperation, start, 200, { result }, null, entry);
+        } catch (error) { fail(message.requestId, loggedOperation, start, error, entry); }
       };
-      const timer = setTimeout(execute, currentScenario === 'slow' ? 1200 : 50);
-      pending.set(message.requestId, { timer, start, operation: loggedOperation });
+      entry.timer = setTimeout(execute, currentScenario === 'slow' ? 1200 : 50);
+      pending.set(message.requestId, entry);
       dialogActions?.publish();
-    } catch (error) { fail(message.requestId, loggedOperation, start, error); }
+    } catch (error) { fail(message.requestId, loggedOperation, start, error, observation); }
   }
   eventTarget.addEventListener('message', receive);
   if (supportsDialog) visibilityTarget.addEventListener('visibilitychange', visibilityChanged);
@@ -155,6 +162,7 @@ export function createDemoHost({ targetWindow, targetOrigin, eventTarget = globa
       if (disposed || closed) return;
       if (widget ? next !== null : !next?.id || !next?.agencyId) throw new TypeError('Changing app surface requires a new host session.');
       cancelPending('CONTEXT_CHANGED', 'The host context changed.');
+      contextEpoch += 1;
       currentContext = clone(next);
       currentSession = requestId();
       dialogActions?.invalidate({ context: true });

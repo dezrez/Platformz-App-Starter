@@ -41,3 +41,18 @@ all installed production and development dependencies, ordinary `npm audit
 ```json
 {"info":0,"low":0,"moderate":0,"high":0,"critical":0,"total":0}
 ```
+
+## Preview-diagnostics source update
+
+Skill bundle `0.4.1-angular` carries the canonical host-side diagnostics module
+required by the local mock host. The source export includes that module and
+records its resource hash. It adds redacted host observations without changing
+the child protocol, SDK wire version, app operations or dependency lock. Reports
+describe observed requests, timing, response sizes and errors; they do not report
+real-system token rate limits or remaining allowances. Account-free example
+observations remain synthetic, not production cost measurements or authority.
+
+The additional fixed SDK file changes the reviewed source profile. A future
+Angular certification must bind a fresh reviewed profile and independent
+evidence; existing frozen profiles and results are unchanged. This source update
+does not build, activate or certify an Angular worker.
