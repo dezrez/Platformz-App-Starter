@@ -13,12 +13,15 @@ apps use SDK `0.2.0`. `manifestVersion:1` versions app details separately.
 The supplied manifest is a complete **fictional example**, marked
 `example:true`. Its one-hour example is not a claim about a real partner or a
 measurement of production demand. You may submit a complete fictional app for
-private synthetic testing. Publication rejects fictional or incomplete details.
-Ask the owner for their real organisation, a working support email or HTTPS
-support address, and explicit usage assumptions before preparing publication.
-Update the declarations and set `example:false` only after the owner supplies
-those values. Never invent a contact, infer a workload from stress tests or
-claim that changing this marker authorizes a release.
+private testing. If the owner explicitly chooses fictional partner details for
+an internal demo, retain them and `example:true`; do not ask for real contacts
+again or change this marker to pass a check. A Dezrez reviewer must separately
+acknowledge those details when approving the exact internal pilot release.
+Otherwise, ask for the owner's organisation and working support email or HTTPS
+support address. Obtain explicit workload assumptions separately; fictional
+partner details do not replace measured workflow and capacity evidence.
+Incomplete declarations still prevent publication. Never invent a contact,
+infer a workload from stress tests or treat any declaration as release approval.
 
 ## Required declarations
 

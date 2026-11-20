@@ -78,9 +78,11 @@ explicitly fictional partner and a one-hour usage scenario. They grant no access
 or higher limits. Read the skill's [app-details reference](skills/dezrez-angular-app/references/app-details.md).
 Keep both copies synchronized and let `npm run validate` check the same public
 normalizer used by intake. Unknown required values remain incomplete and cannot
-be privately submitted. Ask the owner for real organisation, support contact and
-usage assumptions before publication, then update the declarations and example
-marker. Private certification does not itself authorize publication.
+be privately submitted. Keep explicitly owner-approved fictional partner details
+and `example:true` for an internal demo; a Dezrez reviewer must separately
+acknowledge those details for the exact internal pilot release. Ask for missing
+workload assumptions separately. Private certification does not itself authorize
+publication.
 
 ## If the browser needs a secure local address
 

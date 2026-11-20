@@ -32,11 +32,13 @@ licensed Exo 2/Poppins fallback fonts without external font requests. These do
 not claim Exo Soft/New Rubrik parity. Preserve the notices and the strict app
 policy; do not restore an unused base tag or a hosted font link.
 
-The starter includes fictional app details for testing. Ask your AI to keep them
-accurate as it changes the app. Before preparing a real release, it must ask you
-for your organisation, a support contact and an estimate of how people will use
-the app. It must leave unknown details unfinished instead of guessing. The
-bundled app-details reference explains how the AI records your answers.
+The starter includes fictional details for testing. Your AI should keep them
+accurate. You can choose to retain a fictional organisation and support contact
+for an internal demo; a person at Dezrez must approve those details before it is
+released. Otherwise, give your AI your organisation and support contact. Usage
+estimates are a separate question. Missing details should remain unfinished
+instead of being guessed. The bundled app-details reference explains how your
+AI records your answers.
 
 ## If the browser needs a secure local address
 

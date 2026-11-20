@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Adapt, run and test the Dezrez Angular Basic starter through its canonical partner SDK and developer website, retaining the locked build profile and Dezrez themes.
 metadata:
-  version: 0.5.1-angular
+  version: 0.5.2-angular
 ---
 
 # Dezrez Angular app
@@ -65,10 +65,14 @@ Read [the app-details contract](references/app-details.md). Preserve the explici
 `manifestVersion:1` declaration sections and validate them with the supplied
 shared normalizer. Keep `example:true` for the complete fictional demonstration;
 never invent real organisation, support or usage values. Unknown required values
-are a visibly incomplete draft and cannot be privately submitted. Ask the owner
-for real values before preparing publication; update the declarations and set
-`example:false` only when supplied. Publication separately rejects legacy,
-incomplete and example details. Usage counts are totals across the whole
+are a visibly incomplete draft and cannot be privately submitted. If the owner
+explicitly approves fictional partner details for an internal demo, keep them
+and `example:true`; do not ask for real contacts again or change the marker to
+pass a check. A Dezrez reviewer must separately acknowledge those details for
+the exact internal pilot release. Ask for missing workload assumptions
+separately; measured workflow and capacity evidence are still required for
+publication. Legacy and incomplete details cannot be published. Usage counts are
+totals across the whole
 population and horizon, never per-instance rates or trusted calibration.
 Declarations cannot increase access, storage, request budgets or concurrency.
 
