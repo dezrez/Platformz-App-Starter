@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Start a small Dezrez welcome app, then help the person choose and build their own idea with the locked Angular starter and supplied Dezrez styling.
 metadata:
-  version: 0.6.2-angular
+  version: 0.6.3-angular
 ---
 
 # Dezrez Angular app
@@ -11,7 +11,7 @@ Read `DEZREZ-START-HERE.md`, `README.md`, `AGENTS.md` and the project-root
 `references/rezi-styling.md`. Paths here are relative to the project root even
 when this skill is copied into an assistant's discovery folder.
 
-## First: a welcome, with no app idea chosen
+## First: build the actual starting application
 
 Keep exactly the two supplied standard Dezrez panels. The first uses the code
 icon and heading "{firstname} welcome to Dezrez vibe coding", followed by
@@ -22,21 +22,25 @@ book icon and heading "What happens next", with these numbered instructions:
 2. Ask for one small change at a time.
 3. Return to the developer website in Chrome or Edge to see your changes.
 
-These simple instructions are deliberately inside the app. Do not reduce it to
-a heading-only page or add another feature. Changing preview location keeps
-this same welcome and instruction content; it must not choose a prebuilt app.
+These panels are deliberately inside the actual Angular application source,
+which the person continues editing. Build and run them; do not stop at an AI
+reply, a download or a temporary website message. Keep the same code and local
+address across exactly three host locations: Group Hub, Property Hubs and Dashboard.
+Location may be chosen independently of business features; there is no separate
+welcome location. Do not reduce it to a heading-only page or choose a different
+prebuilt app when the presentation changes.
 Ask for the first name if it was not supplied; put it in `configuredFirstName`
 in `src/app/app.component.ts`. Without a name, keep the friendly unnamed welcome.
 The optional `firstName` URL value is bounded display text, never record context.
 Do not add notes, reminders, property fields, example customer data, selectors,
 dialog actions or another feature before the person chooses their idea.
 
-Keep `manifest.json` and `public/manifest.json` as the welcome draft:
+Keep the initial `manifest.json` and `public/manifest.json` unchanged:
 `surface:'dashboard-widget'`, `permissions:[]` and
 `starter:{phase:'welcome',context:'not-chosen'}`. The preview supplies a true null
 context. The welcome entry connects only for validated host appearance/lifecycle;
 it makes no broker requests, direct API calls or storage reads/writes.
-`npm run validate` checks this draft's structure; it is not a record certification
+`npm run validate` checks this metadata's structure; it is not a record certification
 profile, app registration, release approval or permission to publish.
 
 Check Node against `package.json`, then use ordinary `npm ci`,
@@ -57,11 +61,13 @@ uses their normal Chrome or Edge window. Keep the internal browser for the
 local app only when an inspection is actually needed; do not use a local
 stand-in host as evidence of a successful developer-website test.
 
-## Then: help the person choose their own app
+## Then: add features to this same app
 
-Ask what they want the app to do and where it should appear before changing
-context or permissions. Property Hubs use property choices and their actual
-marketing roles, Groups use group choices, and Dashboard has no selected record.
+Ask what they want to add before changing context or permissions. Presentation
+can already be chosen: Property Hubs offers property choices and their actual
+marketing roles, Group Hub offers group choices, and Dashboard has no record
+chooser. An outer location or record choice does not add access to the initial
+app, whose child connection retains null context and empty permissions.
 The signed-in agency is supplied by the website; never ask them to choose one.
 Do not treat the optional record-notes example as a requirement for their app.
 

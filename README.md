@@ -1,9 +1,10 @@
 # Dezrez Angular Basic
 
-Your first app has a welcome with your name and a small What happens next panel. It
-starts with no selected record, no data access and no decision about what you
-will build. Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
-your chosen AI. Bundle **0.6.2-angular** keeps the locked Angular dependency
+Your actual starting application is the supplied welcome with your name and a
+small What happens next panel. Build and run this source, then edit the same
+app with your AI. It starts with no record data access or business features.
+Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
+your chosen AI. Bundle **0.6.3-angular** keeps the locked Angular dependency
 profile and SDK0.2.0; it changes the starting experience, not the wire contract.
 
 ## First welcome: details for your AI or a developer
@@ -30,8 +31,8 @@ The AI puts the person's first name in `configuredFirstName` in
 rendered as text, never context. Without a name the welcome stays friendly.
 The SDK handshake is only for host-owned appearance and lifecycle; the welcome
 makes no broker requests or direct API/storage calls. Its manifests are a
-`dashboard-widget` draft with empty permissions and
-`starter:{phase:'welcome',context:'not-chosen'}`. Validation of that draft is a
+`dashboard-widget` with empty permissions and
+`starter:{phase:'welcome',context:'not-chosen'}`. Validation of that initial metadata is a
 structural check, not certification, registration or a release.
 
 Check just the welcome, its actual font loading and its one current appearance:
@@ -48,15 +49,23 @@ book icon, heading "What happens next" and these numbered instructions:
 2. Ask for one small change at a time.
 3. Return to the developer website in Chrome or Edge to see your changes.
 
-These are part of the welcome, not business features. Do not remove the body
+These panels belong in the actual Angular application source, not just an AI
+reply or a temporary developer-website message. Do not remove the body
 copy or instructions, choose a prebuilt app from the selected location, or add
 records, notes, forms, settings or other functionality before the person asks.
 
-## Once you choose your app
+## Choose its location, then add features when ready
 
-Tell your AI what you want the app to do and where it belongs. Property Hubs use
-properties and their real marketing roles, Groups use groups, and Dashboard has
-no selected record. The website derives the agency from sign-in.
+There are exactly three host locations: Group Hub, Property Hubs and Dashboard.
+They show the same application code at the same local address. Choose the
+surrounding presentation independently of features; there is no separate welcome
+location. Property Hubs offers properties and their real marketing roles, Group Hub
+offers groups, and Dashboard has no record chooser. These outer choices do not
+give the starting app record data access. The website derives the agency from
+sign-in when you later use supported connected features.
+
+Tell your AI what you want to add to this same app. Add context and operations
+only when the requested features need them.
 
 The record-notes example is retained only as later learning material:
 
@@ -118,7 +127,7 @@ After a build, `npm run package` creates `artifacts/app.zip` plus a hash receipt
 from built browser files, manifest and notices. The separate source download
 contains the clean project and lockfile. The packager excludes development mock
 assets and private maintenance notes. Neither ZIP authorises deployment.
-The welcome draft cannot be submitted as a certified record app. The current
+The initial welcome metadata cannot be submitted as a certified record app. The current
 buildless certification pilot does not support Angular source; an isolated
 Angular compiler profile needs independent review. See [COMPATIBILITY.md](COMPATIBILITY.md).
 

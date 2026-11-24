@@ -2,9 +2,9 @@
 
 1. Put the downloaded files in a folder you can find again, such as **Documents / My Dezrez app**.
 2. Open that folder in Claude Code or Codex. The developer website can give you a message to paste into your AI.
-3. Tell your AI your first name. It will get your welcome app running.
+3. Tell your AI your first name. It will build and run the supplied two-panel welcome as your actual starting app.
 4. When your AI gives you an address, return to the developer website in your normal Chrome or Edge window to see it.
-5. Then tell your AI what you would like your app to do. You have not chosen an app type yet.
+5. Choose Group Hub, Property Hubs or Dashboard to see the same app in its host location. Tell your AI what you would like to add when you are ready.
 
 You do not need Visual Studio Code, a deployment account or an API key. Your AI
 can check the small set of tools it needs and explain any installation before
@@ -12,7 +12,7 @@ you do it. Keep your AI open while you try your app.
 
 ## Message for your AI
 
-> Read DEZREZ-START-HERE.md, AGENTS.md, skills/dezrez-angular-app/SKILL.md and references/rezi-styling.md in this project. I am a beginner. Ask my first name if you do not know it. Keep the supplied two-panel welcome: my first-name greeting and starting-app sentence, then What happens next with the exact three numbered instructions in README.md. Keep the code and book icons. Do not remove that body copy or instruction panel. I have not chosen what to build; do not add records, notes, forms, settings or other business features, and keep the same welcome content in every location. Check the required tools, use the locked dependencies, run npm ci, npm run check:welcome, npm run build and npm run validate, then keep npm start running with DEMO_PARENT_ORIGIN set to the exact developer website address I am using. Keep hosted Exo Soft and New Rubrik, the supplied panels, icons, semantic colours and host-owned appearance. Check only this welcome in its current appearance; do not select records, run a theme/context matrix or open the optional notes example. Do not open the developer website inside your internal browser. Give me the verified local address and one simple next action in my normal Chrome or Edge window. Then ask what I want my app to do.
+> Read DEZREZ-START-HERE.md, AGENTS.md, skills/dezrez-angular-app/SKILL.md and references/rezi-styling.md in this project. I am a beginner. Ask my first name if you do not know it. Build and run my actual starting application from the supplied Angular source; do not just describe it or show a temporary message. Keep the supplied two-panel welcome: my first-name greeting and starting-app sentence, then What happens next with the exact three numbered instructions in README.md. Keep the code and book icons. Do not remove that body copy or instruction panel. Group Hub, Property Hubs and Dashboard are the three presentation choices for the same app and local address. Choosing a location does not choose its features or add record access. Do not add records, notes, forms, settings or other business features before I ask. Check the required tools, use the locked dependencies, run npm ci, npm run check:welcome, npm run build and npm run validate, then keep npm start running with DEMO_PARENT_ORIGIN set to the exact developer website address I am using. Keep hosted Exo Soft and New Rubrik, the supplied panels, icons, semantic colours and host-owned appearance. Check only this app in its current appearance without requesting record data; do not run a theme/context matrix or open the optional notes example. Do not open the developer website inside your internal browser. Give me the verified local address and one simple next action in my normal Chrome or Edge window. Then ask what I want to add to my app.
 
 ## When your chosen widget needs settings
 

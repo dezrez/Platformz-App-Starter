@@ -6,12 +6,16 @@ Project paths are relative to this folder, including in discovery copies.
 
 Start with the two supplied standard Dezrez panels: the person's first-name
 welcome and its starting-app sentence, then What happens next with the exact
-three simple numbered instructions. Keep their code/book heading icons. There
-is no chosen context or data operation. Keep the
-welcome draft manifests synchronized, including empty permissions and
+three simple numbered instructions. Build and run them in the actual Angular
+application source; they are not a temporary message. Keep their code/book
+heading icons. There is no chosen record data access or data operation. Keep the
+initial manifests synchronized, including empty permissions and
 `starter:{phase:'welcome',context:'not-chosen'}`. Do not load the optional record
 example or ask the person to choose a record before they decide what to build.
-Keep this same welcome and instruction content in every preview location.
+Keep this same application source and local address across exactly three host
+locations: Group Hub, Property Hubs and Dashboard. Presentation can be chosen
+independently of business features and adds no record access. There is no fourth
+welcome location.
 Do not remove its body copy or next-steps panel, add business features or choose
 what the person should build.
 
