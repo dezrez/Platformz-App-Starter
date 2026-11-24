@@ -3,14 +3,14 @@
   "protocol": "dezrez.partner/1",
   "sdkVersion": "0.2.0",
   "copiedResourceSha256": {
-    "sdk/client.js": "c27b8febf2237345ccb36866f92e4882a0a8232b224e02d3b165ea882bd3b867",
+    "sdk/client.js": "07f6af1ecf4631de17b9bd55a0b3015d14d53cc6a4e0092dc064c2be3df51a66",
     "sdk/protocol.js": "2c60cf1923b767ce42babc648c25c972ea4ba810fe24f637c43686846fd03a97",
     "sdk/demo-host.js": "64b6da752d51b9737cdc4d86937a35a0905fc6e001be09d5ed35bb7bdf615ced",
     "lib/theme.js": "fd23f6f5ebd693c4d344fabd61dfa4ad73ddfebd5a68fe23c9cdfa6e7dcc9a37",
     "sdk/dialog.js": "04be2c0cc72734672ee3f1b6ef1d01654b79cc9979fb57f9f75f3ebddf83e34d",
     "assets/rezi-icons.css": "9f009e7ebdb2d97cc4ea40ab68891a321348dee3e02eefdbe8d494db7eaadd13",
     "assets/fonts/icomoon.woff2": "732c29b295f8af80f286ad54fc285726f6a3f597ca22d045d95ddaaabab97d68",
-    "sdk/manifest.js": "28607a440f8778426101f958515ad4bbf918efeb4a14dc5ae293b2d2b2aec1b9",
+    "sdk/manifest.js": "94c287b8ac6d4ac36470e8c9d36b4fca585f05ab6e8a2eba1d034b44da0790e2",
     "sdk/diagnostics.js": "9279e0f3877c534322094e7f711ec10e0193ec5e15ad562222f4bed6c25e7394",
     "sdk/context.js": "be048f3fc0cec12d10c59c71a97950d9770d1500a1be36be58d75c97d3629220",
     "fixtures/properties.json": "b2dda47dc641c3961b0f74dbcd3ef6791a95d80d718cac32443a4b130fd20f5b",
@@ -20,8 +20,8 @@
     "sdk/viewer.js": "4ea8bad92d68e86becc8d4646837b26c56654358ec067a30191e35737ed97f7c",
     "sdk/viewer.d.ts": "9a553f331befc332b9188b85adf233b437d103b578380fc6e2916d9a434f4923",
     "assets/favicon.svg": "b84b1348415fdc593135152e02f42c86404ca77b7cc0f8e1e19f69e7eb658480",
-    "sdk/api.js": "489a4584847a5c3a4bbae3d343835be17403e9eff954a3b1d9a0797008522e5a",
-    "sdk/api.d.ts": "edcb1987cef4fed0016d2d585a53b5609c52d4a7ac80732c36d6322a1edae09d"
+    "sdk/api.js": "e893257d2744d0efebbe0595bdd7b87058efef7762f0290b37e4937b51e61da4",
+    "sdk/api.d.ts": "67b9b0eedcf9013d5f239f9c6019107d4ff4e880089b954f554c43d4f140c4db"
   },
   "iconStylesheet": "https://dezrez-partner-developers-systest.azurewebsites.net/assets/rezi-icons.css",
   "hostedTypeKit": "https://use.typekit.net/yis4cut.css",

@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Start a small Dezrez welcome app, then help the person choose and build their own idea with the locked Angular starter and supplied Dezrez styling.
 metadata:
-  version: 0.8.0-angular
+  version: 0.9.0-angular
 ---
 
 # Dezrez Angular app
@@ -114,7 +114,12 @@ with complete accurate declarations; the old normalizer and record checks apply
 to that path. Add focused tests appropriate to the requested features.
 `npm test` is the optional full developer
 suite, including the preserved record example; it is not the first welcome step.
-The current buildless certification pilot does not certify Angular source.
+For a chosen API app ready for checks, read `references/api-certification.md`.
+The API profile compiles the exact submitted Angular source offline and tests
+its declared fictional API workflow in a separate browser guest. Add accurate
+owner, usage and test details plus `dezrez-certification.json`; no private-note
+storage or legacy note selectors are required. Do not turn a local test or a
+fixture into certification, review or publication authority.
 
 ## Optional settings for a later chosen widget
 

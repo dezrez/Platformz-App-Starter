@@ -45,3 +45,9 @@ local checker accepts Dashboard, record-action or existing property-action and
 optional documented dialog labels. Do not add fake note/property permissions,
 storage, usage or certification selectors to make an API app compile. This
 development declaration does not grant authority or certify the new API path.
+
+When the person is ready for checks and release, read the project-root
+`references/api-certification.md` and the website's current API certification
+guide. Add the actual owner/usage details and fictional test workflow, without
+fake note storage or legacy selectors. Keep development, certification, human
+approval and Systest publishing as distinct outcomes.

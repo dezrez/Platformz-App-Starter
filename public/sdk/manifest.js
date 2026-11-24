@@ -1,7 +1,7 @@
 /** Public app-details contract. Declarations describe intent; they grant no access. */
 export const MANIFEST_VERSION = 1;
 export const MANIFEST_SDK_VERSION = '0.2.0';
-/** Development API declaration, independent from the older record operations. */
+/** API declaration, independent from the older record operations. */
 export function hasApiDeclaration(manifest) {
   const value = manifest?.api;
   if (value === undefined) return false;
@@ -96,7 +96,11 @@ export function normalizeManifestDeclarations(manifest) {
     const surfaces = unique(list(compatibilityInput.surfaces, 'compatibility.surfaces', (value, path) => { const result = text(value, path); if (result !== null && !['property-action', 'record-action', ...(api ? ['dashboard-widget'] : [])].includes(result)) invalid(path); return result; }), 'compatibility.surfaces');
     compatibility = { sdkVersion, hosts, surfaces };
   }
-  const storageInput = object(manifest.storage, 'storage', ['scope', 'schemaVersion', 'expectedMaximumBytes']);
+  const usesAppState = Array.isArray(manifest.permissions) && manifest.permissions.some(operation => ['appState.get', 'appState.set'].includes(operation));
+  // Business records persist through their own API. An API-only app does not
+  // have to pretend it stores private notes merely to describe certification.
+  const storageRequired = !api || usesAppState;
+  const storageInput = !storageRequired && manifest.storage == null ? null : object(manifest.storage, 'storage', ['scope', 'schemaVersion', 'expectedMaximumBytes']);
   let storage = null;
   if (storageInput) {
     const scope = text(storageInput.scope, 'storage.scope');
@@ -110,9 +114,9 @@ export function normalizeManifestDeclarations(manifest) {
     const initializationCalls = unique(list(activityInput.initializationCalls, 'activity.initializationCalls', (value, path) => {
       const item = object(value, path, ['operation', 'count']); if (!item) return null;
       const operation = text(item.operation, `${path}.operation`);
-      if (operation !== null && !operations.includes(operation)) invalid(`${path}.operation`);
+      if (operation !== null && ![...operations, ...(api ? ['api.request'] : [])].includes(operation)) invalid(`${path}.operation`);
       return { operation, count: integer(item.count, `${path}.count`) };
-    }, { minimum: 0, maximum: 3 }), 'activity.initializationCalls', item => item?.operation);
+    }, { minimum: 0, maximum: api ? 4 : 3 }), 'activity.initializationCalls', item => item?.operation);
     if (!own(activityInput, 'pollingIntervalMs') || activityInput.pollingIntervalMs === undefined) missing.push('activity.pollingIntervalMs');
     else if (activityInput.pollingIntervalMs !== null) invalid('activity.pollingIntervalMs');
     const refreshTriggers = unique(list(activityInput.refreshTriggers, 'activity.refreshTriggers', (value, path) => {
@@ -143,9 +147,10 @@ export function normalizeManifestDeclarations(manifest) {
   const testing = testingInput ? { journeys: unique(list(testingInput.journeys, 'testing.journeys', id), 'testing.journeys'), fixtures: unique(list(testingInput.fixtures, 'testing.fixtures', id), 'testing.fixtures') } : null;
   if (manifest.surface === 'record-action') {
     if (compatibility?.sdkVersion !== MANIFEST_SDK_VERSION || !compatibility.surfaces?.includes('record-action')) invalid('compatibility');
-    if (storage?.scope !== 'app-agency-user-context') invalid('storage.scope');
+    if ((storageRequired || storage) && storage?.scope !== 'app-agency-user-context') invalid('storage.scope');
   }
-  return { legacy: false, complete: missing.length === 0, missing: [...new Set(missing)], fields: { manifestVersion: MANIFEST_VERSION, example, partner, compatibility, storage, activity, expectedUsage, testing } };
+  if (api && (compatibility?.sdkVersion !== MANIFEST_SDK_VERSION || !compatibility.hosts?.includes(manifest.host) || !compatibility.surfaces?.includes(manifest.surface))) invalid('compatibility');
+  return { legacy: false, complete: missing.length === 0, missing: [...new Set(missing)], fields: { manifestVersion: MANIFEST_VERSION, example, partner, compatibility, ...(!api || storage ? { storage } : {}), activity, expectedUsage, testing, ...(api ? { api: { version: 'dezrez.api/1' } } : {}) } };
 }
 
 export function requireCompleteManifestDeclarations(manifest) {

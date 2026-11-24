@@ -28,7 +28,7 @@ export function createApiClient(options: {
 };
 export function createApiHost(options: {
   targetWindow: Window; targetOrigin: string; eventTarget?: Window;
-  session(): { id: string; connected: boolean; enabled: boolean; authenticated: boolean; identityKey: string; appId?: string; apiAllowed?: boolean };
+  session(): { id: string; connected: boolean; enabled: boolean; authenticated: boolean; identityKey: string; appId?: string; apiAllowed?: boolean; releaseSessionId?: string; developmentSessionId?: string };
   requestApi(path: string, options?: unknown): Promise<any>;
   onLog?(event: unknown): void;
 }): { sync(): void; dispose(): void };

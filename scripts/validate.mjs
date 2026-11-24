@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { PROTOCOL, OPERATIONS } from '../public/sdk/protocol.js';
 import { API_PROTOCOL } from '../public/sdk/api.js';
 import { normalizeDialogSettings } from '../public/sdk/dialog.js';
-import { requireCompleteManifestDeclarations } from '../public/sdk/manifest.js';
+import { normalizeManifestDeclarations, requireCompleteManifestDeclarations } from '../public/sdk/manifest.js';
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const digestPattern = /^sha512-[A-Za-z0-9+/]+=*$/;
 export async function regular(relative, maximum = 4_000_000) {
@@ -39,11 +39,12 @@ export function validateManifest(manifest) {
     assert.equal(manifest.surface, 'dashboard-widget'); assert.deepEqual(manifest.permissions, []);
     assert.deepEqual(manifest.starter, { phase: 'welcome', context: 'not-chosen' });
   } else if (manifest.api !== undefined) {
-    assert.ok(Object.keys(manifest).every(key => ['id', 'name', 'version', 'protocol', 'host', 'surface', 'permissions', 'providerDestinations', 'api', 'dialog'].includes(key)), 'Use the API development declarations without unrelated record-example metadata.');
+    assert.ok(Object.keys(manifest).every(key => ['id', 'name', 'version', 'protocol', 'host', 'surface', 'permissions', 'providerDestinations', 'api', 'dialog', 'manifestVersion', 'example', 'partner', 'compatibility', 'storage', 'activity', 'expectedUsage', 'testing'].includes(key)), 'Use the API declarations and actual app details without record-note example selectors.');
     assert.deepEqual(manifest.api, { version: API_PROTOCOL }, 'Use the supplied API protocol declaration.');
     assert.ok(['dashboard-widget', 'record-action', 'property-action'].includes(manifest.surface));
     assert.deepEqual(manifest.permissions, [], 'API access does not require the record-note example permissions.');
     if (manifest.dialog !== undefined) normalizeDialogSettings(manifest.dialog);
+    normalizeManifestDeclarations(manifest); // Incomplete details remain a valid development draft.
   } else {
     requireCompleteManifestDeclarations(manifest);
     assert.equal(manifest.surface, 'record-action');

@@ -1,4 +1,11 @@
-# App details for the first pilot
+# App details and compatibility declarations
+
+For a full API app, read the project-root `references/api-certification.md`.
+Declare its actual owner, compatibility, activity, intended usage and tests.
+Use `api.request` for API initialization counts; API-only apps do not need
+private-note storage. The storage and old helper examples below apply to apps
+which actually use those compatibility capabilities. Do not add fake note
+controls or old certification selectors to qualify an API app.
 
 The app's `manifest.json` describes who supports it, what it expects to do and
 how to test it. These declarations grant no permission, storage allocation,

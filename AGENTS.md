@@ -43,3 +43,8 @@ exact endpoint and contracts from the website's complete API catalog and use
 the supplied `public/sdk/api.js` facade. Full authorized Systest business reads
 and writes are available; the old three-operation note example is not a limit.
 Do not offer private app notes as a substitute for changing a business record.
+
+For a chosen API app ready for checks, read the project-root
+`references/api-certification.md`. Declare actual owner/usage and the app’s
+fictional API workflow; do not invent private notes, storage or legacy selectors.
+The first welcome still has no certification task.

@@ -20,8 +20,21 @@ All dependency versions are exact and the version 3 lockfile records public regi
 
 - The earlier picomatch tooling advisory [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) was withdrawn on 18 November 2026. The maintainer's [review of the reported issue](https://github.com/micromatch/picomatch/pull/235) explains the trusted-pattern context. A fresh full `npm audit --json`, including development dependencies, completed at 22:36:16 UTC on that date with exit 0 and zero findings at every severity. The dependency lock remains `fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3`. This clears that specific advisory release gate; no dependency upgrade, patch, waiver, audit suppression or force fix was applied. Fixed trusted build configuration/patterns, rejection of submitted globs/plugins/configuration, no per-job install/network and disposable bounded compilation remain independent requirements. A clean audit does not establish freedom from all security risks.
 - The maintained starter retains the reviewed Dezrez icon stylesheet/font and readable Exo 2/Poppins fallbacks. Bundle 0.6.0-angular uses the authorised intact hosted kit for Exo Soft/New Rubrik in the child document. Strict preview policy already permits its exact stylesheet/font destinations. Actual loaded faces and visual matching require browser evidence; fallback loading does not establish parity. No Adobe binaries are redistributed.
-- This Angular source cannot be certified by the current buildless static pilot. A separate locked offline Angular compiler stage, followed by an independent disposable conformance stage and reviewed policy, is required. No Angular certification or production deployment is claimed here.
+- The historical buildless static profile does not compile Angular. API certification uses its separate exact locked compiler, fictional API/browser profile and reviewed policy; the submitted app's actual report establishes its result. Local validation alone does not approve a release.
 - Local installation/build/unit/package checks and browser/theme evidence are separate. Actual font parity, localhost pairing, live Dezrez authorization and production release require their own verification.
+
+## API certification and isolated Systest release — 0.9.0-angular
+
+This bundle retains the same dependency lock and first welcome while adding
+the later API certification guide and complete actual app declarations.
+API-only apps need no private-note storage or legacy read/note/save selectors.
+The optional source-side `dezrez-certification.json` describes the app's real
+visible workflow with fictional API responses. The worker pins its complete
+catalog, exact compiler/profile and browser harness; it has no upstream token
+or network. Its offline typography is fallback coverage, not loaded-font parity.
+An actual certified report, human approval and exact-artifact publication are
+separate results. The main Dezrez application is outside this process.
+Earlier version sections below describe their historical delivery boundaries.
 
 ## Full Systest API — 0.8.0-angular
 

@@ -118,7 +118,7 @@ export function createApiHost({ targetWindow, targetOrigin, eventTarget = global
     if (authority) { const expired = authority; authority = null; void requestApi(`${base}/${encodeURIComponent(expired.id)}`, { method: 'DELETE', keepalive: true }).catch(() => {}); }
     if (creating) return creating;
     const epoch = generation;
-    creating = requestApi(base, { method: 'POST', body: { origin: targetOrigin, parentSessionId: initial.id, ...(initial.appId ? { appId: initial.appId } : {}) } }).then(async value => {
+    creating = requestApi(base, { method: 'POST', body: { origin: targetOrigin, parentSessionId: initial.id, ...(initial.appId ? { appId: initial.appId } : {}), ...(initial.releaseSessionId ? { releaseSessionId: initial.releaseSessionId } : {}), ...(initial.developmentSessionId ? { developmentSessionId: initial.developmentSessionId } : {}) } }).then(async value => {
       if (!current(initial) || epoch !== generation) { if (value?.session?.id) await requestApi(`${base}/${encodeURIComponent(value.session.id)}`, { method: 'DELETE', keepalive: true }); throw fault('API_CLOSED', 'The app connection ended.', 409); }
       if (!id(value?.session?.id)) throw fault('API_UNAVAILABLE', 'The API connection could not be created.', 503);
       return authority = { ...value.session, identityKey: initial.identityKey };
@@ -132,7 +132,7 @@ export function createApiHost({ targetWindow, targetOrigin, eventTarget = global
     if (!initial?.connected || initial.id !== message.sessionId || !initial.enabled) return;
     if (message.type === 'cancel') { const entry = pending.get(message.requestId); if (entry) { entry.controller.abort(); if (authority) void requestApi(`${base}/${encodeURIComponent(authority.id)}/requests/${encodeURIComponent(message.requestId)}`, { method: 'DELETE', keepalive: true }).catch(() => {}); } return; }
     if (message.type !== 'request' || seen.has(message.requestId)) return;
-    if (!initial.authenticated || initial.apiAllowed === false) { send(message, 'error', { code: 'API_SIGN_IN_REQUIRED', message: initial.apiAllowed === false ? 'Full API testing is available for your local app; existing releases keep their approved permissions.' : 'Sign in to the developer website to use the API.', status: 403 }); return; }
+    if (!initial.authenticated || initial.apiAllowed === false) { send(message, 'error', { code: 'API_SIGN_IN_REQUIRED', message: initial.apiAllowed === false ? 'This app session does not include approved full API access.' : 'Sign in to the developer website to use the API.', status: 403 }); return; }
     if (pending.size >= 16) { send(message, 'error', { code: 'API_BUSY', message: 'Wait for another request to finish.', status: 503 }); return; }
     let input; try { input = normalizeApiRequest(message.payload); } catch (error) { send(message, 'error', { code: error.code, message: error.message, status: error.status }); return; }
     seen.add(message.requestId); if (seen.size > 1024) seen.delete(seen.values().next().value);

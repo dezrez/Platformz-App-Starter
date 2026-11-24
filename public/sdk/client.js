@@ -19,6 +19,7 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
   let pendingActionId = null;
   let lastActionState = null;
   let surface = 'property-action';
+  let apiCapable = false;
   let contextKind = 'property';
   const actionIds = new Set();
   const pending = new Map();
@@ -42,13 +43,18 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
     if (destroyed || event.source !== hostWindow || event.origin !== hostOrigin || !isEnvelope(event.data)) return;
     const message = event.data;
     if (message.type === 'partner.init') {
-      const widget = message.payload.surface === 'dashboard-widget' && message.payload.context === null && message.payload.synthetic === true && message.payload.manifest?.surface === 'dashboard-widget' && Array.isArray(message.payload.permissions) && message.payload.permissions.length === 0 && Array.isArray(message.payload.manifest.permissions) && message.payload.manifest.permissions.length === 0;
+      const declaredApi = message.payload.manifest?.api;
+      const api = declaredApi && typeof declaredApi === 'object' && !Array.isArray(declaredApi) && Object.keys(declaredApi).length === 1 && declaredApi.version === 'dezrez.api/1';
+      const emptyPermissions = Array.isArray(message.payload.permissions) && message.payload.permissions.length === 0 && Array.isArray(message.payload.manifest?.permissions) && message.payload.manifest.permissions.length === 0;
+      const widget = message.payload.surface === 'dashboard-widget' && message.payload.context === null && (message.payload.synthetic === true || api) && message.payload.manifest?.surface === 'dashboard-widget' && emptyPermissions;
       const nextSurface = message.payload.surface ?? message.payload.manifest?.surface ?? 'property-action';
+      const emptyApiDialog = api && message.payload.context === null && ['property-action', 'record-action'].includes(nextSurface) && emptyPermissions;
       let identity = null;
-      try { if (!widget) identity = recordContextIdentity(message.payload.context); } catch { return; }
+      try { if (!widget && !emptyApiDialog) identity = recordContextIdentity(message.payload.context); } catch { return; }
       const record = ['property-action', 'record-action'].includes(nextSurface) && identity && (nextSurface === 'record-action' || identity.kind === 'property' && !identity.marketingRole);
-      if (!connecting || message.requestId !== connecting.id || typeof message.payload.synthetic !== 'boolean' || !widget && !record) return;
+      if (!connecting || message.requestId !== connecting.id || typeof message.payload.synthetic !== 'boolean' || !widget && !record && !emptyApiDialog) return;
       sessionId = message.sessionId;
+      apiCapable = Boolean(api);
       surface = widget ? 'dashboard-widget' : nextSurface;
       contextKind = identity?.kind ?? null;
       enabled = message.payload.enabled !== false;
@@ -71,17 +77,21 @@ export function createPartnerClient({ hostOrigin, hostWindow = globalThis.parent
         if (message.payload.context !== null || message.payload.surface !== 'dashboard-widget' || !Array.isArray(message.payload.permissions) || message.payload.permissions.length !== 0 || Object.keys(message.payload).some(key => !['context', 'surface', 'permissions'].includes(key))) return;
       } else {
         if (message.payload.surface === 'dashboard-widget') return;
+        if (apiCapable && message.payload.context === null && message.payload.surface === surface && Array.isArray(message.payload.permissions) && message.payload.permissions.length === 0 && Object.keys(message.payload).every(key => ['context', 'surface', 'permissions'].includes(key))) {
+          contextKind = null;
+        } else {
         let identity;
         try { identity = recordContextIdentity(message.payload); } catch { return; }
         if ((identity.kind === 'group' || identity.marketingRole) && surface !== 'record-action') return;
         contextKind = identity.kind;
+        }
       }
       rejectPending('CONTEXT_CHANGED', 'The host context changed.');
       sessionId = message.sessionId;
       pendingActionId = null;
       lastActionState = null;
       actionIds.clear();
-      emit(message.type, surface === 'dashboard-widget' ? null : message.payload);
+      emit(message.type, surface === 'dashboard-widget' || apiCapable && message.payload.context === null ? null : message.payload);
       return;
     }
     if (message.sessionId !== sessionId) return;

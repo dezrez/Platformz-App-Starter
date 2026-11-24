@@ -4,7 +4,7 @@ Your actual starting application is the supplied welcome with your name and a
 small What happens next panel. Build and run this source, then edit the same
 app with your AI. It starts with no record data access or business features.
 Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
-your chosen AI. Bundle **0.8.0-angular** keeps the locked Angular dependency
+your chosen AI. Bundle **0.9.0-angular** keeps the locked Angular dependency
 profile and core SDK0.2.0, with a separate token-free viewer extension1.
 
 ## First welcome: details for your AI or a developer
@@ -146,9 +146,12 @@ After a build, `npm run package` creates `artifacts/app.zip` plus a hash receipt
 from built browser files, manifest and notices. The separate source download
 contains the clean project and lockfile. The packager excludes development mock
 assets and private maintenance notes. Neither ZIP authorises deployment.
-The initial welcome metadata cannot be submitted as a certified record app. The current
-buildless certification pilot does not support Angular source; an isolated
-Angular compiler profile needs independent review. See [COMPATIBILITY.md](COMPATIBILITY.md).
+The initial welcome metadata cannot be submitted as a certified app. After a
+requested API feature is developed, follow the
+[API certification guide](references/api-certification.md). It describes the
+locked offline compiler, separate fictional browser workflow and exact-artifact
+Systest release process. A source declaration or local build does not certify,
+approve or publish it. See [COMPATIBILITY.md](COMPATIBILITY.md).
 
 When the chosen app needs app details, use the skill's
 [app-details reference](skills/dezrez-angular-app/references/app-details.md).

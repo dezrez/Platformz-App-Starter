@@ -22,11 +22,13 @@ export function zipFiles(files, prefix = '') {
 export async function collectSource() {
   await validate(); const files = new Map();
   for (const name of ['package.json', 'package-lock.json', '.npmrc', '.gitignore', '.gitattributes', 'angular.json', 'tsconfig.json', 'tsconfig.app.json', 'tsconfig.spec.json', 'manifest.json', 'README.md', 'DEZREZ-START-HERE.md', 'AGENTS.md', 'CLAUDE.md', 'LICENSE', 'COMPATIBILITY.md', 'RESOURCE-PROVENANCE.json', ...await walk('src'), ...await walk('public'), ...await walk('scripts'), ...await walk('skills'), ...await walk('references')]) files.set(name, await regular(name));
+  try { files.set('dezrez-certification.json', await regular('dezrez-certification.json', 2_000_000)); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
   return files;
 }
 /** Public browser bytes only; retain the profile's supported app-image area. */
 export function packageableBrowserFile(relative) {
-  if (/^(?:mock-host\.|fixtures\/|sdk\/|lib\/)/.test(relative)) return false;
+  if (/^(?:mock-host\.|fixtures\/|sdk\/|lib\/)/.test(relative) || relative === 'dezrez-certification.json') return false;
   if (!/\.(?:html|js|css|json|svg|png|jpe?g|webp|ico|woff2?|ttf|txt)$/i.test(relative)) return false;
   if (relative.startsWith('assets/')) return relative === 'assets/favicon.svg' || /^assets\/app\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_.-]+\.(?:svg|png|jpe?g|webp|ico)$/i.test(relative);
   return true;
