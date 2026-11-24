@@ -40,11 +40,13 @@ infer a workload from stress tests or treat any declaration as release approval.
 
 Keep existing identity, version, name, host, surface, permissions, dialog options
 and genuine certification selectors accurate. A versioned app must name the
-supported host/surface. The supported operations remain `property.read`,
-`appState.get` and `appState.set`; declaring another operation does not enable it.
+supported host/surface. These declarations describe the older `property.read`,
+`appState.get` and `appState.set` compatibility helpers. They do not limit the
+separate full API extension: read the project-root `references/dezrez-api.md`
+for all documented authorized business reads and writes. Do not invent another
+core operation name or replace a requested business change with a private note.
 Read [selected records and marketing roles](record-contexts.md). A property read
-is not applicable to a group; group context metadata and app-owned notes do not
-add full-group/member/contact API access. The server derives the agency and
+helper is not applicable to a group; full group APIs use the API facade. The server derives the agency and
 checks actual property/role/group access. Typed state separates group IDs and
 marketing roles rather than reusing another record's note.
 

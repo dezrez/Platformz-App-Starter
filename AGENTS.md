@@ -33,7 +33,13 @@ welcome requirement. Local structural checks grant no certification or release.
 
 Keep the exact dependency lock, SDK origin/window/session protections, hosted
 intact font kit, local reviewed heading icons and global semantic component
-styles. Never introduce tokens in an iframe, legacy credential handoff, arbitrary
-API calls, polling, automatic write retries, packages or custom builders. Do not
+styles. Never introduce tokens in an iframe, legacy credential handoff, direct
+upstream API bypasses, polling, automatic write retries, packages or custom builders. Do not
 use force or legacy-peer-deps. Ask what the person wants to build before using
 record example guidance or replacing a draft with complete record declarations.
+
+For requested business features, read `references/dezrez-api.md`, discover the
+exact endpoint and contracts from the website's complete API catalog and use
+the supplied `public/sdk/api.js` facade. Full authorized Systest business reads
+and writes are available; the old three-operation note example is not a limit.
+Do not offer private app notes as a substitute for changing a business record.

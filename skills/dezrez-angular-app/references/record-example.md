@@ -11,7 +11,12 @@ Check the Node version against `package.json`. Use ordinary `npm ci`, `npm test`
 
 Use the exact supplied dependency graph. Do not update `package.json`/`package-lock.json`, add packages, use custom builders/plugins or executable configuration, fetch executable scripts remotely, or run force/legacy-peer-deps. A new dependency requires a reviewed build profile. The isolated Angular build profile is a separate certification capability; current static-source certification does not establish Angular support.
 
-Use `public/sdk/client.js` and its versioned contract. Connect with the pairing-supplied `hostOrigin`; preserve exact parent window/origin/session checks. Dezrez credentials stay in the host. The only operations are:
+This optional compatibility note example uses `public/sdk/client.js` and its
+versioned contract. Connect with the pairing-supplied `hostOrigin`; preserve
+exact parent window/origin/session checks. Dezrez credentials stay in the host.
+These three helpers are not the limit of the full API: read the project-root
+`references/dezrez-api.md` for requested business reads and writes through
+`public/sdk/api.js`. The example uses:
 
 | Operation | Input | Result |
 |---|---|---|

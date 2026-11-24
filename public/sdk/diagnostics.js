@@ -164,8 +164,8 @@ export function createPreviewDiagnostics({ maximumEvents = 200, now = Date.now }
       const timestamp = observation?.completedAtMs ?? now();
       const info = runs.get(run);
       const entry = {
-        sequence: ++sequence, previewRun: run, source: info?.source ?? 'unknown', synthetic: info?.synthetic ?? null,
-        operation: OPERATIONS.includes(operation) ? operation : 'unsupported',
+        sequence: ++sequence, previewRun: run, source: operation === 'api.request' ? 'broker' : info?.source ?? 'unknown', synthetic: operation === 'api.request' ? false : info?.synthetic ?? null,
+        operation: operation === 'api.request' || OPERATIONS.includes(operation) ? operation : 'unsupported',
         status: integer(status, 100, 599) ? status : 0,
         durationMs: knownNumber(own(value, 'durationMs')),
         responseBytes: knownNumber(own(value, 'responseBytes')),

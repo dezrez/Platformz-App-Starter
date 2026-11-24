@@ -23,6 +23,16 @@ All dependency versions are exact and the version 3 lockfile records public regi
 - This Angular source cannot be certified by the current buildless static pilot. A separate locked offline Angular compiler stage, followed by an independent disposable conformance stage and reviewed policy, is required. No Angular certification or production deployment is claimed here.
 - Local installation/build/unit/package checks and browser/theme evidence are separate. Actual font parity, localhost pairing, live Dezrez authorization and production release require their own verification.
 
+## Full Systest API — 0.8.0-angular
+
+The independent `dezrez.api/1` extension adds `public/sdk/api.js` and its type
+declarations without changing the core SDK0.2.0 wire contract. Use the full
+website catalog and data contracts through `references/dezrez-api.md` after the
+person chooses a feature. Existing API authorization applies to business reads
+and writes; the old three-operation example is compatibility, not a capability
+ceiling. The welcome, locked dependencies and first-build checks stay the same.
+This does not certify Angular source or deploy a native-host adapter.
+
 The optional later record example implements the documented record-action contract for properties with
 optional real marketing roles and minimal people-group context. It retains the
 synthetic no-record widget. Source/local checks do not establish connected,

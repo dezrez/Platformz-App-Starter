@@ -4,6 +4,8 @@ import { readFile, lstat, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PROTOCOL, OPERATIONS } from '../public/sdk/protocol.js';
+import { API_PROTOCOL } from '../public/sdk/api.js';
+import { normalizeDialogSettings } from '../public/sdk/dialog.js';
 import { requireCompleteManifestDeclarations } from '../public/sdk/manifest.js';
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const digestPattern = /^sha512-[A-Za-z0-9+/]+=*$/;
@@ -25,6 +27,31 @@ export async function walk(relative) {
   }
   return files;
 }
+/** Local build declarations only. API access still comes from the signed-in host. */
+export function validateManifest(manifest) {
+  assert.ok(manifest && typeof manifest === 'object' && !Array.isArray(manifest));
+  assert.match(manifest.id, /^[a-zA-Z0-9_.-]{1,100}$/); assert.ok(manifest.name); assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
+  assert.equal(manifest.protocol, PROTOCOL); assert.equal(manifest.host, 'rezi');
+  const welcome = manifest.starter?.phase === 'welcome';
+  if (welcome) {
+    // This draft check is intentionally separate from record certification.
+    assert.deepEqual(Object.keys(manifest).sort(), ['id', 'name', 'version', 'protocol', 'host', 'surface', 'permissions', 'providerDestinations', 'starter'].sort());
+    assert.equal(manifest.surface, 'dashboard-widget'); assert.deepEqual(manifest.permissions, []);
+    assert.deepEqual(manifest.starter, { phase: 'welcome', context: 'not-chosen' });
+  } else if (manifest.api !== undefined) {
+    assert.ok(Object.keys(manifest).every(key => ['id', 'name', 'version', 'protocol', 'host', 'surface', 'permissions', 'providerDestinations', 'api', 'dialog'].includes(key)), 'Use the API development declarations without unrelated record-example metadata.');
+    assert.deepEqual(manifest.api, { version: API_PROTOCOL }, 'Use the supplied API protocol declaration.');
+    assert.ok(['dashboard-widget', 'record-action', 'property-action'].includes(manifest.surface));
+    assert.deepEqual(manifest.permissions, [], 'API access does not require the record-note example permissions.');
+    if (manifest.dialog !== undefined) normalizeDialogSettings(manifest.dialog);
+  } else {
+    requireCompleteManifestDeclarations(manifest);
+    assert.equal(manifest.surface, 'record-action');
+    assert.deepEqual([...manifest.permissions].sort(), [...OPERATIONS].sort());
+  }
+  assert.deepEqual(manifest.providerDestinations, []);
+  return welcome ? 'welcome' : manifest.api !== undefined ? 'api-development' : 'record-example';
+}
 export async function validate() {
   const pkg = JSON.parse(await regular('package.json')), lock = JSON.parse(await regular('package-lock.json'));
   assert.equal(lock.lockfileVersion, 3); assert.equal(lock.name, pkg.name); assert.equal(lock.version, pkg.version);
@@ -41,20 +68,7 @@ export async function validate() {
     assert.equal(item.link, undefined);
   }
   const manifest = JSON.parse(await regular('manifest.json'));
-  assert.match(manifest.id, /^[a-zA-Z0-9_.-]{1,100}$/); assert.ok(manifest.name); assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
-  assert.equal(manifest.protocol, PROTOCOL); assert.equal(manifest.host, 'rezi');
-  const welcome = manifest.starter?.phase === 'welcome';
-  if (welcome) {
-    // This draft check is intentionally separate from record certification.
-    assert.deepEqual(Object.keys(manifest).sort(), ['id', 'name', 'version', 'protocol', 'host', 'surface', 'permissions', 'providerDestinations', 'starter'].sort());
-    assert.equal(manifest.surface, 'dashboard-widget'); assert.deepEqual(manifest.permissions, []);
-    assert.deepEqual(manifest.starter, { phase: 'welcome', context: 'not-chosen' });
-  } else {
-    requireCompleteManifestDeclarations(manifest);
-    assert.equal(manifest.surface, 'record-action');
-    assert.deepEqual([...manifest.permissions].sort(), [...OPERATIONS].sort());
-  }
-  assert.deepEqual(manifest.providerDestinations, []);
+  const phase = validateManifest(manifest);
   const recordExample = JSON.parse(await regular('public/examples/record-notes.manifest.json'));
   requireCompleteManifestDeclarations(recordExample);
   assert.equal(recordExample.surface, 'record-action'); assert.deepEqual([...recordExample.permissions].sort(), [...OPERATIONS].sort());
@@ -69,7 +83,7 @@ export async function validate() {
     const text = (await regular(name)).toString('utf8'); assert.equal(forbidden.test(text), false, 'Private material in ' + name);
   }
   assert.equal((await regular('src/app/app.component.ts')).toString().includes('styleUrls'), false, 'Component CSS must stay in the compiled global stylesheet.');
-  return { manifestId: manifest.id, protocol: manifest.protocol, phase: welcome ? 'welcome' : 'record-example', certification: 'not-performed', packages: Object.keys(lock.packages).length - 1, dependencyLockChecked: true };
+  return { manifestId: manifest.id, protocol: manifest.protocol, phase, certification: 'not-performed', packages: Object.keys(lock.packages).length - 1, dependencyLockChecked: true };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try { console.log(JSON.stringify(await validate())); }

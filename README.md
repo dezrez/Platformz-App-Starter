@@ -4,7 +4,7 @@ Your actual starting application is the supplied welcome with your name and a
 small What happens next panel. Build and run this source, then edit the same
 app with your AI. It starts with no record data access or business features.
 Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
-your chosen AI. Bundle **0.7.0-angular** keeps the locked Angular dependency
+your chosen AI. Bundle **0.8.0-angular** keeps the locked Angular dependency
 profile and core SDK0.2.0, with a separate token-free viewer extension1.
 
 ## First welcome: details for your AI or a developer
@@ -75,6 +75,14 @@ sign-in when you later use supported connected features.
 Tell your AI what you want to add to this same app. Add context and operations
 only when the requested features need them.
 
+Your AI can discover the complete Dezrez API through the
+[API guide](references/dezrez-api.md), including endpoint contracts and
+source-verified workflow recipes. The supplied `public/sdk/api.js` facade
+supports business reads and writes with your signed-in Systest permissions.
+The older property/note helpers below are compatibility examples, not the API's
+limit. A requested business-record change belongs in Dezrez, not a substitute
+private note. Dashboard can use APIs without a host-selected record.
+
 The record-notes example is retained only as later learning material:
 
 - `src/app/record-example.component.ts` and its template render the record UI.
@@ -87,13 +95,16 @@ Read the skill's [record-example guide](skills/dezrez-angular-app/references/rec
 and [record-context contract](skills/dezrez-angular-app/references/record-contexts.md)
 only when the chosen app needs them. Do not overwrite an existing custom app
 with this example. Adapt the necessary pieces and keep both app manifest copies
-accurate. A record app needs complete declarations through the supplied shared
-normalizer, with the welcome marker removed. No selected record means no record
-operation; never invent a record or agency.
+accurate. That optional compatibility record-note example needs complete
+declarations through the supplied shared normalizer, with the welcome marker
+removed. Full API features instead use the local API declaration documented in
+`references/dezrez-api.md`, with empty helper permissions and no invented note
+feature. Never invent a record or agency; full API features may use an actual
+authorized API result without a host-selected record.
 
 For a property or its actual marketing role the example can call property.read,
 appState.get and appState.set. A people group uses supplied name/type and its own
-app state, never property.read or group members/contacts. Notes are 500 characters,
+app state in this example; full group APIs use the separate API facade. Notes are 500 characters,
 versioned and separate per record/role. Keep stale-reply rejection, pause/close
 cleanup, explicit load retry and conflict draft preservation. Never automatically
 retry a write. A manifest grants no authority; credentials stay in the host.

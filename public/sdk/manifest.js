@@ -1,6 +1,13 @@
 /** Public app-details contract. Declarations describe intent; they grant no access. */
 export const MANIFEST_VERSION = 1;
 export const MANIFEST_SDK_VERSION = '0.2.0';
+/** Development API declaration, independent from the older record operations. */
+export function hasApiDeclaration(manifest) {
+  const value = manifest?.api;
+  if (value === undefined) return false;
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== 1 || !Object.hasOwn(value, 'version') || value.version !== 'dezrez.api/1') throw Object.assign(new TypeError('Use api: { version: "dezrez.api/1" } for full API development.'), { code: 'INVALID_API_DECLARATION' });
+  return true;
+}
 const operations = ['property.read', 'appState.get', 'appState.set'];
 const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value) && Object.getPrototypeOf(value) === Object.prototype;
@@ -18,6 +25,7 @@ function invalid(path) { throw Object.assign(new TypeError(`Ask your AI to corre
 /** Legacy records are identified without changing their bytes or interpreting new fields. */
 export function normalizeManifestDeclarations(manifest) {
   if (!plain(manifest)) invalid('manifest');
+  const api = hasApiDeclaration(manifest);
   if (manifest.manifestVersion === undefined) return { legacy: true, complete: false, missing: ['manifestVersion'], fields: {} };
   if (manifest.manifestVersion !== MANIFEST_VERSION) invalid('manifestVersion');
   const missing = [];
@@ -62,7 +70,7 @@ export function normalizeManifestDeclarations(manifest) {
     return values;
   };
   text(manifest.name, 'name', 100);
-  for (const [key, supported] of [['host', ['rezi']], ['surface', ['property-action', 'record-action']]]) {
+  for (const [key, supported] of [['host', ['rezi']], ['surface', ['property-action', 'record-action', ...(api ? ['dashboard-widget'] : [])]]]) {
     const value = text(manifest[key], key);
     if (value !== null && !supported.includes(value)) invalid(key);
   }
@@ -85,7 +93,7 @@ export function normalizeManifestDeclarations(manifest) {
     const sdkVersion = text(compatibilityInput.sdkVersion, 'compatibility.sdkVersion');
     if (sdkVersion !== null && !['0.1.0', MANIFEST_SDK_VERSION].includes(sdkVersion)) invalid('compatibility.sdkVersion');
     const hosts = unique(list(compatibilityInput.hosts, 'compatibility.hosts', (value, path) => { const result = text(value, path); if (result !== null && result !== 'rezi') invalid(path); return result; }), 'compatibility.hosts');
-    const surfaces = unique(list(compatibilityInput.surfaces, 'compatibility.surfaces', (value, path) => { const result = text(value, path); if (result !== null && !['property-action', 'record-action'].includes(result)) invalid(path); return result; }), 'compatibility.surfaces');
+    const surfaces = unique(list(compatibilityInput.surfaces, 'compatibility.surfaces', (value, path) => { const result = text(value, path); if (result !== null && !['property-action', 'record-action', ...(api ? ['dashboard-widget'] : [])].includes(result)) invalid(path); return result; }), 'compatibility.surfaces');
     compatibility = { sdkVersion, hosts, surfaces };
   }
   const storageInput = object(manifest.storage, 'storage', ['scope', 'schemaVersion', 'expectedMaximumBytes']);

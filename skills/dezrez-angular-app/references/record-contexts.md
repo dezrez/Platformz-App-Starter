@@ -13,17 +13,20 @@ The website supplies one of these minimal contexts:
   real type and accessible historical status. A role belongs to that property.
 - People group: `kind:"group"`, `id`, `agencyId`, `name`, optional `groupType`.
   It may represent an individual, couple, group, company or team. Its metadata
-  does not grant access to members, contacts or a full-group API.
+  does not itself fetch members or contacts. Requested group APIs use the full
+  API facade with existing signed-in permissions; see the project-root
+  `references/dezrez-api.md`.
 - No selected record: `context:null` on the synthetic dashboard-widget surface,
   with empty permissions and no dialog actions or record requests.
 
 The signed-in agency is chosen automatically by the trusted website/server.
-An iframe never chooses an agency, hydrates arbitrary record IDs or invents
-metadata. Contexts in the account-free mock/preview are fictional. Real record
+The iframe does not choose another agency or invent trusted host context
+metadata. Full API features can separately use authorized API search results. Contexts in the account-free mock/preview are fictional. Real record
 selection requires the server's applicable permissions and grant/release.
 
-For a group, display the supplied name/type and load only app-owned state. Do
-not call `property.read` or put a group ID into `propertyId`. Property reads
+For this optional note example, display the supplied group name/type and load
+app-owned state. A chosen business feature may use full group APIs separately.
+Do not call `property.read` or put a group ID into `propertyId`. Property reads
 apply only when `context.kind !== 'group'`. State requests use the current
 verified session, with no record selector:
 

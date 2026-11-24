@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Start a small Dezrez welcome app, then help the person choose and build their own idea with the locked Angular starter and supplied Dezrez styling.
 metadata:
-  version: 0.7.0-angular
+  version: 0.8.0-angular
 ---
 
 # Dezrez Angular app
@@ -81,6 +81,20 @@ app, whose child connection retains null context and empty permissions.
 The signed-in agency is supplied by the website; never ask them to choose one.
 Do not treat the optional record-notes example as a requirement for their app.
 
+For a requested Dezrez data feature, read the project-root
+`references/dezrez-api.md`. Search the website's complete API catalog, read the
+matching operation and full request/response contracts, then use
+`createApiClient({client,hostOrigin})` from `public/sdk/api.js`. Create it before
+core connection, call `api.request({method,path,query,body},{signal})` after
+connection and dispose it before the core client. The result is
+`{status,headers,data,encoding}`. The full API includes business-record writes
+and group APIs under the signed-in developer's existing Systest permissions;
+the three older property/note helpers are compatibility, not a product limit.
+Do not replace a requested business change with a private app note. Read the
+linked property-feature recipe before appending features, preserve existing
+entries and never automatically retry a write. Dashboard needs no selected
+context to use an appropriate authorized API search or action.
+
 Only when the chosen idea needs record actions, read the project-root
 `skills/dezrez-angular-app/references/record-contexts.md`,
 `skills/dezrez-angular-app/references/app-details.md` and
@@ -92,10 +106,13 @@ Its deliberate local entry is `/?example=records&hostOrigin=...`; the optional
 Never overwrite an existing custom app with the example. Merge only the pieces
 needed for the person's chosen idea and retain the SDK boundaries.
 
-For a record app, replace both draft manifests with complete accurate
-declarations for the chosen behavior and remove the welcome marker. The
-supplied normalizer and record checks then apply. Add focused tests appropriate
-to the chosen surface and operations. `npm test` is the optional full developer
+For an API feature, follow `references/dezrez-api.md`: remove the welcome marker,
+add `api:{version:'dezrez.api/1'}` in both manifests and keep empty compatibility
+permissions. Do not invent the three old helper permissions or app-note storage.
+For the optional compatibility record-note app, replace both draft manifests
+with complete accurate declarations; the old normalizer and record checks apply
+to that path. Add focused tests appropriate to the requested features.
+`npm test` is the optional full developer
 suite, including the preserved record example; it is not the first welcome step.
 The current buildless certification pilot does not certify Angular source.
 
