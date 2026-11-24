@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Start a small Dezrez welcome app, then help the person choose and build their own idea with the locked Angular starter and supplied Dezrez styling.
 metadata:
-  version: 0.6.3-angular
+  version: 0.7.0-angular
 ---
 
 # Dezrez Angular app
@@ -29,17 +29,27 @@ address across exactly three host locations: Group Hub, Property Hubs and Dashbo
 Location may be chosen independently of business features; there is no separate
 welcome location. Do not reduce it to a heading-only page or choose a different
 prebuilt app when the presentation changes.
-Ask for the first name if it was not supplied; put it in `configuredFirstName`
-in `src/app/app.component.ts`. Without a name, keep the friendly unnamed welcome.
-The optional `firstName` URL value is bounded display text, never record context.
+Obtain the first name only from the signed-in negotiator/me API's exact
+`FirstName` field through the supplied viewer extension1. Keep the supplied
+`public/sdk/viewer.js` import and types. Create the viewer with
+`{client,hostOrigin}` before `client.connect()`, call
+`await viewer.getCurrentViewer()` only after connection and dispose the viewer
+before the core client. It returns only `{firstName}`, rendered as text.
+Never ask for a name, hardcode one, read it from a URL, split `ContactName`,
+inspect a token or directly call the customer API from this child app.
+Keep a generic loading/absent-name welcome and the supplied sign-in/retry state
+when the viewer is unavailable. Clear stale identity on connection loss.
 Do not add notes, reminders, property fields, example customer data, selectors,
 dialog actions or another feature before the person chooses their idea.
 
 Keep the initial `manifest.json` and `public/manifest.json` unchanged:
 `surface:'dashboard-widget'`, `permissions:[]` and
 `starter:{phase:'welcome',context:'not-chosen'}`. The preview supplies a true null
-context. The welcome entry connects only for validated host appearance/lifecycle;
-it makes no broker requests, direct API calls or storage reads/writes.
+context. The core connection preserves validated appearance/lifecycle and
+SDK0.2.0. The separate viewer read adds no record permission or operation; the
+welcome makes no record broker requests, direct customer API calls or storage
+reads/writes. Sign-in is required on the developer website. Without its trusted
+host, a standalone app cannot obtain the signed-in first name.
 `npm run validate` checks this metadata's structure; it is not a record certification
 profile, app registration, release approval or permission to publish.
 
@@ -50,7 +60,7 @@ Set `DEMO_PARENT_ORIGIN` to the exact developer website origin before the built
 preview starts. Verify the local address responds, then give the person that
 address and one next action in plain language.
 
-The first visible check is just the welcome panel, correct loaded fonts and the
+The first visible check is just the signed-in API greeting, correct loaded fonts and the
 one current appearance: Light when opened locally on its own, or the host's
 effective appearance when embedded. Keep all supplied theme support, but do not
 switch themes, run a record/context test matrix, open the optional mock host,

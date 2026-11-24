@@ -9,7 +9,7 @@ welcome and its starting-app sentence, then What happens next with the exact
 three simple numbered instructions. Build and run them in the actual Angular
 application source; they are not a temporary message. Keep their code/book
 heading icons. There is no chosen record data access or data operation. Keep the
-initial manifests synchronized, including empty permissions and
+initial manifests synchronized, including empty record permissions and
 `starter:{phase:'welcome',context:'not-chosen'}`. Do not load the optional record
 example or ask the person to choose a record before they decide what to build.
 Keep this same application source and local address across exactly three host
@@ -17,10 +17,15 @@ locations: Group Hub, Property Hubs and Dashboard. Presentation can be chosen
 independently of business features and adds no record access. There is no fourth
 welcome location.
 Do not remove its body copy or next-steps panel, add business features or choose
-what the person should build.
+what the person should build. Obtain the first name only from signed-in
+negotiator/me FirstName using the supplied viewer extension: create it with
+{client,hostOrigin} before core connect, call getCurrentViewer only after
+connection and dispose it before the core client. Never manual input, hardcoded
+or URL names, ContactName splitting or token inspection. Keep generic loading
+and sign-in/retry guidance when unavailable.
 
 First build: `npm ci`, `npm run check:welcome`, `npm run build`,
-`npm run validate`, then `npm start`. Check only the welcome in the current
+`npm run validate`, then `npm start`. Check only the signed-in API greeting in the current
 appearance and actual loaded Exo Soft/New Rubrik. Never open the developer
 website in an AI internal browser; hand back the address for normal Chrome/Edge.
 `npm test` is the full developer suite for later development and CI, not a first

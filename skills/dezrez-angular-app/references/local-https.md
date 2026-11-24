@@ -8,7 +8,7 @@ with `https://`, copy this message to the AI chat that built your app:
 > changing what my computer trusts, explain the exact change and ask me to
 > approve it. Keep certificate keys outside my project and source submission.
 > Do not print or share their contents. Start and check the app, then give me
-> the exact address to paste into Dezrez Developer. Stop if there is a browser
+> the exact address to paste into Dezrez Vibe Coder. Stop if there is a browser
 > certificate warning; do not bypass it.
 
 ## Instructions for the AI

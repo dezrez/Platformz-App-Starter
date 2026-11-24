@@ -101,6 +101,16 @@ not build, activate or certify an Angular worker. The developer website's saved
 copy preview can keep fictional notes across Save/reopen and property changes
 within its current page; sign-out or a full developer-page reload clears them.
 
+## Signed-in viewer greeting — 0.7.0-angular
+
+The initial app reads only the signed-in negotiator/me FirstName through the
+separate token-free viewer extension1. Create the facade with {client,hostOrigin}
+before core connect, request the viewer only after connection and dispose it
+before the core client. Manual, hardcoded, URL and ContactName-derived names are
+not accepted. Core SDK0.2.0, zero record permissions, dependency locks and the
+two-panel welcome remain. This extension needs a supporting trusted host; it
+does not establish native-host support, certification or publication eligibility.
+
 ## Restored welcome instructions — 0.6.2-angular
 
 The supplied first app keeps two standard panels in every preview location:

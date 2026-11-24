@@ -4,8 +4,8 @@ Your actual starting application is the supplied welcome with your name and a
 small What happens next panel. Build and run this source, then edit the same
 app with your AI. It starts with no record data access or business features.
 Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
-your chosen AI. Bundle **0.6.3-angular** keeps the locked Angular dependency
-profile and SDK0.2.0; it changes the starting experience, not the wire contract.
+your chosen AI. Bundle **0.7.0-angular** keeps the locked Angular dependency
+profile and core SDK0.2.0, with a separate token-free viewer extension1.
 
 ## First welcome: details for your AI or a developer
 
@@ -26,16 +26,24 @@ npm start
 `localhost` and `127.0.0.1` are different origins. Keep the process running.
 For automatic rebuilding during edits use `npm run dev` instead.
 
-The AI puts the person's first name in `configuredFirstName` in
-`src/app/app.component.ts`. Optional `?firstName=Ian` is bounded display text,
-rendered as text, never context. Without a name the welcome stays friendly.
-The SDK handshake is only for host-owned appearance and lifecycle; the welcome
-makes no broker requests or direct API/storage calls. Its manifests are a
+The greeting obtains only `{firstName}` from the signed-in negotiator/me API's
+exact `FirstName` field through the supplied viewer extension. Preserve its
+`createViewerClient({client,hostOrigin})` before `client.connect()`, then call
+`getCurrentViewer()` only after connection. Dispose the viewer before the core
+client. Keep the supplied `public/sdk/viewer.js` import and types. Never ask for,
+hardcode or take a name from a URL, split `ContactName` or inspect a token.
+Render the name as text. Keep a generic welcome during loading or absent FirstName,
+and sign-in/retry guidance when unavailable. The developer website requires sign-in;
+a standalone app without its trusted host cannot obtain the signed-in name.
+
+The core SDK keeps validated host appearance and lifecycle. The separate viewer
+read grants no record access; the app makes no record broker requests, direct
+customer API calls or storage reads/writes. Its manifests are a
 `dashboard-widget` with empty permissions and
 `starter:{phase:'welcome',context:'not-chosen'}`. Validation of that initial metadata is a
 structural check, not certification, registration or a release.
 
-Check just the welcome, its actual font loading and its one current appearance:
+Check just the signed-in API greeting, its actual font loading and its one current appearance:
 Light on its own locally, or the host's effective appearance when embedded.
 The code retains all supported themes. Do not switch themes, choose records or
 run the optional record matrix during this first step. Use the developer website

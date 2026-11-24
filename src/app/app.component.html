@@ -2,7 +2,7 @@
   <section class="rezi-panel" aria-labelledby="welcome-heading">
     <header class="rezi-panel__heading">
       <span class="char char-code heading-icon" aria-hidden="true"></span>
-      <h1 class="rezi-panel__title" id="welcome-heading">{{ firstName ? firstName + ' welcome to Dezrez vibe coding' : 'Welcome to Dezrez vibe coding' }}</h1>
+      <h1 class="rezi-panel__title" id="welcome-heading">{{ firstName() ? firstName() + ' welcome to Dezrez vibe coding' : 'Welcome to Dezrez vibe coding' }}</h1>
     </header>
     <div class="welcome-panel-body"><p>Your starting app is ready. You decide what it becomes.</p></div>
   </section>
@@ -13,4 +13,5 @@
     </header>
     <div class="welcome-panel-body"><ol><li>Tell your AI what you would like to make.</li><li>Ask for one small change at a time.</li><li>Return to the developer website in Chrome or Edge to see your changes.</li></ol></div>
   </section>
+  @if (statusMessage()) { <p class="status" role="status">{{ statusMessage() }}</p> }
 </main>
