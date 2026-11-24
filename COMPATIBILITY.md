@@ -19,11 +19,11 @@ All dependency versions are exact and the version 3 lockfile records public regi
 ## Open gates
 
 - The earlier picomatch tooling advisory [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) was withdrawn on 18 November 2026. The maintainer's [review of the reported issue](https://github.com/micromatch/picomatch/pull/235) explains the trusted-pattern context. A fresh full `npm audit --json`, including development dependencies, completed at 22:36:16 UTC on that date with exit 0 and zero findings at every severity. The dependency lock remains `fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3`. This clears that specific advisory release gate; no dependency upgrade, patch, waiver, audit suppression or force fix was applied. Fixed trusted build configuration/patterns, rejection of submitted globs/plugins/configuration, no per-job install/network and disposable bounded compilation remain independent requirements. A clean audit does not establish freedom from all security risks.
-- The maintained starter bundles the reviewed public Dezrez icon stylesheet/font and explicitly uses local Exo 2/Poppins fallback fonts. It needs no cross-origin font resource under the app policy. Actual local loading and theme/browser checks remain separate evidence; bundled fallback faces do not establish Exo Soft/New Rubrik parity. No Adobe binaries are redistributed.
+- The maintained starter retains the reviewed Dezrez icon stylesheet/font and readable Exo 2/Poppins fallbacks. Bundle 0.6.0-angular uses the authorised intact hosted kit for Exo Soft/New Rubrik in the child document. Strict preview policy already permits its exact stylesheet/font destinations. Actual loaded faces and visual matching require browser evidence; fallback loading does not establish parity. No Adobe binaries are redistributed.
 - This Angular source cannot be certified by the current buildless static pilot. A separate locked offline Angular compiler stage, followed by an independent disposable conformance stage and reviewed policy, is required. No Angular certification or production deployment is claimed here.
 - Local installation/build/unit/package checks and browser/theme evidence are separate. Actual font parity, localhost pairing, live Dezrez authorization and production release require their own verification.
 
-This app implements the documented record-action contract for properties with
+The optional later record example implements the documented record-action contract for properties with
 optional real marketing roles and minimal people-group context. It retains the
 synthetic no-record widget. Source/local checks do not establish connected,
 native-host or PM conformance, or arbitrary operations, destinations,
@@ -100,3 +100,24 @@ calibration; old frozen profiles/evidence remain unchanged. This release does
 not build, activate or certify an Angular worker. The developer website's saved
 copy preview can keep fictional notes across Save/reopen and property changes
 within its current page; sign-out or a full developer-page reload clears them.
+
+## Welcome-first source update — 0.6.0-angular
+
+The default entry is now a welcome panel with a first-name greeting and simple
+instructions. It has a dashboard-widget draft, no chosen context and empty
+permissions. SDK connection is only for host appearance and lifecycle; no broker
+operation is sent. `npm run check:welcome` runs only its three focused checks.
+The first-build workflow uses that command, build and structural validation;
+it does not run the optional record matrix or switch themes.
+
+The preserved record UI, NotesController and tests are separate later learning
+material, activated deliberately by `?example=records` or the optional mock.
+Its complete record manifest is `public/examples/record-notes.manifest.json`.
+The welcome draft does not pass the shared record declaration normalizer and
+cannot be represented as certification, registration or publication eligibility.
+
+Source/profile identity changes. No dependency, SDK, compiler, worker profile,
+permission policy or locked dependency graph changes. The dependency lock stays
+`fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3`.
+Future Angular certification still requires an independently reviewed profile;
+this export does not activate, calibrate or certify one.

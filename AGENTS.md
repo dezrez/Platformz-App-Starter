@@ -1,13 +1,25 @@
 # Instructions for this Angular project
 
-Read the skill's record-contexts reference. The new record-action/SDK0.2.0 app
-handles properties and their actual marketing roles or minimal people-group
-context; the signed-in agency is server-owned. Group notes use appState only,
-not property.read. Invalidate old requests/actions on every context event,
-including a role change within one property. Retain null-context widget mode.
+Read `DEZREZ-START-HERE.md`, `README.md`, `COMPATIBILITY.md`,
+`skills/dezrez-angular-app/SKILL.md` and `references/rezi-styling.md` first.
+Project paths are relative to this folder, including in discovery copies.
 
-Read `README.md`, `COMPATIBILITY.md` and `skills/dezrez-angular-app/SKILL.md` before changing this project. Follow the same source for Codex and Claude Code. Project paths and commands are relative to this folder.
+Start with the welcome only: the person's first name and simple instructions,
+one standard Dezrez panel, no chosen context and no data operations. Keep the
+welcome draft manifests synchronized, including empty permissions and
+`starter:{phase:'welcome',context:'not-chosen'}`. Do not load the optional record
+example or ask the person to choose a record before they decide what to build.
 
-Keep the exact lockfile/dependency profile, canonical partner SDK, explicit parent origin/window binding and server-owned authorization. Use the three named SDK operations only. Keep global Dezrez styles, explicit bundled fallback-font mode, local reviewed Dezrez icons, all three modern themes, 500-character versioned notes, draft preservation on conflicts, pause/visibility/context/close cleanup and focused tests. Never introduce legacy credential handoff, direct API requests, polling or automatic write retries. Changes to dependency profiles require a reviewed new build profile; never use force or legacy-peer-deps to bypass incompatibilities.
+First build: `npm ci`, `npm run check:welcome`, `npm run build`,
+`npm run validate`, then `npm start`. Check only the welcome in the current
+appearance and actual loaded Exo Soft/New Rubrik. Never open the developer
+website in an AI internal browser; hand back the address for normal Chrome/Edge.
+`npm test` is the full developer suite for later development and CI, not a first
+welcome requirement. Local structural checks grant no certification or release.
 
-Use `npm ci`, `npm test`, `npm run build`, `npm run validate`, then `npm start`. Check the mock host and developer website, including actual font/icon loading and narrow High Contrast. Local checks do not grant certification or production publication. Keep private values and deployment settings out of this project.
+Keep the exact dependency lock, SDK origin/window/session protections, hosted
+intact font kit, local reviewed heading icons and global semantic component
+styles. Never introduce tokens in an iframe, legacy credential handoff, arbitrary
+API calls, polling, automatic write retries, packages or custom builders. Do not
+use force or legacy-peer-deps. Ask what the person wants to build before using
+record example guidance or replacing a draft with complete record declarations.

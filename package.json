@@ -11,6 +11,7 @@
     "start": "node scripts/serve.mjs",
     "build": "ng build --configuration production",
     "test": "ng test --watch=false",
+    "check:welcome": "ng test --watch=false --include=src/app/app.component.spec.ts",
     "validate": "node scripts/validate.mjs",
     "package": "node scripts/package.mjs"
   },

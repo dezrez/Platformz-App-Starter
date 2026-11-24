@@ -1,48 +1,28 @@
-# Start your Angular app
+# Start your app
 
-1. Extract this ZIP into a folder you can find again, such as **Documents / My Dezrez app**. Open the folder containing `package.json` and this file; do not choose its parent folder.
-2. Open that folder in your chosen coding assistant. In Codex, add or open it as the project folder. In Claude Code, choose the local environment and open this folder. Check the selected folder before sending a message.
-3. Paste this prompt, replacing the sentence about your idea:
+1. Put the downloaded files in a folder you can find again, such as **Documents / My Dezrez app**.
+2. Open that folder in Claude Code or Codex. The developer website can give you a message to paste into your AI.
+3. Tell your AI your first name. It will get your welcome app running.
+4. When your AI gives you an address, return to the developer website in your normal Chrome or Edge window to see it.
+5. Then tell your AI what you would like your app to do. You have not chosen an app type yet.
 
-> Read DEZREZ-START-HERE.md, AGENTS.md and skills/dezrez-angular-app/SKILL.md in this folder. I am a beginner. Build this idea using the working Dezrez Angular starter: [describe your idea]. Check that the required Node.js version is available, run npm ci, npm test, npm run build and npm run validate, then start the app with npm start. Keep the existing locked dependencies, partner SDK, Dezrez themes, heading icons and lifecycle protections. Use fictional records until I connect through the developer website. Give me the local app address and one clear next step. Do not add packages or make direct Dezrez/provider calls to bypass unsupported capabilities.
+You do not need Visual Studio Code, a deployment account or an API key. Your AI
+can check the small set of tools it needs and explain any installation before
+you do it. Keep your AI open while you try your app.
 
-4. When your assistant gives you the address, return to the developer website. Choose **Open my app for testing** and paste the address. The default address is **http://127.0.0.1:4200/**. The assistant should set the exact website origin in `DEMO_PARENT_ORIGIN` before starting the production preview.
+## Message for your AI
 
-You can also open **http://127.0.0.1:4200/mock-host.html** to try fictional examples without signing in.
+> Read DEZREZ-START-HERE.md, AGENTS.md, skills/dezrez-angular-app/SKILL.md and references/rezi-styling.md in this project. I am a beginner. Ask my first name if you do not know it. Start only the supplied welcome app with my name and its simple instructions; I have not chosen what to build. Check the required tools, use the locked dependencies, run npm ci, npm run check:welcome, npm run build and npm run validate, then keep npm start running with DEMO_PARENT_ORIGIN set to the exact developer website address I am using. Keep hosted Exo Soft and New Rubrik, the supplied panel, icon, semantic colours and host-owned appearance. Check only the welcome in its current appearance; do not select records, run a theme/context matrix or open the optional notes example. Do not open the developer website inside your internal browser. Give me the verified local address and one simple next action in my normal Chrome or Edge window. Then ask what I want my app to do.
 
-It starts as a dashboard widget with no record selected. Choose a property,
-its marketing role or a people group in the mock host to open the record dialog
-and notes example. Your signed-in agency is handled automatically by the website.
-A widget receives no
-property or person and must not make up an ID to call a record API.
+## If you already have an app
 
-If this is an older app, use the website's separate **Update my app** message.
-Updating the AI's instructions alone does not update app code or its supported
-record choices. Ask your AI to preserve your app while comparing the latest
-starting files, SDK and record-contexts reference.
+Use the website's separate **Update my app** message. Your AI should preserve
+your work and compare only the starting files it needs. Installing new AI
+instructions does not update your app automatically. Do not replace your app
+with a welcome screen or the optional record example.
 
-To install or update the assistant’s project skill, paste:
+To install or update the project skill, ask your AI:
 
-> Read the canonical skill at skills/dezrez-angular-app/SKILL.md. For Codex, copy that folder to .agents/skills/dezrez-angular-app inside this project; for Claude Code, copy it to .claude/skills/dezrez-angular-app. Keep the canonical folder as the maintained source, update the project copy when the canonical instructions change, and do not change global assistant settings. Follow AGENTS.md or CLAUDE.md as well. Explain what you updated in plain language. Never invent new operations or change the locked dependency profile to make a test pass.
+> Read skills/dezrez-angular-app/SKILL.md. Copy the canonical folder to this project's .agents/skills/dezrez-angular-app for Codex, or .claude/skills/dezrez-angular-app for Claude Code. Keep both copies in step when the canonical instructions change. Do not change global settings. Explain what you did in plain language.
 
-You do not need a private repository, feed, deployment account or API key. If an idea needs a capability this starter does not support, your assistant should explain that in ordinary language and keep the demonstration fictional.
-
-Keep `fontSource:'bundled'` and the included local Dezrez icon files. The app uses
-licensed Exo 2/Poppins fallback fonts without external font requests. These do
-not claim Exo Soft/New Rubrik parity. Preserve the notices and the strict app
-policy; do not restore an unused base tag or a hosted font link.
-
-The starter includes fictional details for testing. Your AI should keep them
-accurate. You can choose to retain a fictional organisation and support contact
-for an internal demo; a person at Dezrez must approve those details before it is
-released. Otherwise, give your AI your organisation and support contact. Usage
-estimates are a separate question. Missing details should remain unfinished
-instead of being guessed. The bundled app-details reference explains how your
-AI records your answers.
-
-## If the browser needs a secure local address
-
-Keep the usual setup first. If your browser needs an HTTPS address, give your AI
-the message in [the optional secure local setup](skills/dezrez-angular-app/references/local-https.md).
-It explains the change before asking to install anything or change computer trust.
-Keep certificate keys outside your project and source submission.
+Developer details and the optional later example are in [README.md](README.md).

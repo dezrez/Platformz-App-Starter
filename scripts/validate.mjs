@@ -41,22 +41,35 @@ export async function validate() {
     assert.equal(item.link, undefined);
   }
   const manifest = JSON.parse(await regular('manifest.json'));
-  requireCompleteManifestDeclarations(manifest);
   assert.match(manifest.id, /^[a-zA-Z0-9_.-]{1,100}$/); assert.ok(manifest.name); assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
-  assert.equal(manifest.protocol, PROTOCOL); assert.equal(manifest.host, 'rezi'); assert.equal(manifest.surface, 'record-action');
-  assert.deepEqual([...manifest.permissions].sort(), [...OPERATIONS].sort()); assert.deepEqual(manifest.providerDestinations, []);
+  assert.equal(manifest.protocol, PROTOCOL); assert.equal(manifest.host, 'rezi');
+  const welcome = manifest.starter?.phase === 'welcome';
+  if (welcome) {
+    // This draft check is intentionally separate from record certification.
+    assert.deepEqual(Object.keys(manifest).sort(), ['id', 'name', 'version', 'protocol', 'host', 'surface', 'permissions', 'providerDestinations', 'starter'].sort());
+    assert.equal(manifest.surface, 'dashboard-widget'); assert.deepEqual(manifest.permissions, []);
+    assert.deepEqual(manifest.starter, { phase: 'welcome', context: 'not-chosen' });
+  } else {
+    requireCompleteManifestDeclarations(manifest);
+    assert.equal(manifest.surface, 'record-action');
+    assert.deepEqual([...manifest.permissions].sort(), [...OPERATIONS].sort());
+  }
+  assert.deepEqual(manifest.providerDestinations, []);
+  const recordExample = JSON.parse(await regular('public/examples/record-notes.manifest.json'));
+  requireCompleteManifestDeclarations(recordExample);
+  assert.equal(recordExample.surface, 'record-action'); assert.deepEqual([...recordExample.permissions].sort(), [...OPERATIONS].sort());
   assert.deepEqual(JSON.parse(await regular('public/manifest.json')), manifest, 'Keep the mock manifest in sync with manifest.json.');
   const angular = JSON.parse(await regular('angular.json'));
   assert.equal(angular.projects['angular-basic'].architect.build.builder, '@angular/build:application');
   assert.equal(angular.projects['angular-basic'].architect.build.configurations.production.optimization.styles.inlineCritical, false);
   assert.equal(angular.projects['angular-basic'].architect.build.configurations.production.optimization.fonts, false);
   const forbidden = /(?:https?:\/\/dev\.azure\.com\/|[A-Z]:[\\/]Users[\\/]|source[\\/]repos[\\/]|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|\bBearer\s+[A-Za-z0-9._-]{20,})/i;
-  for (const name of [...await walk('src'), ...await walk('public'), ...await walk('scripts'), ...await walk('skills')]) {
+  for (const name of [...await walk('src'), ...await walk('public'), ...await walk('scripts'), ...await walk('skills'), ...await walk('references')]) {
     if (!/\.(?:[cm]?js|ts|json|html|css|md|txt|svg)$/.test(name)) continue;
     const text = (await regular(name)).toString('utf8'); assert.equal(forbidden.test(text), false, 'Private material in ' + name);
   }
   assert.equal((await regular('src/app/app.component.ts')).toString().includes('styleUrls'), false, 'Component CSS must stay in the compiled global stylesheet.');
-  return { manifestId: manifest.id, protocol: manifest.protocol, packages: Object.keys(lock.packages).length - 1, dependencyLockChecked: true };
+  return { manifestId: manifest.id, protocol: manifest.protocol, phase: welcome ? 'welcome' : 'record-example', certification: 'not-performed', packages: Object.keys(lock.packages).length - 1, dependencyLockChecked: true };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try { console.log(JSON.stringify(await validate())); }

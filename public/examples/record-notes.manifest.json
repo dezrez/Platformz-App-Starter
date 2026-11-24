@@ -1,0 +1,99 @@
+{
+  "id": "my-rezi-angular-app",
+  "name": "My Dezrez Angular app",
+  "version": "0.1.0",
+  "protocol": "dezrez.partner/1",
+  "host": "rezi",
+  "surface": "record-action",
+  "permissions": [
+    "property.read",
+    "appState.get",
+    "appState.set"
+  ],
+  "providerDestinations": [],
+  "dialog": {
+    "actionText": "Save",
+    "showCancelButton": true,
+    "cancelText": "Cancel"
+  },
+  "certification": {
+    "readSelector": "[data-partner-read]",
+    "noteSelector": "[data-partner-note]",
+    "saveSelector": "[data-partner-save]",
+    "statusSelector": "[data-partner-status]",
+    "contextSelector": "[data-partner-context]"
+  },
+  "manifestVersion": 1,
+  "example": true,
+  "partner": {
+    "organisation": "Example partner",
+    "supportContact": "support@example.invalid"
+  },
+  "compatibility": {
+    "sdkVersion": "0.2.0",
+    "hosts": [
+      "rezi"
+    ],
+    "surfaces": [
+      "record-action"
+    ]
+  },
+  "storage": {
+    "scope": "app-agency-user-context",
+    "schemaVersion": 1,
+    "expectedMaximumBytes": 4096
+  },
+  "activity": {
+    "initializationCalls": [
+      {
+        "operation": "property.read",
+        "count": 1
+      },
+      {
+        "operation": "appState.get",
+        "count": 1
+      }
+    ],
+    "pollingIntervalMs": null,
+    "refreshTriggers": [
+      "manual",
+      "context-change",
+      "enabled",
+      "visible"
+    ],
+    "backgroundWork": false
+  },
+  "expectedUsage": {
+    "version": 1,
+    "status": "declared",
+    "horizonMs": 3600000,
+    "maxConcurrentInstances": 1,
+    "sessionStarts": 1,
+    "actions": [
+      {
+        "name": "read-property",
+        "count": 1
+      },
+      {
+        "name": "save-note",
+        "count": 1
+      }
+    ]
+  },
+  "testing": {
+    "journeys": [
+      "initialization",
+      "read-property",
+      "read-group-context",
+      "save-note",
+      "note-read-retry",
+      "version-conflict",
+      "context-change",
+      "marketing-role-change",
+      "close"
+    ],
+    "fixtures": [
+      "dezrez-demo-records/1"
+    ]
+  }
+}

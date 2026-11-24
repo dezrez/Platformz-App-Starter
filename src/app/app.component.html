@@ -1,45 +1,14 @@
 <main class="app-content">
-  @if (state().connected && state().surface === 'dashboard-widget') {
-    <section class="rezi-panel" aria-labelledby="widget-heading"><header class="rezi-panel__heading"><span class="char char-screen heading-icon" aria-hidden="true"></span><h1 id="widget-heading" class="rezi-panel__title">Dashboard widget</h1></header>
-      <p>No record is selected. This app makes no property or note requests in widget mode.</p><p class="rezi-muted">Choose a property, its marketing role or a people group in the testing page to open the notes dialog.</p>
-    </section>
-  } @else {
-  <section class="rezi-panel" aria-labelledby="property-heading" data-partner-context>
+  <section class="rezi-panel" aria-labelledby="welcome-heading">
     <header class="rezi-panel__heading">
-      <span class="char heading-icon" [class.char-user]="isGroup()" [class.char-home3]="!isGroup()" aria-hidden="true"></span>
-      <h1 id="property-heading" class="rezi-panel__title">Record notes</h1>
-      <span class="rezi-muted">{{ state().synthetic ? 'Example data' : 'Approved Dezrez context' }}</span>
+      <span class="char char-book heading-icon" aria-hidden="true"></span>
+      <h1 class="rezi-panel__title" id="welcome-heading">{{ firstName ? firstName + ', welcome to Dezrez vibe coding' : 'Welcome to Dezrez vibe coding' }}</h1>
     </header>
-    @if (isGroup()) {
-      <h2 class="property-address"><span class="char char-user heading-icon" aria-hidden="true"></span>{{ recordName() }}</h2>
-      <p class="rezi-muted">Selected group{{ groupType() ? ' · ' + groupType() : '' }} · Reference {{ state().context?.id }}</p>
-    } @else if (state().property; as property) {
-      <h2 class="property-address"><span class="char char-home3 heading-icon" aria-hidden="true"></span>{{ property.address }}</h2>
-      <p class="rezi-muted">{{ property.postcode }} · {{ property.description }}</p>
-      <dl><div><dt>Price</dt><dd>{{ property.price == null ? 'Not provided' : (property.price | currency:'GBP':'symbol':'1.0-0') }}</dd></div>
-        <div><dt>Bedrooms</dt><dd>{{ property.bedrooms == null ? 'Not provided' : property.bedrooms }}</dd></div></dl>
-    } @else {
-      <p class="rezi-muted">{{ recordName() }}</p>
-    }
-    @if (marketingRole(); as role) { <p class="rezi-muted">Marketing role: {{ role.type }}{{ role.status ? ' · ' + role.status : '' }} · Reference {{ role.id }}</p> }
-    <div class="rezi-actions">
-      <button class="rezi-button" type="button" data-partner-read (click)="read()"
-        [hidden]="isGroup()" [disabled]="isGroup() || !state().connected || !state().enabled || state().closed || !state().visible || state().reading || state().saving">{{ state().reading ? 'Reading…' : 'Read property' }}</button>
-      @if (state().reading) { <button class="rezi-button" type="button" (click)="cancel()">Cancel read</button> }
-    </div>
+    <p>This is your starting point. You can turn it into your own app by talking to your AI.</p>
+    <ol>
+      <li>Tell your AI what you would like your app to do.</li>
+      <li>Ask it to make one small change at a time.</li>
+      <li>Come back to the developer website to see your changes.</li>
+    </ol>
   </section>
-  <section class="rezi-panel" aria-labelledby="note-heading">
-    <header class="rezi-panel__heading"><span class="char char-file heading-icon" aria-hidden="true"></span><h2 id="note-heading" class="rezi-panel__title">This app’s note</h2></header>
-    <label for="property-note">Note for the selected record</label>
-    <textarea id="property-note" data-partner-note rows="4" maxlength="500" [value]="state().note" (input)="edit($event)"
-      [disabled]="!state().stateReady || !state().enabled || state().closed || !state().visible || state().saving" aria-describedby="note-help note-count"></textarea>
-    <div class="note-caption"><p id="note-help" class="rezi-muted">{{ state().synthetic ? 'Example notes belong to this app and selected record or marketing role. The mock host keeps them in page memory.' : 'Private notes belong to this app, agency, account and selected record or marketing role.' }}</p><span id="note-count" class="rezi-muted">{{ state().note.length }}/500</span></div>
-    <div class="rezi-actions"><span class="rezi-muted">{{ state().version ? 'Saved · version ' + state().version : 'No saved note' }}</span>
-      @if (state().noteLoadFailed) { <button class="rezi-button" type="button" (click)="read()" [disabled]="!state().enabled || state().closed || !state().visible || state().reading || state().saving">Try loading note again</button> }
-      <button class="rezi-button rezi-button--primary" type="button" data-partner-save (click)="save()"
-        [disabled]="!state().stateReady || !state().enabled || state().closed || !state().visible || state().saving || state().reading || state().note.length > 500">{{ state().saving ? 'Saving…' : 'Save note' }}</button></div>
-  </section>
-  }
-  <p class="status" data-partner-status role="status" aria-live="polite" [class.rezi-error]="state().error">{{ state().status }}</p>
-  @if (!state().connected) { <p><a href="mock-host.html" target="_top">Open the local mock host</a></p> }
 </main>

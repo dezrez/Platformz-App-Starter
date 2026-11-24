@@ -26,5 +26,5 @@
   "dependencyLockSha256": "fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3",
   "framework": "Angular 22.2.6",
   "buildTool": "Angular CLI/build 22.2.7",
-  "fontMode": "bundled"
+  "fontMode": "hosted"
 }

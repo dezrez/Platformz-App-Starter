@@ -3,8 +3,8 @@ import { createThemeController } from './lib/theme.js';
 import { recordContextKey } from './sdk/context.js';
 const $ = id => document.getElementById(id);
 const records = await fetch('./fixtures/records.json').then(response => { if (!response.ok) throw Error('Fixtures unavailable'); return response.json(); });
-const manifest = await fetch('./manifest.json').then(response => { if (!response.ok) throw Error('Manifest unavailable'); return response.json(); });
-const theme = createThemeController({ document, window, fontSource: 'bundled' });
+const manifest = await fetch('./examples/record-notes.manifest.json').then(response => { if (!response.ok) throw Error('Manifest unavailable'); return response.json(); });
+const theme = createThemeController({ document, window, fontSource: 'hosted' });
 $('theme').value = theme.look;
 const choices = new Map(records.map(record => [recordContextKey(record), record]));
 for (const [key, record] of choices) {
@@ -28,7 +28,7 @@ function restart() {
     onState: ({ status }) => { ended = status === 'closed'; $('mock-status').textContent = `Synthetic host: ${status}`; },
     onLog: entry => { $('mock-status').textContent = `${entry.operation}: ${entry.errorCode ?? 'completed'} · ${entry.durationMs} ms`; } });
   host.setScenario($('outcome').value); host.setEnabled($('enabled').checked);
-  frame.src = './?hostOrigin=' + encodeURIComponent(location.origin);
+  frame.src = './?example=records&hostOrigin=' + encodeURIComponent(location.origin);
 }
 $('restart').addEventListener('click', restart);
 $('property').addEventListener('change', () => {

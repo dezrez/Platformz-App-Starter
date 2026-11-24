@@ -1,92 +1,109 @@
 # Dezrez Angular Basic
 
-A working Angular app for a selected property, its optional marketing role or a people group, with an app-owned note. It uses SDK0.2.0 and `record-action` on the same `dezrez.partner/1` protocol as the developer website. The included mock host uses fictional records and needs no account. Dezrez sign-in and credentials stay in the developer website; the signed-in agency is selected automatically.
+Your first app is a simple welcome with your name and a few instructions. It
+starts with no selected record, no data access and no decision about what you
+will build. Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
+your chosen AI. Bundle **0.6.0-angular** keeps the locked Angular dependency
+profile and SDK0.2.0; it changes the starting experience, not the wire contract.
 
-Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md). You can give that file to Codex, Claude Code or another coding assistant.
+## First welcome: details for your AI or a developer
 
-## Run the app
-
-Install Node.js **22.22.3 or a newer 22.x release**, **24.15.0 or a newer 24.x release**, or **26.x**. This starter was checked using Node.js **22.23.5**. Your assistant can check your version with `node --version`. You do not need to install Angular globally.
-
-From this extracted folder, run:
+Use a supported Node version from `package.json`: 22.22.3 or newer 22.x,
+24.15.0 or newer 24.x, or 26.x. The reviewed toolchain is 22.23.5. Angular does
+not need to be installed globally. From this extracted folder:
 
 ```text
 npm ci
-npm test
+npm run check:welcome
 npm run build
 npm run validate
 npm start
 ```
 
-Open **http://127.0.0.1:4200/mock-host.html** to see the app with fictional records. Change the record or marketing role, response, theme or enabled setting. The host footer’s Save button stays disabled until the app is ready. Save completes one correlated action and closes the session only after success; an error keeps it open. The app’s own Save note button saves without requesting a close. Cancel closes without claiming that an already-sent write was undone. Mock notes stay in page memory and clear on refresh. The app itself is **http://127.0.0.1:4200/**; opening it alone does not supply a property or a host session.
+`npm start` serves the built app at **http://127.0.0.1:4200/**. Set
+`DEMO_PARENT_ORIGIN` to the exact developer website origin before starting it.
+`localhost` and `127.0.0.1` are different origins. Keep the process running.
+For automatic rebuilding during edits use `npm run dev` instead.
 
-The mock host starts with **No record (dashboard widget)**. That mode supplies a
-real null context, makes no property/note API requests and has no dialog footer.
-Choose a property, Selling/Letting/Auction role (including history), or a group,
-company or team to open the record dialog and notes example. Changing a role on
-the same property exercises a real context event and clears the old draft.
-Changing surface
-starts a fresh host/session; the app clears record drafts instead of inventing a
-record or agency ID. The synthetic widget preview does not enable production
-widgets. Existing SDK0.1.0/property-action apps remain property-only compatibility;
-they need a separate app update to use new record contexts.
+The AI puts the person's first name in `configuredFirstName` in
+`src/app/app.component.ts`. Optional `?firstName=Ian` is bounded display text,
+rendered as text, never context. Without a name the welcome stays friendly.
+The SDK handshake is only for host-owned appearance and lifecycle; the welcome
+makes no broker requests or direct API/storage calls. Its manifests are a
+`dashboard-widget` draft with empty permissions and
+`starter:{phase:'welcome',context:'not-chosen'}`. Validation of that draft is a
+structural check, not certification, registration or a release.
 
-For automatic rebuilds while editing, use `npm run dev` instead of `npm start`. The production preview from `npm start` serves only the built browser files under a strict Content Security Policy. Its server never exposes your source, skills, lockfile or local settings.
+Check just the welcome, its actual font loading and its one current appearance:
+Light on its own locally, or the host's effective appearance when embedded.
+The code retains all supported themes. Do not switch themes, choose records or
+run the optional record matrix during this first step. Use the developer website
+in normal Chrome or Edge, never inside an AI's internal browser.
 
-## Pair with the developer website
+## Once you choose your app
 
-Keep the local app running. In the website choose **Open my app for testing** and paste **http://127.0.0.1:4200/**. The website supplies `hostOrigin` and the authorized context. For the production preview, set `DEMO_PARENT_ORIGIN` to the exact website origin before `npm start`; your assistant should do this for you. The default is `http://127.0.0.1:4173`. `localhost` and `127.0.0.1` are different origins.
+Tell your AI what you want the app to do and where it belongs. Property Hubs use
+properties and their real marketing roles, Groups use groups, and Dashboard has
+no selected record. The website derives the agency from sign-in.
 
-The app never receives a Dezrez access or refresh token. A manifest requests operations; it does not grant access. The supported operations are `property.read`, `appState.get` and `appState.set`. Notes are limited to 500 characters and saves include the current version. A conflict preserves your draft and explains how to reopen the latest saved version. The app stops new work while paused, hidden or closed, cancels pending work on context changes and discards stale replies. Saves are never retried automatically.
+The record-notes example is retained only as later learning material:
 
-Group context supplies only its name/type and reference; no property read or
-full group/member/contact request is made. App-state requests use `{}` and
-`{note,version}` and belong to the selected record/marketing role. If a note
-cannot load, choose **Try loading note again**. Save stays disabled until its
-version is known. A conflict keeps your draft until you choose that reload.
+- `src/app/record-example.component.ts` and its template render the record UI.
+- `src/app/notes-controller.ts` contains guarded SDK calls and lifecycle cleanup.
+- `public/examples/record-notes.manifest.json` declares that example's operations.
+- `/mock-host.html` opens that explicit example with fictional records and page-memory notes.
+- `/?example=records&hostOrigin=...` is its deliberate local entry, not startup.
 
-Optional `manifest.dialog` describes the primary label (`actionText`, or `null` for no primary button), Cancel visibility (`showCancelButton`) and Cancel label (`cancelText`). Labels are plain text, 1–30 characters. Only a host advertising `capabilities.dialogActions` supports `setActionState` and `completeAction`; the SDK returns `false` without sending these messages to older hosts. The app can update its primary label/readiness, while the host owns Cancel visibility and enforces pause, hiding, pending work and the current correlated action. Keep the sample’s exact action ID and success/error completion handling.
+Read the skill's [record-example guide](skills/dezrez-angular-app/references/record-example.md)
+and [record-context contract](skills/dezrez-angular-app/references/record-contexts.md)
+only when the chosen app needs them. Do not overwrite an existing custom app
+with this example. Adapt the necessary pieces and keep both app manifest copies
+accurate. A record app needs complete declarations through the supplied shared
+normalizer, with the welcome marker removed. No selected record means no record
+operation; never invent a record or agency.
 
-## What to change
+For a property or its actual marketing role the example can call property.read,
+appState.get and appState.set. A people group uses supplied name/type and its own
+app state, never property.read or group members/contacts. Notes are 500 characters,
+versioned and separate per record/role. Keep stale-reply rejection, pause/close
+cleanup, explicit load retry and conflict draft preservation. Never automatically
+retry a write. A manifest grants no authority; credentials stay in the host.
 
-- `src/app/app.component.html`: the screen and accessible labels.
-- `src/app/notes-controller.ts`: the app behavior and SDK calls.
-- `src/styles.css`: app-specific layout, using the existing Dezrez classes and semantic tokens.
-- `manifest.json`: your app name, ID and version. Keep `public/manifest.json` synchronized for the local mock host.
-- `src/app/*.spec.ts`: focused Angular and behavior tests.
+`npm test` runs the full developer suite, including the preserved record example.
+Use focused tests and browser checks appropriate to the app the person actually
+chooses. This full suite is not a first-welcome requirement.
 
-Keep the supplied SDK and locked dependency profile. Do not add packages, custom Angular builders, executable configuration, runtime remote scripts or arbitrary API requests. Ask for a reviewed profile update when a feature requires more dependencies. This preserves a reproducible build and the planned offline certification boundary.
+## Styling
 
-## Themes and resources
+Read the project-root [layout and styling guide](references/rezi-styling.md).
+Use supplied standard panels and heading icons, semantic tokens, global compiled
+CSS and host-owned appearance. The child document uses `fontSource:'hosted'`
+with the authorised intact kit for **Exo Soft** and **New Rubrik**. The theme
+controller verifies real loaded faces and reports `data-fonts="rezi"`; a CSS
+family name alone is not evidence. Exo 2/Poppins remain readable fallbacks and
+carry their bundled notices. Do not redistribute Adobe font binaries or add an
+unreviewed icon pack. Strict preview CSP already permits the exact kit sources.
 
-Light, Dark and High Contrast come from the effective host theme. The app does not replace it with a localhost preference. High Contrast uses the 1.2 text scale and growing controls. Field focus is orange; standard headings retain the source-verified Dezrez icons and readable text. Global compiled CSS avoids Angular component-style injection under the strict preview policy.
+## Build and release boundaries
 
-The starter includes the same reviewed Dezrez icon stylesheet/font published by the developer website. Its relative font URL is bundled by Angular into the immutable app, so it makes no icon-resource request to another origin. `fontSource:'bundled'` explicitly selects the supplied Exo 2/Poppins fallback faces and avoids hosted type-kit requests. Actual successful loading reports `data-fonts="bundled"`; it does not claim Exo Soft/New Rubrik parity. Keep the font notices in `public/assets/fonts`. No Adobe font binaries are included. See [COMPATIBILITY.md](COMPATIBILITY.md) for current delivery gates.
+Keep exact dependencies and lockfile; do not add packages, custom builders,
+remote executable scripts or API bypasses. New dependencies/capabilities need
+a reviewed profile. Never use force/legacy-peer-deps to hide an incompatibility.
 
-## Package and support
+After a build, `npm run package` creates `artifacts/app.zip` plus a hash receipt
+from built browser files, manifest and notices. The separate source download
+contains the clean project and lockfile. The packager excludes development mock
+assets and private maintenance notes. Neither ZIP authorises deployment.
+The welcome draft cannot be submitted as a certified record app. The current
+buildless certification pilot does not support Angular source; an isolated
+Angular compiler profile needs independent review. See [COMPATIBILITY.md](COMPATIBILITY.md).
 
-After a production build, `npm run package` creates `artifacts/app.zip` and a file/hash receipt. It packages the exact compiled app bytes, manifest and dependency notices, excluding the development mock host and fixtures. It does not deploy them. The separately distributed source ZIP includes this entire clean project and reproducible lockfile, without dependency folders, private history or deployment settings. You may initialize your own new Git repository in the extracted folder.
+When the chosen app needs app details, use the skill's
+[app-details reference](skills/dezrez-angular-app/references/app-details.md).
+Keep fictional details explicitly marked for an internal demo; do not invent
+real contacts, workload estimates or publication permission.
 
-Passing local tests is development feedback. The current production certification pilot supports buildless static sources; the Angular source build profile requires a separately reviewed isolated worker and policy. Do not submit compiled output as if it were the original source, claim certification or publish an app automatically. Human approval must bind the exact certified artifact before an authorized production release.
-
-For help, use the support guidance in the developer website. Share the command, safe error code and a minimal fictional example; keep customer data and credentials out of reports. Keep the MIT license and bundled third-party notices with redistributed code. Compatibility and dependency advisories are recorded in [COMPATIBILITY.md](COMPATIBILITY.md).
-
-## App details
-
-Both manifest copies include version 1 app details marked `example:true`: an
-explicitly fictional partner and a one-hour usage scenario. They grant no access
-or higher limits. Read the skill's [app-details reference](skills/dezrez-angular-app/references/app-details.md).
-Keep both copies synchronized and let `npm run validate` check the same public
-normalizer used by intake. Unknown required values remain incomplete and cannot
-be privately submitted. Keep explicitly owner-approved fictional partner details
-and `example:true` for an internal demo; a Dezrez reviewer must separately
-acknowledge those details for the exact internal pilot release. Ask for missing
-workload assumptions separately. Private certification does not itself authorize
-publication.
-
-## If the browser needs a secure local address
-
-Keep the usual setup first. If your browser needs an HTTPS address, give your AI
-the message in [the optional secure local setup](skills/dezrez-angular-app/references/local-https.md).
-It explains the change before asking to install anything or change computer trust.
-Keep certificate keys outside your project and source submission.
+Optional secure local setup is in the skill's
+[local HTTPS guide](skills/dezrez-angular-app/references/local-https.md).
+Explain any trust-tool installation or trust change before asking permission.
+Keep private values and certificate keys out of the project and submissions.

@@ -1,6 +1,6 @@
 # Selected records and marketing roles
 
-The new starter uses SDK `0.2.0`, `surface:"record-action"`, matching
+This optional later record example uses SDK `0.2.0`, `surface:"record-action"`, matching
 `compatibility.surfaces` and `storage.scope:"app-agency-user-context"` with
 schemaVersion1. The wire protocol stays `dezrez.partner/1`. Old SDK0.1.0
 `property-action` apps remain property-only; adapting an app to new contexts is
