@@ -4,13 +4,16 @@ Read `DEZREZ-START-HERE.md`, `README.md`, `COMPATIBILITY.md`,
 `skills/dezrez-angular-app/SKILL.md` and `references/rezi-styling.md` first.
 Project paths are relative to this folder, including in discovery copies.
 
-Start with the welcome message only: the person's first name and greeting,
-one standard Dezrez panel, no chosen context and no data operations. Keep the
+Start with the two supplied standard Dezrez panels: the person's first-name
+welcome and its starting-app sentence, then What happens next with the exact
+three simple numbered instructions. Keep their code/book heading icons. There
+is no chosen context or data operation. Keep the
 welcome draft manifests synchronized, including empty permissions and
 `starter:{phase:'welcome',context:'not-chosen'}`. Do not load the optional record
 example or ask the person to choose a record before they decide what to build.
-Keep instructions in the wizard, guide or AI chat, not in the app. Do not add
-body copy, a next-steps panel or an instruction list to the welcome.
+Keep this same welcome and instruction content in every preview location.
+Do not remove its body copy or next-steps panel, add business features or choose
+what the person should build.
 
 First build: `npm ci`, `npm run check:welcome`, `npm run build`,
 `npm run validate`, then `npm start`. Check only the welcome in the current

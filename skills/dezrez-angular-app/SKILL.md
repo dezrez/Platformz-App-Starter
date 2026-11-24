@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Start a small Dezrez welcome app, then help the person choose and build their own idea with the locked Angular starter and supplied Dezrez styling.
 metadata:
-  version: 0.6.1-angular
+  version: 0.6.2-angular
 ---
 
 # Dezrez Angular app
@@ -13,10 +13,18 @@ when this skill is copied into an assistant's discovery folder.
 
 ## First: a welcome, with no app idea chosen
 
-The first build is only a single supplied Dezrez panel saying
-"{first name} welcome to Dezrez vibe coding". Display no other app copy,
-instruction list or next-steps panel. Give instructions in the wizard, guides
-or AI chat. Changing preview location must not choose a prebuilt feature.
+Keep exactly the two supplied standard Dezrez panels. The first uses the code
+icon and heading "{firstname} welcome to Dezrez vibe coding", followed by
+"Your starting app is ready. You decide what it becomes." The second uses the
+book icon and heading "What happens next", with these numbered instructions:
+
+1. Tell your AI what you would like to make.
+2. Ask for one small change at a time.
+3. Return to the developer website in Chrome or Edge to see your changes.
+
+These simple instructions are deliberately inside the app. Do not reduce it to
+a heading-only page or add another feature. Changing preview location keeps
+this same welcome and instruction content; it must not choose a prebuilt app.
 Ask for the first name if it was not supplied; put it in `configuredFirstName`
 in `src/app/app.component.ts`. Without a name, keep the friendly unnamed welcome.
 The optional `firstName` URL value is bounded display text, never record context.

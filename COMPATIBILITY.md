@@ -101,10 +101,19 @@ not build, activate or certify an Angular worker. The developer website's saved
 copy preview can keep fictional notes across Save/reopen and property changes
 within its current page; sign-out or a full developer-page reload clears them.
 
+## Restored welcome instructions — 0.6.2-angular
+
+The supplied first app keeps two standard panels in every preview location:
+the first-name welcome, its starting-app sentence, then What happens next with
+the exact three simple numbered instructions in README.md. The code and book
+heading icons, body copy and instruction list are deliberately included. No
+record, data operation, setting form or business feature is added. The first
+smoke check remains this welcome in one current appearance with null context.
+SDK0.2.0, the dependency lock and worker profile are unchanged.
+
 ## Optional widget-settings source update — 0.6.1-angular
 
-The first app displays only its personal welcome message, with no instructions
-or extra body copy inside the app. Guides and the wizard retain next steps.
+The later 0.6.2 source restores the welcome's body copy and next-step panel.
 The source bundle adds an optional `public/sdk/widget-settings.js` facade,
 self-contained TypeScript declaration and conditional public guide. The facade
 is not imported by core SDK0.2.0 or the default welcome. No dependency, lockfile,

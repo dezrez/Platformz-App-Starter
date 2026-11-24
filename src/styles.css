@@ -5,6 +5,10 @@ body { font-family: 'exo-soft', 'Exo 2', Arial, sans-serif; }
 .rezi-panel, .rezi-panel__heading, .rezi-panel__title { min-width: 0; }
 .rezi-panel__heading { flex-wrap: wrap; }
 .rezi-panel__title, .property-address, .rezi-muted, dd { overflow-wrap: anywhere; }
+.welcome-panel-body > :first-child { margin-top: 0; }
+.welcome-panel-body > :last-child { margin-bottom: 0; }
+.welcome-panel-body ol { padding-left: 24px; }
+.welcome-panel-body li + li { margin-top: 8px; }
 .heading-icon { flex: 0 0 auto; font-size: calc(16px * var(--rezi-modern-font-scale, 1)); text-align: center; width: calc(22.4px * var(--rezi-modern-font-scale, 1)); }
 .property-address { align-items: center; display: flex; gap: 10px; }
 dl { display: flex; flex-wrap: wrap; gap: 12px 32px; }

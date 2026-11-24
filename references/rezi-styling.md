@@ -2,9 +2,10 @@
 
 Use the supplied component styles, icon assets, semantic colour tokens and theme
 controller. Match the Dezrez application rather than inventing a separate visual
-design. The first welcome app should be one small, readable panel containing
-only the person's welcome message. Instructions belong in the website wizard
-and guides, not in the app. Do not add property
+design. The first welcome app has two small, readable panels: the person's
+welcome with "Your starting app is ready. You decide what it becomes.", then
+"What happens next" with the supplied three simple steps. Preserve this guidance
+in the app, identical in every preview location. Do not add property
 cards, notes, record selectors, example business data or extra application
 features before the person chooses what to build.
 
@@ -55,8 +56,8 @@ the simple welcome message an oversized marketing-page treatment.
 ## Use standard panels
 
 A section containing a title and related content belongs in a standard panel.
-Use one panel for the initial welcome; add more only when the person's later app
-has genuinely separate sections. Avoid either a bare page of unstructured text
+Use the two supplied welcome and next-step panels; add more only when the person's
+later app has genuinely separate sections. Avoid either a bare page of unstructured text
 or a grid of decorative cards.
 
 The panel has a 1px semantic border, 10px radius, surface background, 12px content
@@ -140,7 +141,7 @@ their own visible keyboard cues. Controls and panel headers must grow with text;
 never hide overflowing content to conceal a layout problem. Respect reduced
 motion and avoid decorative animation in the welcome app.
 
-For the first welcome build, verify only the single welcome message panel,
+For the first welcome build, verify only the two simple welcome and next-step panels,
 its actual fonts and its one current appearance: Light when opened locally on
 its own, or the host's effective appearance when embedded. Keep theme support in the code,
 but do not launch a multi-theme, record-context, note-storage or certification

@@ -1,9 +1,9 @@
 # Settings inside a dashboard widget
 
 Use this optional guide only after the person has chosen a dashboard widget
-feature that needs settings. The first welcome app contains only the welcome
-message: no instructions, settings form, stored values or extra requests.
-Instructions belong in the website wizard and guides.
+feature that needs settings. The first welcome app keeps its welcome message,
+short starting-app message and three simple next steps. It has no settings form,
+stored values or extra requests.
 Ask what should be configurable before adding controls or defaults.
 
 The cog in a widget's header opens **that widget's own settings panel**. It does

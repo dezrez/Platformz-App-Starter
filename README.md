@@ -1,9 +1,9 @@
 # Dezrez Angular Basic
 
-Your first app displays only a welcome message with your name. It
+Your first app has a welcome with your name and a small What happens next panel. It
 starts with no selected record, no data access and no decision about what you
 will build. Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
-your chosen AI. Bundle **0.6.1-angular** keeps the locked Angular dependency
+your chosen AI. Bundle **0.6.2-angular** keeps the locked Angular dependency
 profile and SDK0.2.0; it changes the starting experience, not the wire contract.
 
 ## First welcome: details for your AI or a developer
@@ -39,8 +39,18 @@ Light on its own locally, or the host's effective appearance when embedded.
 The code retains all supported themes. Do not switch themes, choose records or
 run the optional record matrix during this first step. Use the developer website
 in normal Chrome or Edge, never inside an AI's internal browser.
-Instructions and next steps belong in the wizard, these guides or the AI chat;
-do not add them as body copy, an extra panel or a list inside the first app.
+Keep the two supplied panels in every preview location. The first has the code
+icon, heading "{firstname} welcome to Dezrez vibe coding" and body
+"Your starting app is ready. You decide what it becomes." The second has the
+book icon, heading "What happens next" and these numbered instructions:
+
+1. Tell your AI what you would like to make.
+2. Ask for one small change at a time.
+3. Return to the developer website in Chrome or Edge to see your changes.
+
+These are part of the welcome, not business features. Do not remove the body
+copy or instructions, choose a prebuilt app from the selected location, or add
+records, notes, forms, settings or other functionality before the person asks.
 
 ## Once you choose your app
 
@@ -84,8 +94,8 @@ core SDK0.2.0. Create the facade before the core client connects; use its
 `onOpen`, `get` and `save` methods without app IDs or environment branches.
 Preview settings are temporary. A production-host adapter has not been
 installed or verified, so this does not establish production availability.
-The first welcome does not import the facade or display settings. It shows only
-the same welcome message in every preview location until you ask for a feature.
+The first welcome does not import the facade or display settings. It keeps the
+same two welcome/instruction panels in every location until you ask for a feature.
 
 ## Styling
 

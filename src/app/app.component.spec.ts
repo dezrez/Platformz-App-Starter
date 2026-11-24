@@ -19,13 +19,19 @@ async function render() {
   const fixture = TestBed.createComponent(AppComponent); fixture.detectChanges(); await fixture.whenStable(); return fixture;
 }
 describe('first welcome app', () => {
-  it('shows only the welcome message without instructions, record features or another app', async () => {
+  it('shows the supplied welcome and next-step panels without record features or another app', async () => {
     const fixture = await render(), root: HTMLElement = fixture.nativeElement;
     expect(root.querySelector('h1')?.textContent).toBe('Welcome to Dezrez vibe coding');
-    expect(root.querySelectorAll('.rezi-panel').length).toBe(1);
-    expect(root.querySelector('header .char-book[aria-hidden="true"]')).not.toBeNull();
-    expect(root.textContent?.trim()).toBe('Welcome to Dezrez vibe coding');
-    expect(root.querySelector('p, ol, ul, li')).toBeNull();
+    expect(root.querySelectorAll('.rezi-panel').length).toBe(2);
+    expect(root.querySelector('[aria-labelledby="welcome-heading"] header .char-code[aria-hidden="true"]')).not.toBeNull();
+    expect(root.querySelector('p')?.textContent).toBe('Your starting app is ready. You decide what it becomes.');
+    expect(root.querySelector('h2')?.textContent).toBe('What happens next');
+    expect(root.querySelector('[aria-labelledby="next-heading"] header .char-book[aria-hidden="true"]')).not.toBeNull();
+    expect([...root.querySelectorAll('li')].map(item => item.textContent)).toEqual([
+      'Tell your AI what you would like to make.',
+      'Ask for one small change at a time.',
+      'Return to the developer website in Chrome or Edge to see your changes.',
+    ]);
     expect(root.querySelector('textarea, input, select, button, [data-partner-context]')).toBeNull();
     expect(root.textContent).not.toMatch(/property|reminder|note|agency|marketing role/i);
     expect(mocks.client).not.toHaveBeenCalled(); expect(mocks.request).not.toHaveBeenCalled();
