@@ -12,7 +12,14 @@ you do it. Keep your AI open while you try your app.
 
 ## Message for your AI
 
-> Read DEZREZ-START-HERE.md, AGENTS.md, skills/dezrez-angular-app/SKILL.md and references/rezi-styling.md in this project. I am a beginner. Ask my first name if you do not know it. Start only the supplied welcome app with my name and its simple instructions; I have not chosen what to build. Check the required tools, use the locked dependencies, run npm ci, npm run check:welcome, npm run build and npm run validate, then keep npm start running with DEMO_PARENT_ORIGIN set to the exact developer website address I am using. Keep hosted Exo Soft and New Rubrik, the supplied panel, icon, semantic colours and host-owned appearance. Check only the welcome in its current appearance; do not select records, run a theme/context matrix or open the optional notes example. Do not open the developer website inside your internal browser. Give me the verified local address and one simple next action in my normal Chrome or Edge window. Then ask what I want my app to do.
+> Read DEZREZ-START-HERE.md, AGENTS.md, skills/dezrez-angular-app/SKILL.md and references/rezi-styling.md in this project. I am a beginner. Ask my first name if you do not know it. Start the supplied app showing only my welcome message; I have not chosen what to build. Do not add body copy, instructions, another panel or a list of next steps inside the app. Give instructions to me in this chat or the wizard. Check the required tools, use the locked dependencies, run npm ci, npm run check:welcome, npm run build and npm run validate, then keep npm start running with DEMO_PARENT_ORIGIN set to the exact developer website address I am using. Keep hosted Exo Soft and New Rubrik, the supplied panel, icon, semantic colours and host-owned appearance. Check only the welcome in its current appearance; do not select records, run a theme/context matrix or open the optional notes example. Do not open the developer website inside your internal browser. Give me the verified local address and one simple next action in my normal Chrome or Edge window. Then ask what I want my app to do.
+
+## When your chosen widget needs settings
+
+That is a later choice, not part of the first welcome. Ask your AI to read
+[the widget-settings guide](references/widget-settings.md) only when you want
+that feature. Preview settings are temporary; the production-host connection
+has not been verified.
 
 ## If you already have an app
 

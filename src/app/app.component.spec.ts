@@ -19,12 +19,13 @@ async function render() {
   const fixture = TestBed.createComponent(AppComponent); fixture.detectChanges(); await fixture.whenStable(); return fixture;
 }
 describe('first welcome app', () => {
-  it('shows only a welcome panel and simple next steps without a chosen record or business app', async () => {
+  it('shows only the welcome message without instructions, record features or another app', async () => {
     const fixture = await render(), root: HTMLElement = fixture.nativeElement;
     expect(root.querySelector('h1')?.textContent).toBe('Welcome to Dezrez vibe coding');
     expect(root.querySelectorAll('.rezi-panel').length).toBe(1);
     expect(root.querySelector('header .char-book[aria-hidden="true"]')).not.toBeNull();
-    expect(root.querySelectorAll('li').length).toBe(3);
+    expect(root.textContent?.trim()).toBe('Welcome to Dezrez vibe coding');
+    expect(root.querySelector('p, ol, ul, li')).toBeNull();
     expect(root.querySelector('textarea, input, select, button, [data-partner-context]')).toBeNull();
     expect(root.textContent).not.toMatch(/property|reminder|note|agency|marketing role/i);
     expect(mocks.client).not.toHaveBeenCalled(); expect(mocks.request).not.toHaveBeenCalled();
@@ -34,7 +35,7 @@ describe('first welcome app', () => {
   it('renders the supplied first name as text and bounds optional display input', async () => {
     history.replaceState(null, '', '/?firstName=' + encodeURIComponent('<img src=x>'));
     const fixture = await render(), root: HTMLElement = fixture.nativeElement;
-    expect(root.querySelector('h1')?.textContent).toBe('<img src=x>, welcome to Dezrez vibe coding');
+    expect(root.querySelector('h1')?.textContent).toBe('<img src=x> welcome to Dezrez vibe coding');
     expect(root.querySelector('img')).toBeNull();
     expect(welcomeName('  Ian  ')).toBe('Ian'); expect(welcomeName('x'.repeat(61))).toBe('');
     expect(welcomeName('bad\nname')).toBe(''); expect(welcomeName(null)).toBe(''); fixture.destroy();

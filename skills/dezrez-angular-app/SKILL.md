@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Start a small Dezrez welcome app, then help the person choose and build their own idea with the locked Angular starter and supplied Dezrez styling.
 metadata:
-  version: 0.6.0-angular
+  version: 0.6.1-angular
 ---
 
 # Dezrez Angular app
@@ -14,7 +14,9 @@ when this skill is copied into an assistant's discovery folder.
 ## First: a welcome, with no app idea chosen
 
 The first build is only a single supplied Dezrez panel saying
-"{first name}, welcome to Dezrez vibe coding" with three simple instructions.
+"{first name} welcome to Dezrez vibe coding". Display no other app copy,
+instruction list or next-steps panel. Give instructions in the wizard, guides
+or AI chat. Changing preview location must not choose a prebuilt feature.
 Ask for the first name if it was not supplied; put it in `configuredFirstName`
 in `src/app/app.component.ts`. Without a name, keep the friendly unnamed welcome.
 The optional `firstName` URL value is bounded display text, never record context.
@@ -72,6 +74,18 @@ supplied normalizer and record checks then apply. Add focused tests appropriate
 to the chosen surface and operations. `npm test` is the optional full developer
 suite, including the preserved record example; it is not the first welcome step.
 The current buildless certification pilot does not certify Angular source.
+
+## Optional settings for a later chosen widget
+
+Only if the person chooses a widget that needs settings, read the project-root
+`references/widget-settings.md`. Import the supplied optional
+`public/sdk/widget-settings.js` facade from the component's correct relative
+path. Create it before the core client's `connect()` so it observes the
+validated connection, then use `onOpen`, `get` and `save` for the current paired
+widget. Do not add app IDs, environment branches or broker operations. This
+module is separate from core SDK0.2.0. The preview settings are temporary; a
+production-host adapter has not been installed or verified. Keep the first
+welcome unchanged: no facade import, settings UI or extra permissions.
 
 ## Keep the supplied foundations
 

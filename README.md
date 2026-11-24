@@ -1,9 +1,9 @@
 # Dezrez Angular Basic
 
-Your first app is a simple welcome with your name and a few instructions. It
+Your first app displays only a welcome message with your name. It
 starts with no selected record, no data access and no decision about what you
 will build. Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
-your chosen AI. Bundle **0.6.0-angular** keeps the locked Angular dependency
+your chosen AI. Bundle **0.6.1-angular** keeps the locked Angular dependency
 profile and SDK0.2.0; it changes the starting experience, not the wire contract.
 
 ## First welcome: details for your AI or a developer
@@ -39,6 +39,8 @@ Light on its own locally, or the host's effective appearance when embedded.
 The code retains all supported themes. Do not switch themes, choose records or
 run the optional record matrix during this first step. Use the developer website
 in normal Chrome or Edge, never inside an AI's internal browser.
+Instructions and next steps belong in the wizard, these guides or the AI chat;
+do not add them as body copy, an extra panel or a list inside the first app.
 
 ## Once you choose your app
 
@@ -72,6 +74,18 @@ retry a write. A manifest grants no authority; credentials stay in the host.
 `npm test` runs the full developer suite, including the preserved record example.
 Use focused tests and browser checks appropriate to the app the person actually
 chooses. This full suite is not a first-welcome requirement.
+
+## Optional settings for a later widget
+
+Only if the widget you choose needs settings, follow the project-root
+[widget-settings guide](references/widget-settings.md). The supplied optional
+`public/sdk/widget-settings.js` and its type declaration are separate from
+core SDK0.2.0. Create the facade before the core client connects; use its
+`onOpen`, `get` and `save` methods without app IDs or environment branches.
+Preview settings are temporary. A production-host adapter has not been
+installed or verified, so this does not establish production availability.
+The first welcome does not import the facade or display settings. It shows only
+the same welcome message in every preview location until you ask for a feature.
 
 ## Styling
 

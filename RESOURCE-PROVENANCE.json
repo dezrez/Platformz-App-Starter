@@ -14,7 +14,9 @@
     "sdk/diagnostics.js": "6f4473adff869bb96b654203f04a785e826beb51de868fac8ad4c23291dfae54",
     "sdk/context.js": "be048f3fc0cec12d10c59c71a97950d9770d1500a1be36be58d75c97d3629220",
     "fixtures/properties.json": "b2dda47dc641c3961b0f74dbcd3ef6791a95d80d718cac32443a4b130fd20f5b",
-    "fixtures/records.json": "785cdbe8ef696256ea2f78f3bd3664c9e080628f1da6f3e4ff17ac65bae933b3"
+    "fixtures/records.json": "785cdbe8ef696256ea2f78f3bd3664c9e080628f1da6f3e4ff17ac65bae933b3",
+    "sdk/widget-settings.js": "8684052361d40d5207b7a5d3665d7adc154d9d10fac06cd74fe9f9211a41b9e3",
+    "sdk/widget-settings.d.ts": "b52d91f2177d0c13e83df67b9f41437d3961e89e3050350e76ef4854869e3ef0"
   },
   "iconStylesheet": "https://dezrez-partner-developers-systest.azurewebsites.net/assets/rezi-icons.css",
   "hostedTypeKit": "https://use.typekit.net/yis4cut.css",

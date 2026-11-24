@@ -2,8 +2,9 @@
 
 Use the supplied component styles, icon assets, semantic colour tokens and theme
 controller. Match the Dezrez application rather than inventing a separate visual
-design. The first welcome app should be one small, readable panel with the
-person's welcome message and a few simple instructions. Do not add property
+design. The first welcome app should be one small, readable panel containing
+only the person's welcome message. Instructions belong in the website wizard
+and guides, not in the app. Do not add property
 cards, notes, record selectors, example business data or extra application
 features before the person chooses what to build.
 
@@ -99,7 +100,7 @@ keep the same relationships rather than introducing a second panel system:
 ```
 
 Give every standard panel heading an appropriate supplied, verified decorative
-icon beside real accessible text. For a welcome/instructions panel, use the
+icon beside real accessible text. For a welcome panel, use the
 supplied book or screen icon. For the existing icon-font assets this is, for
 example, `<span class="char char-book" aria-hidden="true"></span>`. Keep the
 actual heading text; the glyph must not be its accessible name. Do not invent a
@@ -139,7 +140,7 @@ their own visible keyboard cues. Controls and panel headers must grow with text;
 never hide overflowing content to conceal a layout problem. Respect reduced
 motion and avoid decorative animation in the welcome app.
 
-For the first welcome build, verify only the simple greeting/instructions panel,
+For the first welcome build, verify only the single welcome message panel,
 its actual fonts and its one current appearance: Light when opened locally on
 its own, or the host's effective appearance when embedded. Keep theme support in the code,
 but do not launch a multi-theme, record-context, note-storage or certification

@@ -101,6 +101,19 @@ not build, activate or certify an Angular worker. The developer website's saved
 copy preview can keep fictional notes across Save/reopen and property changes
 within its current page; sign-out or a full developer-page reload clears them.
 
+## Optional widget-settings source update — 0.6.1-angular
+
+The first app displays only its personal welcome message, with no instructions
+or extra body copy inside the app. Guides and the wizard retain next steps.
+The source bundle adds an optional `public/sdk/widget-settings.js` facade,
+self-contained TypeScript declaration and conditional public guide. The facade
+is not imported by core SDK0.2.0 or the default welcome. No dependency, lockfile,
+worker input or compiler policy is changed. A later chosen widget can create
+the facade before core connection and use its host-paired settings API without
+app IDs or environment-specific code. Preview settings are temporary; the
+production-host adapter is not installed or verified. This is not connected
+widget registration, certification or release evidence.
+
 ## Welcome-first source update — 0.6.0-angular
 
 The default entry is now a welcome panel with a first-name greeting and simple
