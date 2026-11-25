@@ -1,6 +1,6 @@
 # Compatibility and release status
 
-Verified package selection: 18 November 2026.
+Base toolchain selection: 18 November 2026. Chart.js addition: 25 November 2026.
 
 | Component | Exact version |
 |---|---|
@@ -9,6 +9,7 @@ Verified package selection: 18 November 2026.
 | TypeScript | 6.0.3 |
 | RxJS | 7.8.2 |
 | tslib | 2.9.1 |
+| Chart.js | 4.6.2 |
 | Vitest / jsdom | 5.1.0 / 31.0.1 |
 | Partner protocol / SDK | dezrez.partner/1 / 0.2.0 (legacy property declarations: 0.1.0) |
 
@@ -18,10 +19,23 @@ All dependency versions are exact and the version 3 lockfile records public regi
 
 ## Open gates
 
-- The earlier picomatch tooling advisory [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) was withdrawn on 18 November 2026. The maintainer's [review of the reported issue](https://github.com/micromatch/picomatch/pull/235) explains the trusted-pattern context. A fresh full `npm audit --json`, including development dependencies, completed at 22:36:16 UTC on that date with exit 0 and zero findings at every severity. The dependency lock remains `fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3`. This clears that specific advisory release gate; no dependency upgrade, patch, waiver, audit suppression or force fix was applied. Fixed trusted build configuration/patterns, rejection of submitted globs/plugins/configuration, no per-job install/network and disposable bounded compilation remain independent requirements. A clean audit does not establish freedom from all security risks.
+- The earlier picomatch tooling advisory [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) was withdrawn on 18 November 2026. The maintainer's [review of the reported issue](https://github.com/micromatch/picomatch/pull/235) explains the trusted-pattern context. A fresh full `npm audit --json`, including development dependencies, completed at 22:36:16 UTC on that date with exit 0 and zero findings at every severity. That checkpoint's dependency lock was `fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3`. It cleared that specific advisory release gate without a dependency upgrade, patch, waiver, audit suppression or force fix. The later Chart.js lock is a separate change. Fixed trusted build configuration/patterns, rejection of submitted globs/plugins/configuration, no per-job install/network and disposable bounded compilation remain independent requirements. A clean audit does not establish freedom from all security risks.
 - The maintained starter retains the reviewed Dezrez icon stylesheet/font and readable Exo 2/Poppins fallbacks. Bundle 0.6.0-angular uses the authorised intact hosted kit for Exo Soft/New Rubrik in the child document. Strict preview policy already permits its exact stylesheet/font destinations. Actual loaded faces and visual matching require browser evidence; fallback loading does not establish parity. No Adobe binaries are redistributed.
 - The historical buildless static profile does not compile Angular. API certification uses its separate exact locked compiler, fictional API/browser profile and reviewed policy; the submitted app's actual report establishes its result. Local validation alone does not approve a release.
 - Local installation/build/unit/package checks and browser/theme evidence are separate. Actual font parity, localhost pairing, live Dezrez authorization and production release require their own verification.
+
+## Chart guidance and dependency — 0.10.0-angular
+
+Chart.js 4.6.2 is supplied as an exactly locked local dependency for later
+requested charts; the updated lock and reviewed build profile belong to this
+bundle. Read `references/charts.md` for the framework-independent helper,
+Exo Soft axes/labels/legends/tooltips, New Rubrik headings, exact ordered series
+palette and theme-aware text/grids/surfaces. Keep font-ready and live-theme
+redraw, reduced motion, teardown and a text/table alternative. Do not load a CDN
+script or substitute another chart library. The default welcome stays chart-free
+with unchanged record permissions and no new data calls. This source/dependency
+update requires its matching isolated profile and actual verification; it does
+not certify an app, activate a worker or approve publication.
 
 ## API certification and isolated Systest release — 0.9.0-angular
 

@@ -134,6 +134,12 @@ explicit fallback rather than rewriting that preference.
 
 ## Controls and first-build checks
 
+For every later requested chart, use the supplied local Chart.js package and read
+[the chart guide](charts.md). It defines the exact ordered series palette,
+Exo Soft axes/labels/legends/tooltips, New Rubrik headings, theme-aware
+text/grids/surfaces, font-ready redraw, cleanup and accessible text alternatives.
+Do not add a chart to the first welcome.
+
 Reuse the supplied control rules. Text fields and selects have an orange focused
 boundary with no extra outline or shadow, including High Contrast. Ordinary
 fields do not gain an orange hover border. Buttons, links and disclosures retain

@@ -61,6 +61,9 @@ export async function validate() {
   const hash = bytes => createHash('sha256').update(bytes).digest('hex');
   assert.equal(hash(await regular('package-lock.json')), provenance.dependencyLockSha256, 'The dependency profile needs a reviewed update.');
   for (const [name, digest] of Object.entries(provenance.copiedResourceSha256)) assert.equal(hash(await regular('public/' + name)), digest, 'The supplied SDK or theme runtime changed.');
+  for (const name of ['sdk/charts.js', 'sdk/charts.d.ts']) assert.match(provenance.copiedResourceSha256[name], /^[a-f0-9]{64}$/, 'The chart helper needs reviewed provenance.');
+  assert.match(provenance.copiedReferenceSha256?.['references/charts.md'], /^[a-f0-9]{64}$/, 'The chart guide needs reviewed provenance.');
+  for (const [name, digest] of Object.entries(provenance.copiedReferenceSha256)) assert.equal(hash(await regular(name)), digest, 'The supplied public guide changed.');
   for (const group of [pkg.dependencies, pkg.devDependencies]) for (const version of Object.values(group)) assert.match(version, /^\d+\.\d+\.\d+$/);
   for (const [name, item] of Object.entries(lock.packages)) if (name) {
     assert.match(item.version, /^\d+\.\d+\.\d+(?:[-+][\w.-]+)?$/);

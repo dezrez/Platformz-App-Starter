@@ -4,7 +4,7 @@ Your actual starting application is the supplied welcome with your name and a
 small What happens next panel. Build and run this source, then edit the same
 app with your AI. It starts with no record data access or business features.
 Start with [DEZREZ-START-HERE.md](DEZREZ-START-HERE.md) and talk to
-your chosen AI. Bundle **0.9.0-angular** keeps the locked Angular dependency
+your chosen AI. Bundle **0.10.0-angular** keeps the locked Angular dependency
 profile and core SDK0.2.0, with a separate token-free viewer extension1.
 
 ## First welcome: details for your AI or a developer
@@ -137,6 +137,13 @@ carry their bundled notices. Do not redistribute Adobe font binaries or add an
 unreviewed icon pack. Strict preview CSP already permits the exact kit sources.
 
 ## Build and release boundaries
+
+For a later requested chart, follow [the chart guide](references/charts.md).
+Use the supplied exactly locked local Chart.js 4.6.2 package, Exo Soft for
+axes/labels/legends/tooltips, New Rubrik for headings, the exact ordered series
+palette and semantic theme colours for text, grids and surfaces. Keep live theme
+refresh, font-ready redraw, reduced motion, cleanup and a text/table alternative.
+Charts are not part of the first welcome. Do not use a CDN or another chart library.
 
 Keep exact dependencies and lockfile; do not add packages, custom builders,
 remote executable scripts or API bypasses. New dependencies/capabilities need

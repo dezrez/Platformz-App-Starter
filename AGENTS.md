@@ -48,3 +48,8 @@ For a chosen API app ready for checks, read the project-root
 `references/api-certification.md`. Declare actual owner/usage and the app’s
 fictional API workflow; do not invent private notes, storage or legacy selectors.
 The first welcome still has no certification task.
+
+For every later requested chart, read `references/charts.md` and use the supplied
+locked local Chart.js package: Exo Soft axes/labels/legends/tooltips, New Rubrik
+headings, the exact ordered palette and theme-aware text/grids/surfaces. Preserve
+chart cleanup and text alternatives. No CDN scripts; keep the welcome chart-free.

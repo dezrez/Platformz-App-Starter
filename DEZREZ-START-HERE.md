@@ -23,6 +23,10 @@ has not been verified.
 
 ## If you already have an app
 
+If you later ask for a chart, your AI should follow [the chart guide](references/charts.md)
+and use the supplied Chart.js package with the Dezrez fonts, themes and ordered
+colours. The first welcome stays as its two simple panels.
+
 Use the website's separate **Update my app** message. Your AI should preserve
 your work and compare only the starting files it needs. Installing new AI
 instructions does not update your app automatically. Do not replace your app

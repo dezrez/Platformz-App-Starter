@@ -2,7 +2,7 @@
 name: dezrez-angular-app
 description: Start a small Dezrez welcome app, then help the person choose and build their own idea with the locked Angular starter and supplied Dezrez styling.
 metadata:
-  version: 0.9.0-angular
+  version: 0.10.0-angular
 ---
 
 # Dezrez Angular app
@@ -134,6 +134,15 @@ production-host adapter has not been installed or verified. Keep the first
 welcome unchanged: no facade import, settings UI or extra permissions.
 
 ## Keep the supplied foundations
+
+For every chart you add, use the supplied locked local Chart.js package and read
+the project-root `references/charts.md`. Use Exo Soft for axes, labels, legends
+and all tooltip text; use New Rubrik for headings. Follow its exact ordered
+24-colour palette, stable series identities and semantic theme colours for text,
+grids and surfaces. Refresh mounted charts after host themes/fonts change,
+respect reduced motion, provide a text/table alternative and destroy charts on
+teardown. Keep the first welcome chart-free; do not load chart scripts from a
+CDN or add a different chart library.
 
 Preserve the exact locked dependencies, public SDK and validated origin/window/
 session binding. Never add packages, custom builders, remote executable scripts,

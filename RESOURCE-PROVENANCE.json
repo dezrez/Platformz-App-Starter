@@ -21,7 +21,9 @@
     "sdk/viewer.d.ts": "9a553f331befc332b9188b85adf233b437d103b578380fc6e2916d9a434f4923",
     "assets/favicon.svg": "b84b1348415fdc593135152e02f42c86404ca77b7cc0f8e1e19f69e7eb658480",
     "sdk/api.js": "e893257d2744d0efebbe0595bdd7b87058efef7762f0290b37e4937b51e61da4",
-    "sdk/api.d.ts": "67b9b0eedcf9013d5f239f9c6019107d4ff4e880089b954f554c43d4f140c4db"
+    "sdk/api.d.ts": "67b9b0eedcf9013d5f239f9c6019107d4ff4e880089b954f554c43d4f140c4db",
+    "sdk/charts.js": "e07dd6c7d0a52a82e90a6204deec1dfaf456546aad2d3fff154f7d4efb77bfdc",
+    "sdk/charts.d.ts": "9730ac2cb20e7d2913269fddbdada45ab536a06a0893583e7d3174ce9fa41e52"
   },
   "iconStylesheet": "https://dezrez-partner-developers-systest.azurewebsites.net/assets/rezi-icons.css",
   "hostedTypeKit": "https://use.typekit.net/yis4cut.css",
@@ -30,8 +32,11 @@
     "public/assets/fonts/Exo2-OFL.txt",
     "public/assets/fonts/Poppins-OFL.txt"
   ],
-  "dependencyLockSha256": "fb1169a67e220dd410c94a349b25e15682b9c7c147af7421ce256b48bee147d3",
+  "dependencyLockSha256": "67d7928af09dd39d9b774b5f9b74502bef3149feb0ac50d81bd775c57e3d7d61",
   "framework": "Angular 22.2.6",
   "buildTool": "Angular CLI/build 22.2.7",
-  "fontMode": "hosted"
+  "fontMode": "hosted",
+  "copiedReferenceSha256": {
+    "references/charts.md": "20b5e9c198e104d4377b6fc5c977b56b6b0b8c859acc138a7568bdff83ac2751"
+  }
 }
